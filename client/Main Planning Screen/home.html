@@ -1,0 +1,63 @@
+<template name="home">
+
+	{{> inputAutocomplete settings=settings id="departurePoint" class="form-control" name="departurePoint" placeholder="Departure from" }}<br />
+	<div>
+		<table>
+			<tr>
+				<td>{{> map}}</td>
+				<td>{{> inputPanel}}</td>
+			</tr>
+		</table>
+	</div>
+	<div class="currencies">
+		<right>{{>currencies}}</right>
+	</div>
+</template>
+
+<template name="selectedIPs">
+			<h4>Which locations do you want to visit ?</h4>
+			<div id="selectedIP">
+				<ul>
+					{{#each selectedIp}}
+						<li>{{city}} in {{country}} for <input type="number" class="NbDays" min="0" max="99" value="1"/> nights</li>
+					{{/each}}
+				</ul>
+			</div>
+</template>
+
+<template name="displayDeparture">
+    {{PlaceName}}, in {{CountryName}}
+</template>
+
+<template name="departureDate">
+	<label>Departure Date : </label>
+	<input type="date" id="departureDate"/>
+</template>
+
+<template name="optimizeButton">
+		<button type="submit" class="optimizeButton" name="optimize">Optimize my trip !</button>
+</template>
+
+<template name='inputPanel'>
+	<div>
+		<form class='startingPanel'>
+		    <div class="well">
+   				<center><br />
+   				{{> departureDate}}<br />
+   				<label>Number of travelers :</label>
+   				<input type="number" class="NbPerson" id="NbPerson" min="0" max="99" value="1"/>
+   				{{> selectedIPs}}
+   				<br />
+				{{> optimizeButton}}</center>
+			</div>
+		</form><br />
+	</div>
+</template>
+
+<template name="currencies">
+	<select id="cur" value="EUR">
+		{{#each Currencies}}
+			<option>{{Code}}</option>
+		{{/each}}
+	</select>
+</template>
