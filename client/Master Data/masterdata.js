@@ -169,6 +169,8 @@ Template.mdff.events({
 
 	'click .flushAllFares': function(){
 		Meteor.call('flushAllFares', function(err,id){if(err){alert(err.reason);}});
+		Meteor.call('flushAllCarFares', function(err,id){if(err){alert(err.reason);}});
+		Meteor.call('flushAllHotelFares', function(err,id){if(err){alert(err.reason);}});
 	}
 
 });

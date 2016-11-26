@@ -43,6 +43,7 @@ Meteor.methods({
 
 								var carCode = getHotelAutoSuggest(ac.ip.city, currency);
 
+
 								Meteor.call("getCarFaresInCollection", carCode, pickUp, dropOff, currency, function(err,result){
 									if(!err){
 
@@ -69,6 +70,9 @@ Meteor.methods({
 											});
 										}
 									}
+									else{
+										console.log(err);
+									}
 								});
 							}
 						}
@@ -93,7 +97,7 @@ Meteor.methods({
 			}
 		});
 
-		return [minPrice, minQuote]
+		return [minPrice, minQuote];
 
 	},
 

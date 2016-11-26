@@ -2,6 +2,8 @@
 Template.relaunch.events({
 	'click .relaunch': function(e){
 
+		console.log(Session.get("departureFrom"), Session.get("departureDate"), Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get('selectedIp'), Session.get('nbDays'));
+
 		Meteor.call("updateIpDays", Session.get('selectedIp'), Session.get('nbDays'), function(error, result){
 			if (error){
 				console.log(error.reason);
