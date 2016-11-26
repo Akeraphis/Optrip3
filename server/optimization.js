@@ -13,71 +13,61 @@ Meteor.methods({
 			var res = {};
 
 			if (ft.flightFare.data){
-				Meteor.call("getCheapestFlight", ft, function(err, res){
+				var res = Meteor.call("getCheapestFlight", ft);
 
-					if (err){
-						console.log(err);
-					}
-					else{
-						console.log("1 -----> For the city of " + res[1].ip.city + ", for "+ nbPerson +" persons, the flight price is :" + res[0]*nbPerson);
-		
-						if(res[0] < Infinity){
+				console.log("1 -----> For the city of " + res[1].ip.city + ", for "+ nbPerson +" persons, the flight price is :" + res[0]*nbPerson);
+			
+				if(res[0] < Infinity){
 
-							//2. For staying from 1 to n-1 days in ip1
-							var ac = res[1];
-							var nbDays1 = ac.nbDays;
-							var CodeArrOrderedLeft = Meteor.call("getCodeArrOrderLeft", ac, optimalCircuit);
-							var CodeArrOrderedRight = Meteor.call("getCodeArrOrderReverse", ac, CodeArrOrderedLeft);
+					//2. For staying from 1 to n-1 days in ip1
+					var ac = res[1];
+					var nbDays1 = ac.nbDays;
+					var CodeArrOrderedLeft = Meteor.call("getCodeArrOrderLeft", ac, optimalCircuit);
+					var CodeArrOrderedRight = Meteor.call("getCodeArrOrderReverse", ac, CodeArrOrderedLeft);
 
-							for (var i=1; i<nbDays1; i++){
+					for (var i=1; i<nbDays1; i++){
 
-								//3. Retrieve the min Car price
+						//3. Retrieve the min Car price
+						
+						var pickUpDate = makeDate(departureDate);
+						pickUpDate.setDate(makeDate(departureDate).getDate() + i);
+						var dropOffDate = makeDate(returnDate);
+						dropOffDate.setDate(makeDate(returnDate).getDate() - nbDays1 + i);
+
+						pickUp = pickUpDate.yyyymmdd();
+						dropOff = dropOffDate.yyyymmdd();
+
+						var carCode = getHotelAutoSuggest(ac.ip.city, currency);
+						var minQuoteCar = {};
+						var minPriceCar = Infinity;
+
+						var result = Meteor.call("getCarFaresInCollection", carCode, pickUp, dropOff, currency);
+
+						_.forEach(result.carFare.cars, function(quote){
+							if(quote.price_all_days < minPriceCar){
+							minPriceCar = quote.price_all_days;
+							minQuoteCar = quote;;
+							}
+						});
+
+						console.log("2 -----> For the city of " + res[1].ip.city + ", leaving after " + i + " days, the car location price is :" + minPriceCar);
+						
+						if(minPriceCar<Infinity){
+
+							var res3 = Meteor.call("getCheapestHotel", ac, pickUp, CodeArrOrderedLeft, CodeArrOrderedRight, departureDate, returnDate, dropOff, currency, nbPerson);
+
+							console.log("3 -----> Leaving after " + i + " days, the hotel best possible combination price is :" + res3[0]);
+
+							if(res[0]*nbPerson+minPriceCar+res3[0] < cheapestFlightHotelAndCarPrice){
+								cheapestFlightHotelAndCarPrice = res[0]*nbPerson+minPriceCar+res3[0];
+								cheapestQuote = [res,minQuoteCar,res3];
+
+								console.log("4. So the cheapest option to leave from:" + res[1].ip.city + " amounts to : ", res[0]*2+minPriceCar+res3[0]);
 								
-								var pickUpDate = makeDate(departureDate);
-								pickUpDate.setDate(makeDate(departureDate).getDate() + i);
-								var dropOffDate = makeDate(returnDate);
-								dropOffDate.setDate(makeDate(returnDate).getDate() - nbDays1 + i);
-
-								pickUp = pickUpDate.yyyymmdd();
-								dropOff = dropOffDate.yyyymmdd();
-
-								var carCode = getHotelAutoSuggest(ac.ip.city, currency);
-
-
-								Meteor.call("getCarFaresInCollection", carCode, pickUp, dropOff, currency, function(err,result){
-									if(!err){
-
-										var res2 = Meteor.call('returnCarMinPriceQuote', result.carFare.cars);
-
-										console.log("2 -----> For the city of " + res[1].ip.city + ", leaving after " + i + " days, the car location price is :" + res2[0]);
-										if(res2[0]<Infinity){
-
-											Meteor.call("getCheapestHotel", ac, pickUp, CodeArrOrderedLeft, CodeArrOrderedRight, departureDate, returnDate, dropOff, currency, nbPerson, function(err,res3){
-												if(err){
-													console.log(err);
-												}
-												else{
-													console.log("3 -----> Leaving after " + i + " days, the hotel best possible combination price is :" + res3[0]);
-
-													if(res[0]*nbPerson+res2[0]+res3[0] < cheapestFlightHotelAndCarPrice){
-														cheapestFlightHotelAndCarPrice = res[0]*nbPerson+res2[0]+res3[0];
-														cheapestQuote = [res,res2[1],res3];
-
-														console.log("4. So the cheapest option to leave from:" + res[1].ip.city + " amounts to : ", res[0]+res2[0]*nbPerson+res3[0]);
-														
-													}
-												}
-											});
-										}
-									}
-									else{
-										console.log(err);
-									}
-								});
 							}
 						}
 					}
-				});
+				}
 			}
 		});
 
@@ -87,15 +77,9 @@ Meteor.methods({
 
 	returnCarMinPriceQuote: function(res){
 
-		var minQuote = {};
-		var minPrice = Infinity;
 
-		_.forEach(res, function(quote){
-			if(quote.price_all_days < minPrice){
-				minPrice = quote.price_all_days;
-				minQuote = quote;
-			}
-		});
+
+
 
 		return [minPrice, minQuote];
 

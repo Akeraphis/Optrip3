@@ -31,30 +31,32 @@ Meteor.methods({
 		}
 
 		var temp = result1.headers.location;
-		Meteor._sleepForMs(3000);
 		var sessionKey = temp.substring(0, temp.search("deltaExcludeWebsites"));
 
 		if(sessionKey){
 			var url2 = "http://partners.api.skyscanner.net"+sessionKey+"?apiKey="+apiKey;
-			try{
-				HTTP.call('GET', url2, function(error, result){
-					if(!error){
-						res = result.data;
-						if (alreadyExists){
-							CarFares.update({ pickUp : codeArr, departureDate : depDate, returnDate : retDate}, {dateUpdate : dateNow, carFare : res });
+			Meteor._sleepForMs(3000);
+			//while(){
+				try{
+					HTTP.call('GET', url2, function(error, result){
+						if(!error){
+							res = result.data;
+							if (alreadyExists){
+								CarFares.update({ pickUp : codeArr, departureDate : depDate, returnDate : retDate}, {dateUpdate : dateNow, carFare : res });
+							}
+							else{
+								CarFares.insert({ pickUp : codeArr, departureDate : depDate, returnDate : retDate, dateUpdate : dateNow, carFare : res });
+							}
 						}
 						else{
-							CarFares.insert({ pickUp : codeArr, departureDate : depDate, returnDate : retDate, dateUpdate : dateNow, carFare : res });
+							console.log(error);
 						}
-					}
-					else{
-						console.log(error);
-					}
-				});
-			}
-			catch(e){
-				console.log(e);
-			}
+					});
+				}
+				catch(e){
+					console.log(e);
+				}
+			//}
 		}
 
 	    return res;
@@ -69,7 +71,7 @@ Meteor.methods({
 		var res = CarFares.findOne({pickUp : ca, departureDate : depDate, returnDate : retDate});
 
 		// S'il y a une correspondance et que la mise à jour a eu lieu récemment
-		if(res && res.dateUpdate >= dateThreshold ){
+		if(res && res.dateUpdate >= dateThreshold && res.carFare.cars.length>1){
 			//Just retrieve the field
 			cfs = res;
 		}
