@@ -83,7 +83,7 @@ Meteor.methods({
 
 	returnCarMinPriceQuote: function(res){
 
-		var quote = {};
+		var minQuote = {};
 		var minPrice = Infinity;
 
 		_.forEach(res, function(quote){

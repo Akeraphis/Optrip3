@@ -1,4 +1,8 @@
 Session.set("selectedCurrency", "EUR");
+Session.set('nbPersons', 2);
+Session.set('departureFrom',"");
+Session.set('departureDate', "");
+Session.set('nbDays', []);
 
 Template.home.helpers({
 	settings: function() {
@@ -37,25 +41,31 @@ Template.home.events({
 		//create all variables to get values in the form
 		var departureFrom = document.getElementById("departurePoint");
 		var departureDate = document.getElementById("departureDate");
-		var interestPoints = Session.get("selectedIp");
 		var nbDaysElements = document.getElementsByClassName('NbDays');
 		var nbPersons = document.getElementById("NbPerson");
 		var nbDays = [];
+
+		Session.set("nbPersons", nbPersons.value);
+		Session.set("departureDate", departureDate.value);
+		Session.set("departureFrom", departureFrom.value);
 
 		for (var i=0; i<nbDaysElements.length; i++){
 			nbDays.push(nbDaysElements[i].value);
 		}
 
+		Session.set('nbDays', nbDays);
 		var totalDays = 0;
 
+		Router.go('/optimization/results');
+
 		//Call the update method for selectedIPDays
-		Meteor.call("updateIpDays", interestPoints, nbDays, function(error, result){
+		Meteor.call("updateIpDays", Session.get('selectedIp'), Session.get('nbDays'), function(error, result){
 			if (error){
 				console.log(error.reason);
 			}
 			else{
 				//send this information to the server to optimize and return result
-				Meteor.call('optimizeTrip', departureFrom.value, departureDate.value, result, Session.get('selectedCurrency'), nbPersons.value, function(error, res){
+				Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), function(error, res){
 					if(error){
 						alert("This is an error while optimizing the trip!");
 					}
