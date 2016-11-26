@@ -101,6 +101,53 @@ Meteor.methods({
 
 	},
 
+	updateFares : function(codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson){
+
+		// 1. Retrieve possible flight arrival places
+		_.forEach(flightTable, function(ft){
+
+			//2. For staying from 1 to n-1 days in ip1
+			var ac = ft.arrivalCode;
+			var nbDays1 = ac.nbDays;
+			var CodeArrOrderedLeft = Meteor.call("getCodeArrOrderLeft", ac, optimalCircuit);
+			var CodeArrOrderedRight = Meteor.call("getCodeArrOrderReverse", ac, CodeArrOrderedLeft);
+
+			for (var i=1; i<nbDays1; i++){
+
+				//3. Retrieve the min Car price
+				
+				var pickUpDate = makeDate(departureDate);
+				pickUpDate.setDate(makeDate(departureDate).getDate() + i);
+				var dropOffDate = makeDate(returnDate);
+				dropOffDate.setDate(makeDate(returnDate).getDate() - nbDays1 + i);
+
+				pickUp = pickUpDate.yyyymmdd();
+				dropOff = dropOffDate.yyyymmdd();
+
+				var carCode = getHotelAutoSuggest(ac.ip.city, currency);
+
+
+				Meteor.call("getCarFaresInCollection", carCode, pickUp, dropOff, currency, function(err,result){
+					if(!err){
+						console.log("---- Step 5 completed : Hotel Fares retrieved ----");
+					}
+					else{
+						console.log(err);
+					}
+				});
+
+				Meteor.call("getCheapestHotel", ac, pickUp, CodeArrOrderedLeft, CodeArrOrderedRight, departureDate, returnDate, dropOff, currency, nbPerson, function(err, result){
+					if(!err){
+						console.log("---- Step 6 completed : Car Fares retrieved ----");
+					}
+					else{
+						console.log(err);
+					}
+				});
+			}
+		});
+	},
+
 	getCheapestFlight: function(ft){
 
 		var minPrice = Infinity;

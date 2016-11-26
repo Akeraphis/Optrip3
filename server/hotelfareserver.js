@@ -75,17 +75,7 @@ getHotelFaresInCollection = function(departureDate, returnDate, ipa, currency,nb
 		var newhf = {agents : hf.agents, amenities : hf.amenities, hotels : newHotels, hotels_prices : hf.hotels_prices, places : hf.places, total_available_hotels : hf.total_available_hotels, total_hotels : hf.total_hotels};
 		var result = HotelFares.update({city : ipcity, checkin : departureDate, checkout : returnDate}, {dateUpdate : dateNow, hotelFare : newhf });
 		hfs = { city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : newhf };
-		console.log("alert hotel 1");
-
-	}
-	else if(res && res.hotelFare == null){
-		//Remove the field and Retrieve
-		var hf = getHotelFares(ipcode, departureDate, returnDate, currency, nbPerson);
-		var newHotels = {address : hf.hotels.address, amenities : hf.hotels.amenities, distance_from_search : hf.hotels.distance_from_search, district : hf.hotels.district, hotel_id : hf.hotels.hotel_id, latitude : hf.hotels.latitude, longitude : hf.hotels.longitude, name : hf.hotels.name, number_of_rooms : hf.hotels.number_of_rooms, popularity : hf.hotels.popularity, popularity_desc : hf.hotels.popularity_desc, score : hf.hotels.score, star_rating : hf.hotels.star_rating, tag : hf.hotels.tag, types : hf.hotels.types}
-		var newhf = {agents : hf.agents, amenities : hf.amenities, hotels : newHotels, hotels_prices : hf.hotels_prices, places : hf.places, total_available_hotels : hf.total_available_hotels, total_hotels : hf.total_hotels};
-		var result = HotelFares.update({ city : ipcity, checkin : departureDate, checkout : returnDate}, {dateUpdate : dateNow, hotelFare : newhf });
-		hfs = { city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : newhf };
-		console.log("alert hotel 2");
+		console.log("alert hotel to be refreshed");
 
 	}
 	else{
@@ -95,7 +85,7 @@ getHotelFaresInCollection = function(departureDate, returnDate, ipa, currency,nb
 		var newhf = {agents : hf.agents, amenities : hf.amenities, hotels : newHotels, hotels_prices : hf.hotels_prices, places : hf.places, total_available_hotels : hf.total_available_hotels, total_hotels : hf.total_hotels};
 		var result = HotelFares.insert({ city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : newhf });
 		hfs = { city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : newhf };
-		console.log("alert hotel 3");
+		console.log("alert hotel no entry");
 	}
 
 	return hfs;

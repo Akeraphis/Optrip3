@@ -67,7 +67,7 @@ Template.home.events({
 				//send this information to the server to optimize and return result
 				Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), function(error, res){
 					if(error){
-						alert("This is an error while optimizing the trip!");
+						alert("This is an error while updating the fares!");
 					}
 					else{
 						console.log(res);

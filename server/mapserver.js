@@ -7,6 +7,8 @@ var googleKey = 'AIzaSyBa-oHgHxxTBaIhoFz8koYTBlHcuCyfiIk';
 Meteor.methods({
 	optimizeTrip: function(departureFrom, departureDate, ipDays, currency, nbPerson){
 
+		var optimalTrip = [];
+		
 		//Get ip
 		var ip = Meteor.call('getIp', ipDays);
 
@@ -29,21 +31,24 @@ Meteor.methods({
 		var flightTable = getFlightFaresInCollection(codeDep, codeArr, departureDate, returnDate, currency);
 		console.log("---- Step 3 completed : Flights Fares retrieved ----");
 
-		//Step 4. Get all the possible hotel rates for the trip
-		//var hotelTable = getHotelFaresInCollection(departureDate, returnDate, ipDays);
-		console.log("---- Step 4 completed : Hotel Fares retrieved ----");
-
-		//Step 5. Get the car rental table with all the possible rates in the arrival cities
-		//var carTable = getCarFaresInCollection(codeArr, departureDate, returnDate);
-		console.log("---- Step 5 completed : Car Fares retrieved ----");
-
-		//Step 6. Get the circuit
+		//Step 4. Get the circuit
 		var optimalCircuit = Meteor.call("orderIps", ipDays);
-		console.log("---- Step 6 completed : Optimal circuit computed ----");
+		console.log("---- Step 4 completed : Optimal circuit computed ----");
 
-		//Step 7. Compute all trip possibilities and results and return the cheapest option
-		var optimalTrip = Meteor.call("findOptimalTrip", codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson);
-		console.log("---- Step 7 completed : Optimal trip computed ----");
+		//Step 5. Get all the possible hotel and car rates for the trip
+		var refreshRates = Meteor.call("updateFares", codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson, function(err, res){
+			if(!err){
+				console.log("---- Step 7 completed : Fares computed computed ----");
+				//Step 6. Compute all trip possibilities and results and return the cheapest option
+				optimalTrip = Meteor.call("findOptimalTrip", codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson);
+				console.log("---- Step 8 completed : Optimal trip computed ----");
+			}
+			else{
+				console.log(err);
+			}
+		});
+
+
 
 		//Step 8. Call live prices for selected flight leg
 

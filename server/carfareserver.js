@@ -80,6 +80,7 @@ Meteor.methods({
 					cfs = { pickUp : ca, departureDate : depDate, returnDate : retDate, dateUpdate : dateNow, carFare : result };
 				}
 			});
+			console.log("alert car to be refreshed");
 		}
 		else{
 			//Enter the missing search in the table and retrieve the result
@@ -88,6 +89,7 @@ Meteor.methods({
 					cfs = { pickUp : ca, departureDate : depDate, returnDate : retDate, dateUpdate : dateNow, carFare : result };
 				}
 			});
+			console.log("alert car no entry");
 		}
 
 		return cfs;
