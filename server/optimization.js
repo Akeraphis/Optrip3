@@ -46,7 +46,7 @@ Meteor.methods({
 						_.forEach(result.carFare.cars, function(quote){
 							if(quote.price_all_days < minPriceCar){
 							minPriceCar = quote.price_all_days;
-							minQuoteCar = quote;;
+							minQuoteCar = quote;
 							}
 						});
 
@@ -72,17 +72,7 @@ Meteor.methods({
 		});
 
 		console.log("----------------   OPTIMIZED PRICE : " + cheapestFlightHotelAndCarPrice + "---------------------");
-		return [cheapestFlightHotelAndCarPrice, cheapestQuote];
-	},
-
-	returnCarMinPriceQuote: function(res){
-
-
-
-
-
-		return [minPrice, minQuote];
-
+		return [cheapestFlightHotelAndCarPrice, cheapestQuote, optimalCircuit];
 	},
 
 	updateFares : function(codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson){

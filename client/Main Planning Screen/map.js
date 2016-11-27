@@ -4,6 +4,15 @@ var map=null;
 var markers = [];
 var googleKey = 'AIzaSyBa-oHgHxxTBaIhoFz8koYTBlHcuCyfiIk';
 
+Session.set("selectedCurrency", "EUR");
+Session.set('nbPersons', 2);
+Session.set('departureFrom',"");
+Session.set('departureDate', "");
+Session.set('nbDays', []);
+Session.set("minTotalPrice", Infinity);
+Session.set("results", []);
+
+
 //Open Google maps on startup; fill in the key
 Meteor.startup(function() {
 	GoogleMaps.load({key : googleKey});
@@ -260,13 +269,6 @@ function deleteMarkers() {
   markers = [];
 }
 
-Session.set("selectedCurrency", "EUR");
-Session.set('nbPersons', 2);
-Session.set('departureFrom',"");
-Session.set('departureDate', "");
-Session.set('nbDays', []);
-Session.set("minTotalPrice", Infinity);
-
 Template.home.helpers({
 	settings: function() {
 		return {
@@ -330,34 +332,19 @@ Template.home.events({
 			}
 			else{
 
-				//Get the best circuit for the selected IPs
-				Meteor.call("orderIps", result, function(err, res2){
-					if (err){
-						console.log("error", err.reason);
-					}
-					else{
-						Session.set("optimalCircuit", res2);
-						console.log(Session.get("optimalCircuit"));
-
-						//draw the route
-						//------------------------------------------------------------------------------------------------------------------------
-						drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
-						//------------------------------------------------------------------------------------------------------------------------
-					}
-				});
-
-				//send this information to the server to optimize and return result
+								//send this information to the server to optimize and return result
 				Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), function(error, res){
 					if(error){
 						alert("This is an error while updating the fares!");
 					}
 					else{
-						console.log(res);
+						Session.set("results", res[1]);
 						Session.set("minTotalPrice", res[0]);
+						Session.set("optimalCircuit", res[2])
+						console.log(res);
+						drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
 					}
 				});
-
-
 			}
 		});
 	},

@@ -1,15 +1,10 @@
 <template name="results">
 	<div>
-		<table>
-			<tr>
-				<td></td>
-				<td>{{> minPrice}}</td>
-			</tr>
-			<tr>
-				<td>{{> map}}</td>
-				<td>{{> relaunch}}</td>
-			</tr>
-		</table>
+		{{> relaunch}}
+		{{> minPrice}}
+		{{> minFlight}}
+		{{> minCar}}
+		{{> minHotel}}
 	</div>
 	<div class="currencies">
 		<right>{{>currencies}}</right>
@@ -24,4 +19,27 @@
 
 <template name="minPrice">
 	<h1> Total Price : {{minTotalPrice}} </h1>
+</template>
+
+<template name="minFlight">
+	<div>
+		<h4>Flight Price (per person): {{minFlightPrice}} </h4>
+		<h4>Flight Destination : {{minFlightArrival}} </h4>
+		<h4>{{isDirect}}</h4>
+	</div>
+</template>
+	
+<template name="minCar">
+	<h4>Car Rental Price : {{minCarPrice}}</h4>
+	<h4>Vehicle : {{minVehicle}}</h4>
+</template>
+		
+<template name="minHotel">
+	<div>
+		<h4>Hotel Total Prices : {{minHotelPrices}}</h4>
+	</div>
+</template>
+
+<template name="tripSummary">
+
 </template>
