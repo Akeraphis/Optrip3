@@ -32,35 +32,44 @@ Meteor.methods({
 
 		var temp = result1.headers.location;
 		var sessionKey = temp.substring(0, temp.search("deltaExcludeWebsites"));
+		Meteor._sleepForMs(5000);
 
 		if(sessionKey){
 			var url2 = "http://partners.api.skyscanner.net"+sessionKey+"?apiKey="+apiKey;
-			Meteor._sleepForMs(3000);
-			//while(){
-				try{
-					HTTP.call('GET', url2, function(error, result){
-						if(!error){
-							res = result.data;
-							if (alreadyExists){
-								CarFares.update({ pickUp : codeArr, departureDate : depDate, returnDate : retDate}, {dateUpdate : dateNow, carFare : res });
-							}
-							else{
-								CarFares.insert({ pickUp : codeArr, departureDate : depDate, returnDate : retDate, dateUpdate : dateNow, carFare : res });
-							}
-						}
-						else{
-							console.log(error);
-						}
-					});
+			HTTP.call('GET', url2, function(error, result){
+				res = result.data;
+
+				if(!error){
+					if (alreadyExists){
+						CarFares.update({ pickUp : codeArr, departureDate : depDate, returnDate : retDate}, {dateUpdate : dateNow, carFare : res });
+					}
+					else{
+						CarFares.insert({ pickUp : codeArr, departureDate : depDate, returnDate : retDate, dateUpdate : dateNow, carFare : res });
+					}
 				}
-				catch(e){
-					console.log(e);
+				else{
+					console.log(error);
 				}
-			//}
+			});
 		}
 
 	    return res;
 	},
+
+	/*'importCarFaresFinished' : function(res){
+		var bool = true;
+
+		console.log(res.websites);
+
+		_.forEach(res.websites, function(wb){
+			if(wb.in_progress){
+				bool = false;
+			}
+		});
+
+		return bool;
+
+	},*/
 
 	'getCarFaresInCollection': function(ca, depDate, retDate, currency){
 		
@@ -89,6 +98,9 @@ Meteor.methods({
 			Meteor.call("updateCarFares", ca, depDate, retDate, currency, false, function(err, result){
 				if(!err){
 					cfs = { pickUp : ca, departureDate : depDate, returnDate : retDate, dateUpdate : dateNow, carFare : result };
+				}
+				else{
+					console.log(err);
 				}
 			});
 			console.log("alert car no entry");

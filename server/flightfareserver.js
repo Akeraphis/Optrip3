@@ -60,7 +60,7 @@ getFlightFaresInCollection = function(codeDep, codeArr, departureDate, returnDat
 			var ff = getFlightFares(codeDep, ca.code, departureDate, returnDate, currency);
 			var result = FlightFares.update({ departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate}, {dateUpdate : dateNow, flightFare : ff });
 			ffs.push({ departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff });
-			console.log("alert flight 1");
+			console.log("alert flight to be refreshed");
 
 		}
 		else{
@@ -68,7 +68,7 @@ getFlightFaresInCollection = function(codeDep, codeArr, departureDate, returnDat
 			var ff = getFlightFares(codeDep, ca.code, departureDate, returnDate, currency);
 			var result = FlightFares.insert({ departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff });
 			ffs.push({ departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff });
-			console.log("alert flight 2");
+			console.log("alert flight no entry");
 		}
 	});
 
