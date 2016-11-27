@@ -2,6 +2,9 @@
 	<div>
 		<table>
 			<tr>
+				<td>{{> minPrice}}</td>
+			</tr>
+			<tr>
 				<td>{{> relaunch}}</td>
 				<td>{{> map}}</td>
 			</tr>
@@ -14,4 +17,8 @@
 
 <template name="relaunch">
 	<button type="submit" class="relaunch" name="refreshResults">Refresh</button>
+</template>
+
+<template name="minPrice">
+	<h1> Total Price : {{minTotalPrice}} </h1>
 </template>

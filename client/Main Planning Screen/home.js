@@ -3,6 +3,7 @@ Session.set('nbPersons', 2);
 Session.set('departureFrom',"");
 Session.set('departureDate', "");
 Session.set('nbDays', []);
+Session.set("minTotalPrice", Infinity);
 
 Template.home.helpers({
 	settings: function() {
@@ -49,6 +50,8 @@ Template.home.events({
 		Session.set("departureDate", departureDate.value);
 		Session.set("departureFrom", departureFrom.value);
 
+
+
 		for (var i=0; i<nbDaysElements.length; i++){
 			nbDays.push(nbDaysElements[i].value);
 		}
@@ -71,6 +74,7 @@ Template.home.events({
 					}
 					else{
 						console.log(res);
+						Session.set("minTotalPrice", res[0]);
 					}
 				});
 

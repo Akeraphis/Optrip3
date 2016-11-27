@@ -16,10 +16,19 @@ Template.relaunch.events({
 					}
 					else{
 						console.log(res);
+						Session.set("minTotalPrice", res[0]);
 					}
 				});
 
 			}
 		});
+	}
+});
+
+Template.minPrice.helpers({
+	minTotalPrice : function(){
+
+		return Session.get("minTotalPrice")
+
 	}
 });

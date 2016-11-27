@@ -4,7 +4,6 @@ var map=null;
 var markers = [];
 var googleKey = 'AIzaSyBa-oHgHxxTBaIhoFz8koYTBlHcuCyfiIk';
 
-
 //Open Google maps on startup; fill in the key
 Meteor.startup(function() {
 	GoogleMaps.load({key : googleKey});
