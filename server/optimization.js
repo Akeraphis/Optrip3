@@ -128,7 +128,7 @@ Meteor.methods({
 		var minQuote = {};
 
 		_.forEach(ft.flightFare.data.Quotes, function(quote){
-			if(quote.MinPrice > 0 && quote.MinPrice < minPrice){
+			if(quote.MinPrice > 0 && quote.MinPrice < minPrice && quote.InboundLeg && quote.OutboundLeg){
 				minPrice = quote.MinPrice;
 				minQuote = quote
 			}
@@ -143,7 +143,7 @@ Meteor.methods({
 			}
 		});
 	
-		return [minPrice, ft.arrivalCode, minQuote]
+		return [minPrice, ft.arrivalCode, minQuote, ft.flightFare.data.Places, ft.flightFare.data.Carriers]
 	},
 
 	getCheapestHotel : function(codeArr, pickUp, leftCircuit, rightCircuit, departureDate, returnDate, dropOff, currency, nbPerson){
