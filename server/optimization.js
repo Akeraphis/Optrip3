@@ -126,15 +126,41 @@ Meteor.methods({
 
 		var minPrice = Infinity;
 		var minQuote = {};
+		var minInboundPrice = Infinity;
+		var minOutboundPrice = Infinity;
+		var minInboundQuote = {};
+		var minOutboundQuote = {};
+		var minPriceTwoLegs = Infinity;
+		var minQuoteTwoLegs = {};
 
 		_.forEach(ft.flightFare.data.Quotes, function(quote){
-			if(quote.MinPrice > 0 && quote.MinPrice < minPrice && quote.InboundLeg && quote.OutboundLeg){
-				minPrice = quote.MinPrice;
-				minQuote = quote
+			if(quote.MinPrice > 0 && quote.MinPrice < minPriceTwoLegs && quote.InboundLeg && quote.OutboundLeg){
+				minPriceTwoLegs = quote.MinPrice;
+				minQuoteTwoLegs = quote;
+			}
+			if(quote.MinPrice > 0 && quote.MinPrice < minInboundPrice && quote.InboundLeg && !quote.OutboundLeg){
+				minInboundPrice = quote.MinPrice;
+				minInboundQuote = quote;
+			}
+			if(quote.MinPrice > 0 && quote.MinPrice < minInboundPrice && !quote.InboundLeg && quote.OutboundLeg){
+				minOutboundPrice = quote.MinPrice;
+				minOutboundQuote = quote;
 			}
 		});
 
-		var arrId = minQuote.DestinationId;
+		var arrId = "";
+
+		if(minPriceTwoLegs<=minInboundPrice+minOutboundPrice){
+			minPrice = minPriceTwoLegs;
+			minQuote = minQuoteTwoLegs;
+			arrId = minQuote.DestinationId;
+		}
+		else{
+			minPrice = minInboundPrice+minOutboundPrice;
+			minQuote = [minOutboundQuote, minInboundQuote];
+			arrId = minOutboundQuote.DestinationId;
+		}
+
 		var arrName = "";
 
 		_.forEach(ft.flightFare.data.Places, function(p){

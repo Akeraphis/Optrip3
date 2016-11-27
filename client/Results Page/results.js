@@ -42,44 +42,40 @@ Template.minPrice.helpers({
 	},
 
 	minTotalPrice : function(){
-
 		return Session.get("minTotalPrice")
-
 	},
-	minCarPrice : function(){
 
+	minCarPrice : function(){
 		var res = Session.get("results");
 		if(res.length >1){
 			return res[1].price_all_days;
 		}
 	},
-	minFlightPrice : function(){
 
+	minFlightPrice : function(){
 		var res = Session.get("results");
 		if(res.length >1){
 			return ((res[0])[0]);
 		}
 	},
+
 	minHotelPrices : function(){
 		var res = Session.get("results");
 		var hp = [];
-
 		if(res.length >1){
 			return (res[2])[0];
 		}
-
 	},
+
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
 		var cur2 = Currencies.findOne({Code : cur});
-
 		return cur2.Symbol;
 	}
 });
 
 Template.minFlight.helpers({
 	
-
 	minFlightArrival : function(){
 		var res = Session.get("results");
 		if(res.length >1){
@@ -94,6 +90,7 @@ Template.minFlight.helpers({
 			return ((res[0])[2]).OutboundLeg.departureDate;
 		}
 	},
+
 	isDirect : function(){
 		var res = Session.get("results");
 		if (res.length >1){
@@ -107,6 +104,40 @@ Template.minFlight.helpers({
 				return "Not direct";
 			}
 		}
+	},
+
+	carrierInbound : function(){
+		var res = Session.get("results");
+		var comp = "";
+
+		if(res.length>1){
+			var carrierCode = (((res[0])[2]).InboundLeg.CarrierIds)[0];
+			var Carriers = (res[0])[4];
+
+			_.forEach(Carriers, function(cid){
+				if(cid.CarrierId = carrierCode){
+					comp = cid.Name
+				}
+			});
+		}
+		return comp;
+	},
+
+	carrierOutbound : function(){
+		var res = Session.get("results");
+		var comp = "";
+
+		if(res.length>1){
+			var carrierCode = (((res[0])[2]).OutboundLeg.CarrierIds)[0];
+			var Carriers = (res[0])[4];
+
+			_.forEach(Carriers, function(cid){
+				if(cid.CarrierId = carrierCode){
+					comp = cid.Name
+				}
+			});
+		}
+		return comp;
 	}
 });
 
