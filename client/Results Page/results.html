@@ -1,10 +1,23 @@
 <template name="results">
 	<div>
-		{{> relaunch}}
-		{{> minPrice}}
-		{{> minFlight}}
-		{{> minCar}}
-		{{> minHotel}}
+		<table>
+			<tr>
+				<td>{{> minPrice}}</td>
+				<td>{{> relaunch}}</td>
+			</tr>
+			<tr>
+				<td>{{> minFlight}}</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>{{> minCar}}</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>{{> minHotel}}</td>
+				<td></td>
+			</tr>
+		</table>
 	</div>
 	<div class="currencies">
 		<right>{{>currencies}}</right>

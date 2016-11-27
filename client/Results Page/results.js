@@ -42,7 +42,6 @@ Template.minFlight.helpers({
 	minFlightPrice : function(){
 
 		var res = Session.get("results");
-		console.log(res);
 		if(res.length >1){
 			return ((res[0])[0]);
 		}
