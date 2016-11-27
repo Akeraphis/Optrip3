@@ -239,7 +239,7 @@ function addMarker(location, title, map, rating) {
 		label : rating
 	});
 
-	marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red.png');
+	marker.setIcon('https://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight_maps.png');
 	markers.push(marker);
 	return marker;
 };
