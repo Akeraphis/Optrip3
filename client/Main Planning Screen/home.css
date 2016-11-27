@@ -1,0 +1,88 @@
+.mainLayout {
+    background-color: #c9cce3;
+}
+
+.titleSite{
+    font-weight: 900;
+    font : 80px Arial;
+    color : darkblue;
+}
+
+.map {
+    position: absolute;
+    top : 200px;
+    left: 20px;
+	height: 600px;
+    width: 1200px;
+    margin: 0;
+    padding: 20px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+.hot-container p { margin-top: 10px; }
+a { text-decoration: none; margin: 0 10px; }
+
+.hot-container {
+    min-height: 100px;
+    margin-top: 100px;
+    width: 100%;
+    text-align: center;
+}
+
+
+/* Optimize button */
+
+.optimizeButton {
+    background-color: #699DB6;
+    border-color: rgba(0,0,0,0.3);
+    text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+    font: 20px Arial, Helvetica, sans-serif;
+    color: #FFF;
+    height: 50px;
+    width: 200px;
+}
+
+.optimizeButton:hover {
+    background-color: #4F87A2;
+    border-color: rgba(0,0,0,0.5);
+}
+
+.optimizeButton:active {
+    background-color: #3C677B;
+    border-color: rgba(0,0,0,0.9);
+}
+
+.startingPanel {
+    position : absolute;
+    left : 1240px;
+    top : 200px;
+    height: 600px;
+}
+
+.form-control{
+    margin-left : 20px;
+    margin-right: 20px;
+}
+
+.currencies{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
