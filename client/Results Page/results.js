@@ -115,7 +115,7 @@ Template.minFlight.helpers({
 			var Carriers = (res[0])[4];
 
 			_.forEach(Carriers, function(cid){
-				if(cid.CarrierId = carrierCode){
+				if(cid.CarrierId == carrierCode){
 					comp = cid.Name
 				}
 			});
@@ -132,13 +132,82 @@ Template.minFlight.helpers({
 			var Carriers = (res[0])[4];
 
 			_.forEach(Carriers, function(cid){
-				if(cid.CarrierId = carrierCode){
+				if(cid.CarrierId == carrierCode){
 					comp = cid.Name
 				}
 			});
 		}
 		return comp;
-	}
+	},
+
+	orginOutboundAirport : function(){
+		var res = Session.get("results");
+		var orout = "";
+
+		if(res.length>1){
+
+			var originCode = ((res[0])[2]).OutboundLeg.OriginId;
+			var Places = (res[0])[3];
+			console.log(originCode, Places)
+			_.forEach(Places, function(pl){
+				if(pl.PlaceId == originCode){
+					orout = pl.Name
+				}
+			});
+		}
+		return orout;
+	},
+
+	orginInboundAirport : function(){
+		var res = Session.get("results");
+		var orout = "";
+
+		if(res.length>1){
+			var originCode = ((res[0])[2]).InboundLeg.OriginId;
+			var Places = (res[0])[3];
+
+			_.forEach(Places, function(pl){
+				if(pl.PlaceId == originCode){
+					orout = pl.Name
+				}
+			});
+		}
+		return orout;
+	},
+
+	destinationOutboundAirport : function(){
+		var res = Session.get("results");
+		var orout = "";
+
+		if(res.length>1){
+			var originCode = ((res[0])[2]).OutboundLeg.DestinationId;
+			var Places = (res[0])[3];
+
+			_.forEach(Places, function(pl){
+				if(pl.PlaceId == originCode){
+					orout = pl.Name
+				}
+			});
+		}
+		return orout;
+	},
+
+	destinationInboundAirport : function(){
+		var res = Session.get("results");
+		var orout = "";
+
+		if(res.length>1){
+			var originCode = ((res[0])[2]).InboundLeg.DestinationId;
+			var Places = (res[0])[3];
+
+			_.forEach(Places, function(pl){
+				if(pl.PlaceId == originCode){
+					orout = pl.Name
+				}
+			});
+		}
+		return orout;
+	},
 });
 
 Template.minCar.helpers({
