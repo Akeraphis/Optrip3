@@ -1,5 +1,6 @@
 <template name="results">
 	<div>
+		{{#if results}}
 		<table>
 			<tr>
 				<td>{{> minPrice}}</td>
@@ -18,6 +19,7 @@
 				<td></td>
 			</tr>
 		</table>
+		{{/if}}
 	</div>
 	<div class="currencies">
 		<right>{{>currencies}}</right>
@@ -31,12 +33,10 @@
 </template>
 
 <template name="minPrice">
-	{{#if results}}
 		<h1> Total Price : {{minTotalPrice}} {{symbolCurrency}}</h1>
 		<h4>Flight (per person): {{minFlightPrice}} {{symbolCurrency}}</h4>
 		<h4>Car Rental : {{minCarPrice}} {{symbolCurrency}}</h4>
 		<h4>Hotel Total : {{minHotelPrices}} {{symbolCurrency}}</h4>
-	{{/if}}
 </template>
 
 <template name="minFlight">
@@ -51,7 +51,7 @@
 	
 <template name="minCar">
 	<h4>Vehicle : {{minVehicle}}</h4>
-	<h4><img border="0" height="60" width="120" hspace="0" src={{minWebsiteImage}}/>Proposed by : {{minWebsiteName}} {{minWebsiteImage}}</h4>
+	<img border="0" height="60" width="120" hspace="0" src="{{minWebsiteImage}}"/><h4>Proposed by : {{minWebsiteName}}</h4>
 	<h4>Car Class : {{minCarClass}}</h4>
 	<h4>{{minManual}}</h4>
 	<h4>{{minDoors}} doors</h4>
@@ -63,7 +63,12 @@
 <template name="minHotel">
 	<h3>Hotels :</h3> 
 	{{#each minHotels}}
-		blabla
+		Stay in : {{city}}, from {{checkin}} to {{checkout}}
+		<br />
+		{{#with minQuote}}
+			For a price of : {{price_total}}{{symbolCurrency}}
+		{{/with}}
+		<br /><br />
 	{{/each}}
 </template>
 

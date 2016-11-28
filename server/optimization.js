@@ -268,7 +268,7 @@ Meteor.methods({
 		var total_min_price = 0;
 		var minQuotes = [];
 		var minQuote = {};
-		var minHotelQuotes = [];
+		var minHotelQuotes = {};
 
 		_.forEach(Circuit, function(arr){
 			
@@ -286,12 +286,12 @@ Meteor.methods({
 				_.forEach(hf.agent_prices, function(ap){
 					if(ap.price_total < minPrice){
 						minPrice = ap.price_total;
-						minQuote = hf;
+						minQuote = {id : ap.id, price_total : ap.price_total};
 					}
 				});
 			});
 
-			minHotelQuotes = [minQuote, resHotel.city, resHotel.checkin, resHotel.checkout, resHotel.hotelFare.agents, resHotel.hotelFare.amenities, resHotel.hotelFare.hotels, resHotel.hotelFare.places, resHotel.hotelFare.total_available_hotels, resHotel.hotelFare.total_hotels];
+			minHotelQuotes = {minQuote: minQuote, city: resHotel.city, checkin: resHotel.checkin, checkout: resHotel.checkout, agents: resHotel.hotelFare.agents, amenities: resHotel.hotelFare.amenities, hotels: resHotel.hotelFare.hotels, places: resHotel.hotelFare.places, total_available_hotels: resHotel.hotelFare.total_available_hotels, total_hotels: resHotel.hotelFare.total_hotels};
 			countDays = countDays + arr.nbDays;
 			minQuotes.push(minHotelQuotes);
 			total_min_price = total_min_price + minPrice;
@@ -318,7 +318,7 @@ Meteor.methods({
 			_.forEach(hf.agent_prices, function(ap){
 				if(ap.price_total < minFirstPrice){
 					minFirstPrice = ap.price_total;
-					minFirstQuote = hf;
+					minFirstQuote = {id : ap.id, price_total : ap.price_total};
 				}
 			});
 		});
@@ -327,13 +327,13 @@ Meteor.methods({
 			_.forEach(hf.agent_prices, function(ap){
 				if(ap.price_total < minLastPrice){
 					minLastPrice = ap.price_total;
-					minLastQuote = hf;
+					minLastQuote = {id : ap.id, price_total : ap.price_total};
 				}
 			});
 		});
 
-		minFirstHotelQuotes = [minFirstQuote, firstresHotel.city, firstresHotel.checkin, firstresHotel.checkout, firstresHotel.hotelFare.agents, firstresHotel.hotelFare.amenities, firstresHotel.hotelFare.hotels, firstresHotel.hotelFare.places, firstresHotel.hotelFare.total_available_hotels, firstresHotel.hotelFare.total_hotels];
-		minLastHotelQuotes = [minLastQuote, lastresHotel.city, lastresHotel.checkin, lastresHotel.checkout, lastresHotel.hotelFare.agents, lastresHotel.hotelFare.amenities, lastresHotel.hotelFare.hotels, lastresHotel.hotelFare.places, lastresHotel.hotelFare.total_available_hotels, lastresHotel.hotelFare.total_hotels];
+		minFirstHotelQuotes = {minQuote: minFirstQuote, city: firstresHotel.city, checkin: firstresHotel.checkin, checkout: firstresHotel.checkout, agents: firstresHotel.hotelFare.agents, amenities: firstresHotel.hotelFare.amenities, hotels: firstresHotel.hotelFare.hotels, places: firstresHotel.hotelFare.places, total_available_hotels: firstresHotel.hotelFare.total_available_hotels, total_hotels: firstresHotel.hotelFare.total_hotels};
+		minLastHotelQuotes = {minQuote: minLastQuote, city: lastresHotel.city, checkin: lastresHotel.checkin, checkout: lastresHotel.checkout, agents: lastresHotel.hotelFare.agents,amenities: lastresHotel.hotelFare.amenities,hotels: lastresHotel.hotelFare.hotels,places: lastresHotel.hotelFare.places,total_available_hotels: lastresHotel.hotelFare.total_available_hotels,total_hotels: lastresHotel.hotelFare.total_hotels};
 			
 
 		return [minFirstPrice, minFirstHotelQuotes, minLastPrice, minLastHotelQuotes];

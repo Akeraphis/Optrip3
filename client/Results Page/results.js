@@ -30,8 +30,7 @@ Template.relaunch.events({
 	}
 });
 
-Template.minPrice.helpers({
-
+Template.results.helpers({
 	results : function(){
 		if (Session.get("minTotalPrice")<Infinity){
 			return true;
@@ -39,7 +38,16 @@ Template.minPrice.helpers({
 		else{
 			return false;
 		}
-	},
+	},	
+
+	symbolCurrency : function(){
+		var cur = Session.get("selectedCurrency");
+		var cur2 = Currencies.findOne({Code : cur});
+		return cur2.Symbol;
+	}
+});
+
+Template.minPrice.helpers({
 
 	minTotalPrice : function(){
 		return Session.get("minTotalPrice")
@@ -65,12 +73,6 @@ Template.minPrice.helpers({
 		if(res.length >1){
 			return (res[2])[0];
 		}
-	},
-
-	symbolCurrency : function(){
-		var cur = Session.get("selectedCurrency");
-		var cur2 = Currencies.findOne({Code : cur});
-		return cur2.Symbol;
 	}
 });
 
@@ -319,5 +321,5 @@ Template.minHotel.helpers({
 		if(res.length >1){
 			return res[2][1];
 		}
-	},
+	}
 });
