@@ -6,6 +6,7 @@ Meteor.methods({
 		//get the cheapest price of the trip
 		var cheapestFlightHotelAndCarPrice = Infinity;
 		var cheapestQuote = [];
+		var minCar = [];
 
 		// 1. Retrieve possible flight arrival places
 		_.forEach(flightTable, function(ft){
@@ -50,6 +51,8 @@ Meteor.methods({
 							}
 						});
 
+						minCar = [minQuoteCar, result.carFare.websites, result.carFare.car_classes, result.carTypes];
+
 						console.log("2 -----> For the city of " + res[1].ip.city + ", leaving after " + i + " days, the car location price is :" + minPriceCar);
 						
 						if(minPriceCar<Infinity){
@@ -60,7 +63,7 @@ Meteor.methods({
 
 							if(res[0]*nbPerson+minPriceCar+res3[0] < cheapestFlightHotelAndCarPrice){
 								cheapestFlightHotelAndCarPrice = res[0]*nbPerson+minPriceCar+res3[0];
-								cheapestQuote = [res,minQuoteCar,res3];
+								cheapestQuote = [res, minCar,res3];
 
 								console.log("4. So the cheapest option to leave from:" + res[1].ip.city + " amounts to : ", res[0]*2+minPriceCar+res3[0]);
 								
@@ -265,6 +268,7 @@ Meteor.methods({
 		var total_min_price = 0;
 		var minQuotes = [];
 		var minQuote = {};
+		var minHotelQuotes = [];
 
 		_.forEach(Circuit, function(arr){
 			
@@ -287,8 +291,9 @@ Meteor.methods({
 				});
 			});
 
+			minHotelQuotes = [minQuote, resHotel.city, resHotel.checkin, resHotel.checkout, resHotel.hotelFare.agents, resHotel.hotelFare.amenities, resHotel.hotelFare.hotels, resHotel.hotelFare.places, resHotel.hotelFare.total_available_hotels, resHotel.hotelFare.total_hotels];
 			countDays = countDays + arr.nbDays;
-			minQuotes.push(minQuote);
+			minQuotes.push(minHotelQuotes);
 			total_min_price = total_min_price + minPrice;
 			minPrice = Infinity;
 		});
@@ -306,6 +311,8 @@ Meteor.methods({
 		var minFirstPrice = Infinity;
 		var minLastQuote = {};
 		var minLastPrice = Infinity;
+		minFirstHotelQuotes = [];
+		minLastHotelQuotes = [];
 
 		_.forEach(firstresHotel.hotelFare.hotels_prices, function(hf){
 			_.forEach(hf.agent_prices, function(ap){
@@ -325,7 +332,11 @@ Meteor.methods({
 			});
 		});
 
-		return [minFirstPrice, minFirstQuote, minLastPrice, minLastQuote];
+		minFirstHotelQuotes = [minFirstQuote, firstresHotel.city, firstresHotel.checkin, firstresHotel.checkout, firstresHotel.hotelFare.agents, firstresHotel.hotelFare.amenities, firstresHotel.hotelFare.hotels, firstresHotel.hotelFare.places, firstresHotel.hotelFare.total_available_hotels, firstresHotel.hotelFare.total_hotels];
+		minLastHotelQuotes = [minLastQuote, lastresHotel.city, lastresHotel.checkin, lastresHotel.checkout, lastresHotel.hotelFare.agents, lastresHotel.hotelFare.amenities, lastresHotel.hotelFare.hotels, lastresHotel.hotelFare.places, lastresHotel.hotelFare.total_available_hotels, lastresHotel.hotelFare.total_hotels];
+			
+
+		return [minFirstPrice, minFirstHotelQuotes, minLastPrice, minLastHotelQuotes];
 	},
 
 });

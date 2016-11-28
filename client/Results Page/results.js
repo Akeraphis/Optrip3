@@ -48,7 +48,7 @@ Template.minPrice.helpers({
 	minCarPrice : function(){
 		var res = Session.get("results");
 		if(res.length >1){
-			return res[1].price_all_days;
+			return res[1][0].price_all_days;
 		}
 	},
 
@@ -148,7 +148,7 @@ Template.minFlight.helpers({
 
 			var originCode = ((res[0])[2]).OutboundLeg.OriginId;
 			var Places = (res[0])[3];
-			console.log(originCode, Places)
+
 			_.forEach(Places, function(pl){
 				if(pl.PlaceId == originCode){
 					orout = pl.Name
@@ -215,11 +215,109 @@ Template.minCar.helpers({
 	minVehicle : function(){
 		var res = Session.get("results");
 		if(res.length >1){
-			return res[1].vehicle;
+			return res[1][0].vehicle;
 		}
+	},
+	minDoors : function(){
+		var res = Session.get("results");
+		if(res.length >1){
+			return res[1][0].doors;
+		}
+	},
+	minManual : function(){
+		var res = Session.get("results");
+		var manual = false ;
+		if(res.length >1){
+			manual =res[1][0].manual;
+		}
+		if(manual){
+			return "Manual";
+			}
+		else{
+			return "Not manual";
+		}
+	},
+	minSeats : function(){
+		var res = Session.get("results");
+		if(res.length >1){
+			return res[1][0].seats;
+		}
+	},
+	minFuel : function(){
+		var res = Session.get("results");
+		if(res.length >1){
+			return res[1][0].value_add.fuel.policy;
+		}
+	},
+	minUnlimitedMileage : function(){
+		var res = Session.get("results");
+		var unlim = false;
+		if(res.length >1){
+			unlim = res[1][0].value_add.included_mileage_unlimited;
+		}
+		if(unlim){
+			return "Unlimited Mileage";
+			}
+		else{
+			return "Limited Mileage";
+		}
+	},
+
+	minWebsiteName : function(){
+		var res = Session.get("results");
+		var web = "";
+
+		if(res.length>1){
+			var webid = res[1][0].website_id;
+			var Websites = (res[1])[1];
+
+			_.forEach(Websites, function(wb){
+				if(wb.id == webid){
+					web = wb.name;
+				}
+			});
+		}
+		return web;
+	},
+	minWebsiteImage : function(){
+		var res = Session.get("results");
+		var webim = "";
+
+		if(res.length>1){
+			var webid = res[1][0].website_id;
+			var Websites = (res[1])[1];
+
+			_.forEach(Websites, function(wb){
+				if(wb.id == webid){
+					webim = wb.image_url;
+				}
+			});
+		}
+		return webim;
+	},
+	minCarClass : function(){
+		var res = Session.get("results");
+		var cc = "";
+
+		if(res.length>1){
+			var ccid = res[1][0].car_class_id;
+			var Classes = (res[1])[2];
+
+			_.forEach(Classes, function(cl){
+				if(cl.id == ccid){
+					cc = cl.name;
+				}
+			});
+		}
+		return cc;
 	},
 });
 
 Template.minHotel.helpers({
-
+	minHotels : function(){
+		var res = Session.get("results");
+		if(res.length >1){
+			return res[2][1];
+		}
+	},
 });

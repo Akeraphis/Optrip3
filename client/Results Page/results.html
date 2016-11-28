@@ -51,11 +51,20 @@
 	
 <template name="minCar">
 	<h4>Vehicle : {{minVehicle}}</h4>
+	<h4><img border="0" height="60" width="120" hspace="0" src={{minWebsiteImage}}/>Proposed by : {{minWebsiteName}} {{minWebsiteImage}}</h4>
+	<h4>Car Class : {{minCarClass}}</h4>
+	<h4>{{minManual}}</h4>
+	<h4>{{minDoors}} doors</h4>
+	<h4>{{minSeats}} seats</h4>
+	<h4>Fuel policy : {{minFuel}}</h4>
+	<h4>{{minUnlimitedMileage}}</h4>
 </template>
 		
 <template name="minHotel">
-	<div>
-	</div>
+	<h3>Hotels :</h3> 
+	{{#each minHotels}}
+		blabla
+	{{/each}}
 </template>
 
 <template name="tripSummary">
