@@ -38,12 +38,6 @@ Template.results.helpers({
 		else{
 			return false;
 		}
-	},	
-
-	symbolCurrency : function(){
-		var cur = Session.get("selectedCurrency");
-		var cur2 = Currencies.findOne({Code : cur});
-		return cur2.Symbol;
 	}
 });
 
@@ -73,6 +67,12 @@ Template.minPrice.helpers({
 		if(res.length >1){
 			return (res[2])[0];
 		}
+	},
+
+	symbolCurrency : function(){
+		var cur = Session.get("selectedCurrency");
+		var cur2 = Currencies.findOne({Code : cur});
+		return cur2.Symbol;
 	}
 });
 
@@ -321,5 +321,11 @@ Template.minHotel.helpers({
 		if(res.length >1){
 			return res[2][1];
 		}
+	},
+
+	symbolCurrency : function(){
+		var cur = Session.get("selectedCurrency");
+		var cur2 = Currencies.findOne({Code : cur});
+		return cur2.Symbol;
 	}
 });

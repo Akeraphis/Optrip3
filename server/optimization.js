@@ -269,33 +269,39 @@ Meteor.methods({
 		var minQuotes = [];
 		var minQuote = {};
 		var minHotelQuotes = {};
+		var i=0;
 
 		_.forEach(Circuit, function(arr){
-			
-			var startDate = makeDate(pickUpDate);
-			startDate.setDate(makeDate(pickUpDate).getDate() + countDays);
-			var endDate = makeDate(pickUpDate);
-			endDate.setDate(makeDate(pickUpDate).getDate() + countDays + arr.nbDays);
 
-			var start = startDate.yyyymmdd();
-			var end = endDate.yyyymmdd();
+			if(i>=1){
+				var startDate = makeDate(pickUpDate);
+				startDate.setDate(makeDate(pickUpDate).getDate() + countDays);
+				var endDate = makeDate(pickUpDate);
+				endDate.setDate(makeDate(pickUpDate).getDate() + countDays + arr.nbDays);
 
-			var resHotel = getHotelFaresInCollection(start, end, arr, currency, nbPerson);
+				var start = startDate.yyyymmdd();
+				var end = endDate.yyyymmdd();
 
-			_.forEach(resHotel.hotelFare.hotels_prices, function(hf){
-				_.forEach(hf.agent_prices, function(ap){
-					if(ap.price_total < minPrice){
-						minPrice = ap.price_total;
-						minQuote = {id : ap.id, price_total : ap.price_total};
-					}
+
+				var resHotel = getHotelFaresInCollection(start, end, arr, currency, nbPerson);
+
+				_.forEach(resHotel.hotelFare.hotels_prices, function(hf){
+					_.forEach(hf.agent_prices, function(ap){
+						if(ap.price_total < minPrice){
+							minPrice = ap.price_total;
+							minQuote = {id : ap.id, price_total : ap.price_total};
+						}
+					});
 				});
-			});
 
-			minHotelQuotes = {minQuote: minQuote, city: resHotel.city, checkin: resHotel.checkin, checkout: resHotel.checkout, agents: resHotel.hotelFare.agents, amenities: resHotel.hotelFare.amenities, hotels: resHotel.hotelFare.hotels, places: resHotel.hotelFare.places, total_available_hotels: resHotel.hotelFare.total_available_hotels, total_hotels: resHotel.hotelFare.total_hotels};
-			countDays = countDays + arr.nbDays;
-			minQuotes.push(minHotelQuotes);
-			total_min_price = total_min_price + minPrice;
-			minPrice = Infinity;
+				minHotelQuotes = {minQuote: minQuote, city: resHotel.city, checkin: resHotel.checkin, checkout: resHotel.checkout, agents: resHotel.hotelFare.agents, amenities: resHotel.hotelFare.amenities, hotels: resHotel.hotelFare.hotels, places: resHotel.hotelFare.places, total_available_hotels: resHotel.hotelFare.total_available_hotels, total_hotels: resHotel.hotelFare.total_hotels};
+				countDays = countDays + arr.nbDays;
+				minQuotes.push(minHotelQuotes);
+				total_min_price = total_min_price + minPrice;
+				minPrice = Infinity;
+			}
+
+			i++;
 		});
 
 		return [total_min_price, minQuotes];
