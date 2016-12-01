@@ -285,7 +285,7 @@ Meteor.methods({
 
 				var resHotel = getHotelFaresInCollection(start, end, arr, currency, nbPerson);
 
-				_.forEach(resHotel.hotelFare.hotels_prices, function(hf){
+				_.forEach(resHotel.hotelFare, function(hf){
 					_.forEach(hf.agent_prices, function(ap){
 						if(ap.price_total < minPrice){
 							minPrice = ap.price_total;
@@ -320,7 +320,7 @@ Meteor.methods({
 		minFirstHotelQuotes = [];
 		minLastHotelQuotes = [];
 
-		_.forEach(firstresHotel.hotelFare.hotels_prices, function(hf){
+		_.forEach(firstresHotel.hotelFare, function(hf){
 			_.forEach(hf.agent_prices, function(ap){
 				if(ap.price_total < minFirstPrice){
 					minFirstPrice = ap.price_total;
@@ -329,7 +329,7 @@ Meteor.methods({
 			});
 		});
 
-		_.forEach(lastresHotel.hotelFare.hotels_prices, function(hf){
+		_.forEach(lastresHotel.hotelFare, function(hf){
 			_.forEach(hf.agent_prices, function(ap){
 				if(ap.price_total < minLastPrice){
 					minLastPrice = ap.price_total;

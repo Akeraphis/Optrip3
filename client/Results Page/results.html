@@ -1,11 +1,12 @@
 <template name="results">
 	<div>
-		{{#if results}}
+		
 		<table>
 			<tr>
 				<td>{{> minPrice}}</td>
 				<td>{{> relaunch}}</td>
 			</tr>
+			{{#if results}}
 			<tr>
 				<td>{{> minFlight}}</td>
 				<td></td>
@@ -18,8 +19,8 @@
 				<td>{{> minHotel}}</td>
 				<td></td>
 			</tr>
+			{{/if}}
 		</table>
-		{{/if}}
 	</div>
 	<div class="currencies">
 		<right>{{>currencies}}</right>
