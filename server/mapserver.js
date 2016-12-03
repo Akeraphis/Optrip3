@@ -5,10 +5,11 @@ var googleKey = 'AIzaSyBa-oHgHxxTBaIhoFz8koYTBlHcuCyfiIk';
 //Meteor.startup(function() { Kadira.connect('d62MSQCbwpDxdN4z3', '7f107ad7-8c15-493d-8875-813b7cea7410'); });
 
 Meteor.methods({
-	optimizeTrip: function(departureFrom, departureDate, ipDays, currency, nbPerson){
+	optimizeTrip: function(departureFrom, depDate, ipDays, currency, nbPerson){
 
 		var optimalTrip = [];
-		
+		var departureDate = makeDate(depDate).yyyymmdd();
+
 		//Get ip
 		var ip = Meteor.call('getIp', ipDays);
 
