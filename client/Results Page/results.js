@@ -19,8 +19,9 @@ Template.relaunch.events({
 					}
 					else{
 						console.log(res);
-						Session.set("minTotalPrice", res[0]);
-						Session.set("results", res[1]);
+						Session.set("minTotalPrice", res[0][0]);
+						Session.set("results", res[0][1]);
+						Session.set("optimalCircuit", res[0][2]);
 						Pace.stop();
 					}
 				});
@@ -98,11 +99,16 @@ Template.minFlight.helpers({
 		if (res.length >1){
 			var res = Session.get("results");
 			var direct = ((res[0])[2]).Direct;
+			var inboundDirect = ((res[0])[2]).InboundDirect;
+			var outboundDirect = ((res[0])[2]).OutboundDirect;
 
 			if(direct){
 				return "Direct Flight";
 			}
-			else{
+			else if(inboundDirect && outboundDirect){
+				return "Direct Flight";
+			}
+			{
 				return "Not direct";
 			}
 		}

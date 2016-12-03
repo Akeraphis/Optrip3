@@ -9,6 +9,7 @@ Meteor.methods({
 
 		var optimalTrip = [];
 		var departureDate = makeDate(depDate).yyyymmdd();
+		var lfp = {};
 
 		//Get ip
 		var ip = Meteor.call('getIp', ipDays);
@@ -43,13 +44,16 @@ Meteor.methods({
 				//Step 6. Compute all trip possibilities and results and return the cheapest option
 				optimalTrip = Meteor.call("findOptimalTrip", codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson);
 				console.log("---- Step 8 completed : Optimal trip computed ----");
+				lfp = getLiveFlightFaresInCollection(codeDep, optimalTrip[1][0][1].code, departureDate, returnDate, currency, nbPerson);
+				console.log("---- Step 9 completed : Live flight prices retrieved ----");
 			}
 			else{
 				console.log(err);
 			}
 		});
 
-		//Step 6. Get the hotel details
+		//Step 6. Get the live flight prices
+		
 
 		//console.log("---- Step 9 completed : Hotel Details retrieved ----");
 
@@ -59,7 +63,7 @@ Meteor.methods({
 
 		//Step 11. Return : trip flights to starting IP selected, car rentals to starting IP selected, hotels list for each IP on each day selected
 				
-		return optimalTrip;
+		return [optimalTrip, lfp];
 	},
 
 	//return ip from ipDays

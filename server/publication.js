@@ -45,3 +45,9 @@ Meteor.publish("allHotels", function(){
 		fields: {content :0}
 	});
 });
+
+Meteor.publish("allFlightLivePrices", function(){
+	return LiveFlightPrices.find({},{
+		fields: {content :0}
+	});
+});

@@ -338,9 +338,9 @@ Template.home.events({
 						alert("This is an error while updating the fares!");
 					}
 					else{
-						Session.set("results", res[1]);
-						Session.set("minTotalPrice", res[0]);
-						Session.set("optimalCircuit", res[2])
+						Session.set("results", res[0][1]);
+						Session.set("minTotalPrice", res[0][0]);
+						Session.set("optimalCircuit", res[0][2])
 						console.log(res);
 						drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
 					}

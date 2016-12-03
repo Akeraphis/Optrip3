@@ -158,7 +158,7 @@ Meteor.methods({
 		}
 		else{
 			minPrice = minInboundPrice+minOutboundPrice;
-			minQuote = [minOutboundQuote, minInboundQuote];
+			minQuote = {Minprice : minPrice, InboundDirect : minInboundQuote.Direct, OutboundDirect: minOutboundQuote.Direct, OutboundLeg : minOutboundQuote.OutboundLeg, InboundLeg : minInboundQuote.InboundLeg};
 			arrId = minOutboundQuote.DestinationId;
 		}
 
