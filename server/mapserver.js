@@ -48,9 +48,9 @@ Meteor.methods({
 			}
 		});
 
+		//Step 6. Get the hotel details
 
-
-		//Step 8. Call live prices for selected flight leg
+		//console.log("---- Step 9 completed : Hotel Details retrieved ----");
 
 		//Step 9. Call hotel live prices for selecetd IP days
 

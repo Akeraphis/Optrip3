@@ -39,3 +39,9 @@ Meteor.publish("allCurrencies", function(){
 		fields: {content :0}
 	});
 });
+
+Meteor.publish("allHotels", function(){
+	return Hotels.find({},{
+		fields: {content :0}
+	});
+});
