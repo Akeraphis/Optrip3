@@ -6,6 +6,7 @@ Meteor.methods({
 		//get the cheapest price of the trip
 		var cheapestFlightHotelAndCarPrice = Infinity;
 		var cheapestQuote = [];
+		var minCar = [];
 
 		// 1. Retrieve possible flight arrival places
 		_.forEach(flightTable, function(ft){
@@ -46,9 +47,11 @@ Meteor.methods({
 						_.forEach(result.carFare.cars, function(quote){
 							if(quote.price_all_days < minPriceCar){
 							minPriceCar = quote.price_all_days;
-							minQuoteCar = quote;;
+							minQuoteCar = quote;
 							}
 						});
+
+						minCar = [minQuoteCar, result.carFare.websites, result.carFare.car_classes, result.carTypes];
 
 						console.log("2 -----> For the city of " + res[1].ip.city + ", leaving after " + i + " days, the car location price is :" + minPriceCar);
 						
@@ -60,7 +63,7 @@ Meteor.methods({
 
 							if(res[0]*nbPerson+minPriceCar+res3[0] < cheapestFlightHotelAndCarPrice){
 								cheapestFlightHotelAndCarPrice = res[0]*nbPerson+minPriceCar+res3[0];
-								cheapestQuote = [res,minQuoteCar,res3];
+								cheapestQuote = [res, minCar,res3];
 
 								console.log("4. So the cheapest option to leave from:" + res[1].ip.city + " amounts to : ", res[0]*2+minPriceCar+res3[0]);
 								
@@ -72,17 +75,7 @@ Meteor.methods({
 		});
 
 		console.log("----------------   OPTIMIZED PRICE : " + cheapestFlightHotelAndCarPrice + "---------------------");
-		return [cheapestFlightHotelAndCarPrice, cheapestQuote];
-	},
-
-	returnCarMinPriceQuote: function(res){
-
-
-
-
-
-		return [minPrice, minQuote];
-
+		return [cheapestFlightHotelAndCarPrice, cheapestQuote, optimalCircuit];
 	},
 
 	updateFares : function(codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson){
@@ -136,15 +129,41 @@ Meteor.methods({
 
 		var minPrice = Infinity;
 		var minQuote = {};
+		var minInboundPrice = Infinity;
+		var minOutboundPrice = Infinity;
+		var minInboundQuote = {};
+		var minOutboundQuote = {};
+		var minPriceTwoLegs = Infinity;
+		var minQuoteTwoLegs = {};
 
 		_.forEach(ft.flightFare.data.Quotes, function(quote){
-			if(quote.MinPrice > 0 && quote.MinPrice < minPrice){
-				minPrice = quote.MinPrice;
-				minQuote = quote
+			if(quote.MinPrice > 0 && quote.MinPrice < minPriceTwoLegs && quote.InboundLeg && quote.OutboundLeg){
+				minPriceTwoLegs = quote.MinPrice;
+				minQuoteTwoLegs = quote;
+			}
+			if(quote.MinPrice > 0 && quote.MinPrice < minInboundPrice && quote.InboundLeg && !quote.OutboundLeg){
+				minInboundPrice = quote.MinPrice;
+				minInboundQuote = quote;
+			}
+			if(quote.MinPrice > 0 && quote.MinPrice < minInboundPrice && !quote.InboundLeg && quote.OutboundLeg){
+				minOutboundPrice = quote.MinPrice;
+				minOutboundQuote = quote;
 			}
 		});
 
-		var arrId = minQuote.DestinationId;
+		var arrId = "";
+
+		if(minPriceTwoLegs<=minInboundPrice+minOutboundPrice){
+			minPrice = minPriceTwoLegs;
+			minQuote = minQuoteTwoLegs;
+			arrId = minQuote.DestinationId;
+		}
+		else{
+			minPrice = minInboundPrice+minOutboundPrice;
+			minQuote = [minOutboundQuote, minInboundQuote];
+			arrId = minOutboundQuote.DestinationId;
+		}
+
 		var arrName = "";
 
 		_.forEach(ft.flightFare.data.Places, function(p){
@@ -153,7 +172,7 @@ Meteor.methods({
 			}
 		});
 	
-		return [minPrice, ft.arrivalCode, minQuote]
+		return [minPrice, ft.arrivalCode, minQuote, ft.flightFare.data.Places, ft.flightFare.data.Carriers]
 	},
 
 	getCheapestHotel : function(codeArr, pickUp, leftCircuit, rightCircuit, departureDate, returnDate, dropOff, currency, nbPerson){
@@ -249,32 +268,44 @@ Meteor.methods({
 		var total_min_price = 0;
 		var minQuotes = [];
 		var minQuote = {};
+		var minHotelQuotes = {};
+		var i=0;
 
 		_.forEach(Circuit, function(arr){
-			
-			var startDate = makeDate(pickUpDate);
-			startDate.setDate(makeDate(pickUpDate).getDate() + countDays);
-			var endDate = makeDate(pickUpDate);
-			endDate.setDate(makeDate(pickUpDate).getDate() + countDays + arr.nbDays);
 
-			var start = startDate.yyyymmdd();
-			var end = endDate.yyyymmdd();
+			if(i>=1){
+				var startDate = makeDate(pickUpDate);
+				startDate.setDate(makeDate(pickUpDate).getDate() + countDays);
+				var endDate = makeDate(pickUpDate);
+				endDate.setDate(makeDate(pickUpDate).getDate() + countDays + arr.nbDays);
 
-			var resHotel = getHotelFaresInCollection(start, end, arr, currency, nbPerson);
+				var start = startDate.yyyymmdd();
+				var end = endDate.yyyymmdd();
+				var ht = {};
+				var ag = {};
 
-			_.forEach(resHotel.hotelFare.hotels_prices, function(hf){
-				_.forEach(hf.agent_prices, function(ap){
-					if(ap.price_total < minPrice){
-						minPrice = ap.price_total;
-						minQuote = hf;
-					}
+
+				var resHotel = getHotelFaresInCollection(start, end, arr, currency, nbPerson);
+
+				_.forEach(resHotel.hotelFare, function(hf){
+					_.forEach(hf.agent_prices, function(ap){
+						if(ap.price_total < minPrice){
+							minPrice = ap.price_total;
+							minQuote = {id : ap.id, price_total : ap.price_total};
+							ht = Hotels.findOne({hotel_id : hf.id});
+							ag = Meteor.call("getAgent", resHotel.agents, ap.id);
+						}
+					});
 				});
-			});
 
-			countDays = countDays + arr.nbDays;
-			minQuotes.push(minQuote);
-			total_min_price = total_min_price + minPrice;
-			minPrice = Infinity;
+				minHotelQuotes = {minQuote: minQuote, city: resHotel.city, checkin: resHotel.checkin, checkout: resHotel.checkout, hotel : ht, agent : ag}//, agents: resHotel.hotelFare.agents, amenities: resHotel.hotelFare.amenities, hotels: resHotel.hotelFare.hotels, places: resHotel.hotelFare.places, total_available_hotels: resHotel.hotelFare.total_available_hotels, total_hotels: resHotel.hotelFare.total_hotels};
+				countDays = countDays + arr.nbDays;
+				minQuotes.push(minHotelQuotes);
+				total_min_price = total_min_price + minPrice;
+				minPrice = Infinity;
+			}
+
+			i++;
 		});
 
 		return [total_min_price, minQuotes];
@@ -290,29 +321,58 @@ Meteor.methods({
 		var minFirstPrice = Infinity;
 		var minLastQuote = {};
 		var minLastPrice = Infinity;
+		minFirstHotelQuotes = [];
+		minLastHotelQuotes = [];
+		var firstht = {};
+		var lastht = {};
+		var firstag = {};
+		var lastag = {};
 
-		_.forEach(firstresHotel.hotelFare.hotels_prices, function(hf){
+		_.forEach(firstresHotel.hotelFare, function(hf){
 			_.forEach(hf.agent_prices, function(ap){
 				if(ap.price_total < minFirstPrice){
 					minFirstPrice = ap.price_total;
-					minFirstQuote = hf;
+					minFirstQuote = {id : ap.id, price_total : ap.price_total};
+					firstht = Hotels.findOne({hotel_id : hf.id});
+					firstag = Meteor.call("getAgent", firstresHotel.agents, ap.id);
 				}
 			});
 		});
 
-		_.forEach(lastresHotel.hotelFare.hotels_prices, function(hf){
+		_.forEach(lastresHotel.hotelFare, function(hf){
 			_.forEach(hf.agent_prices, function(ap){
 				if(ap.price_total < minLastPrice){
 					minLastPrice = ap.price_total;
-					minLastQuote = hf;
+					minLastQuote = {id : ap.id, price_total : ap.price_total};
+					lastht = Hotels.findOne({hotel_id : hf.id});
+					lastag = Meteor.call("getAgent", lastresHotel.agents, ap.id);
 				}
 			});
 		});
 
-		return [minFirstPrice, minFirstQuote, minLastPrice, minLastQuote];
+		minFirstHotelQuotes = {minQuote: minFirstQuote, city: firstresHotel.city, checkin: firstresHotel.checkin, checkout: firstresHotel.checkout, hotel : firstht, agent : firstag}//, agents: firstresHotel.hotelFare.agents, amenities: firstresHotel.hotelFare.amenities, hotels: firstresHotel.hotelFare.hotels, places: firstresHotel.hotelFare.places, total_available_hotels: firstresHotel.hotelFare.total_available_hotels, total_hotels: firstresHotel.hotelFare.total_hotels};
+		minLastHotelQuotes = {minQuote: minLastQuote, city: lastresHotel.city, checkin: lastresHotel.checkin, checkout: lastresHotel.checkout, hotel : lastht, agent : lastag}//, agents: lastresHotel.hotelFare.agents,amenities: lastresHotel.hotelFare.amenities,hotels: lastresHotel.hotelFare.hotels,places: lastresHotel.hotelFare.places,total_available_hotels: lastresHotel.hotelFare.total_available_hotels,total_hotels: lastresHotel.hotelFare.total_hotels};
+			
+
+		return [minFirstPrice, minFirstHotelQuotes, minLastPrice, minLastHotelQuotes];
+	},
+
+	getAgent : function(agents, id){
+
+		var res = [];
+
+		_.forEach(agents, function(ag){
+			if(ag.id == id){
+				res=ag;
+			}
+		});
+
+		return res;
 	},
 
 });
+
+
 
 Array.prototype.move = function (from, to) {
   this.splice(to, 0, this.splice(from, 1)[0]);
