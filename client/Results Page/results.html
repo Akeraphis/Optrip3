@@ -1,10 +1,25 @@
 <template name="results">
 	<div>
+		
 		<table>
 			<tr>
+				<td>{{> minPrice}}</td>
 				<td>{{> relaunch}}</td>
-				<td>{{> map}}</td>
 			</tr>
+			{{#if results}}
+			<tr>
+				<td>{{> minFlight}}</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>{{> minCar}}</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>{{> minHotel}}</td>
+				<td></td>
+			</tr>
+			{{/if}}
 		</table>
 	</div>
 	<div class="currencies">
@@ -13,5 +28,77 @@
 </template>
 
 <template name="relaunch">
-	<button type="submit" class="relaunch" name="refreshResults">Refresh</button>
+	<div>
+		<button type="submit" class="relaunch" name="refreshResults">Refresh</button>
+	</div>
+</template>
+
+<template name="minPrice">
+		<h1> Total Price : {{minTotalPrice}} {{symbolCurrency}}</h1>
+		<h4>Flight (per person): {{minFlightPrice}} {{symbolCurrency}}</h4>
+		<h4>Car Rental : {{minCarPrice}} {{symbolCurrency}}</h4>
+		<h4>Hotel Total : {{minHotelPrices}} {{symbolCurrency}}</h4>
+</template>
+
+<template name="minFlight">
+	<div>
+		<h4>Flight Destination : {{minFlightArrival}} </h4>
+		<h4>{{isDirect}}</h4>
+		<h4>Company : {{carrierOutbound}}/{{carrierInbound}}</h4>
+		<h4>Outbound : {{orginOutboundAirport}} --> {{destinationOutboundAirport}}</h4>
+		<h4>Inbound : {{orginInboundAirport}} --> {{destinationInboundAirport}}</h4>
+	</div>
+</template>
+	
+<template name="minCar">
+	<h4>Vehicle : {{minVehicle}}</h4>
+	<img border="0" height="60" width="120" hspace="0" src="{{minWebsiteImage}}"/><h4>Proposed by : {{minWebsiteName}}</h4>
+	<h4>Car Class : {{minCarClass}}</h4>
+	<h4>{{minManual}}</h4>
+	<h4>{{minDoors}} doors</h4>
+	<h4>{{minSeats}} seats</h4>
+	<h4>Fuel policy : {{minFuel}}</h4>
+	<h4>{{minUnlimitedMileage}}</h4>
+</template>
+		
+<template name="minHotel">
+	<h3>Hotels :</h3> 
+	{{#each minHotels}}
+		Stay in : {{city}}, from {{checkin}} to {{checkout}}
+		{{#with hotel}}
+		<br />
+			Hotel Name : {{name}}
+		<br />
+			Popularity : {{popularity_desc}} {{popularity}}%
+		<br />
+			Distance from center : {{distance_from_search}}km
+		<br />
+			Stars : {{star_rating}}
+		<br />
+			Amenities : 
+			<table>
+				<tr>
+				{{#each amenities}}
+					<td>{{name}}</td>
+				{{/each}}
+				</tr>
+			</table>
+		{{/with}}
+		<br />
+		{{#with minQuote}}
+			For a price of : {{price_total}}{{symbolCurrency}}
+		{{/with}}
+		{{#with agent}}
+			<img border="0" height="60" width="120" hspace="0" src="{{image_url}}"/>
+		{{/with}}
+		<br /><br />
+	{{/each}}
+</template>
+
+<template name="hotel">
+	
+</template>
+
+<template name="tripSummary">
+
 </template>

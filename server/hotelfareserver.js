@@ -23,9 +23,27 @@ getHotelAutoSuggest = function(ipCity, currency){
 
 };
 
-getHotelFares = function(entityid, checkindate, checkoutdate, currency, nbPerson){
+getHotelFares = function(sessionKey){
+
+	var res = {};
+
+	if(sessionKey){
+		var url2 = "http://partners.api.skyscanner.net"+sessionKey;
+		try{
+			res = HTTP.call('GET', url2);
+		}
+		catch(e){
+			console.log(e);
+		}
+	}
+
+	return res;
+};
+
+getHotelSessionKey = function(entityid, checkindate, checkoutdate, currency, nbPerson){
 
 	var url = "http://partners.api.skyscanner.net/apiservices/hotels/liveprices/v2/" + market +"/" +  currency + "/" + locale + "/" + entityid + "/" + checkindate + "/" + checkoutdate + "/" + nbPerson + "/" + rooms + "?apiKey=" + apiKey;
+	var res = {};
 
 	try{
 		var result1 = HTTP.call('GET',url);
@@ -37,19 +55,9 @@ getHotelFares = function(entityid, checkindate, checkoutdate, currency, nbPerson
 	var sessionKey = result1.headers.location;
 	Meteor._sleepForMs(3000);
 
-	if(sessionKey){
-			var url2 = "http://partners.api.skyscanner.net"+sessionKey;
-			try{
-				var res = HTTP.call('GET', url2);
-			}
-			catch(e){
-				console.log(e);
-			}
-		}
-
-    return res.data;
-
+	return sessionKey;
 };
+
 
 getHotelFaresInCollection = function(departureDate, returnDate, ipa, currency,nbPerson){
 
@@ -69,29 +77,32 @@ getHotelFaresInCollection = function(departureDate, returnDate, ipa, currency,nb
 
 	}
 	else if(res && res.dateUpdate < dateThreshold){
-			//Remove the field and Retrieve
-		var hf = getHotelFares(ipcode, departureDate, returnDate, currency, nbPerson);
-		var newHotels = {address : hf.hotels.address, amenities : hf.hotels.amenities, distance_from_search : hf.hotels.distance_from_search, district : hf.hotels.district, hotel_id : hf.hotels.hotel_id, latitude : hf.hotels.latitude, longitude : hf.hotels.longitude, name : hf.hotels.name, number_of_rooms : hf.hotels.number_of_rooms, popularity : hf.hotels.popularity, popularity_desc : hf.hotels.popularity_desc, score : hf.hotels.score, star_rating : hf.hotels.star_rating, tag : hf.hotels.tag, types : hf.hotels.types}
-		var newhf = {agents : hf.agents, amenities : hf.amenities, hotels : newHotels, hotels_prices : hf.hotels_prices, places : hf.places, total_available_hotels : hf.total_available_hotels, total_hotels : hf.total_hotels};
-		var result = HotelFares.update({city : ipcity, checkin : departureDate, checkout : returnDate}, {dateUpdate : dateNow, hotelFare : newhf });
-		hfs = { city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : newhf };
-		console.log("alert hotel to be refreshed");
+		//Remove the field and Retrieve
+		var sessionKey = getHotelSessionKey(ipcode, departureDate, returnDate, currency, nbPerson);
+		var hf = getHotelFares(sessionKey);
+
+		var result = HotelFares.update({city : ipcity, checkin : departureDate, checkout : returnDate}, {dateUpdate : dateNow, hotelFare : hf.data.hotels_prices, agents : hf.data.agents});
+		hfs = { city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : hf.hotels_prices, agents : hf.data.agents};
+		console.log("alert hotel fare to be refreshed");
 
 	}
 	else{
 		//Enter the missing search in the table and retrieve the result
-		var hf = getHotelFares(ipcode, departureDate, returnDate, currency, nbPerson);
-		var newHotels = {address : hf.hotels.address, amenities : hf.hotels.amenities, distance_from_search : hf.hotels.distance_from_search, district : hf.hotels.district, hotel_id : hf.hotels.hotel_id, latitude : hf.hotels.latitude, longitude : hf.hotels.longitude, name : hf.hotels.name, number_of_rooms : hf.hotels.number_of_rooms, popularity : hf.hotels.popularity, popularity_desc : hf.hotels.popularity_desc, score : hf.hotels.score, star_rating : hf.hotels.star_rating, tag : hf.hotels.tag, types : hf.hotels.types}
-		var newhf = {agents : hf.agents, amenities : hf.amenities, hotels : newHotels, hotels_prices : hf.hotels_prices, places : hf.places, total_available_hotels : hf.total_available_hotels, total_hotels : hf.total_hotels};
-		var result = HotelFares.insert({ city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : newhf });
-		hfs = { city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : newhf };
-		console.log("alert hotel no entry");
+		var sessionKey = getHotelSessionKey(ipcode, departureDate, returnDate, currency, nbPerson);
+		var hf = getHotelFares(sessionKey);
+
+		_.forEach(hf.data.hotels_prices, function(hp){
+			getHotelsInCollection(sessionKey, hp.id);
+		});
+
+		var result = HotelFares.insert({ city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : hf.data.hotels_prices, agents : hf.data.agents});
+		hfs = { city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : hf.hotels_prices , agents : hf.data.agents};
+		console.log("alert hotel fare no entry");
 	}
 
 	return hfs;
 
 };
-
 
 makeDate = function(dateString){
 
