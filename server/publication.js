@@ -46,7 +46,7 @@ Meteor.publish("allHotels", function(){
 	});
 });
 
-Meteor.publish("allFlightLivePrices", function(){
+Meteor.publish("allLiveFlightPrices", function(){
 	return LiveFlightPrices.find({},{
 		fields: {content :0}
 	});
