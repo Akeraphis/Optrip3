@@ -81,8 +81,8 @@ getHotelFaresInCollection = function(departureDate, returnDate, ipa, currency,nb
 		var sessionKey = getHotelSessionKey(ipcode, departureDate, returnDate, currency, nbPerson);
 		var hf = getHotelFares(sessionKey);
 
-		var result = HotelFares.update({city : ipcity, checkin : departureDate, checkout : returnDate}, {dateUpdate : dateNow, hotelFare : hf.data.hotels_prices });
-		hfs = { city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : hf.hotels_prices };
+		var result = HotelFares.update({city : ipcity, checkin : departureDate, checkout : returnDate}, {dateUpdate : dateNow, hotelFare : hf.data.hotels_prices, agents : hf.data.agents});
+		hfs = { city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : hf.hotels_prices, agents : hf.data.agents};
 		console.log("alert hotel fare to be refreshed");
 
 	}
@@ -92,12 +92,11 @@ getHotelFaresInCollection = function(departureDate, returnDate, ipa, currency,nb
 		var hf = getHotelFares(sessionKey);
 
 		_.forEach(hf.data.hotels_prices, function(hp){
-			console.log(hp.id);
 			getHotelsInCollection(sessionKey, hp.id);
 		});
 
-		var result = HotelFares.insert({ city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : hf.data.hotels_prices });
-		hfs = { city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : hf.hotels_prices };
+		var result = HotelFares.insert({ city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : hf.data.hotels_prices, agents : hf.data.agents});
+		hfs = { city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : hf.hotels_prices , agents : hf.data.agents};
 		console.log("alert hotel fare no entry");
 	}
 

@@ -65,9 +65,31 @@
 	<h3>Hotels :</h3> 
 	{{#each minHotels}}
 		Stay in : {{city}}, from {{checkin}} to {{checkout}}
+		{{#with hotel}}
+		<br />
+			Hotel Name : {{name}}
+		<br />
+			Popularity : {{popularity_desc}} {{popularity}}%
+		<br />
+			Distance from center : {{distance_from_search}}km
+		<br />
+			Stars : {{star_rating}}
+		<br />
+			Amenities : 
+			<table>
+				<tr>
+				{{#each amenities}}
+					<td>{{name}}</td>
+				{{/each}}
+				</tr>
+			</table>
+		{{/with}}
 		<br />
 		{{#with minQuote}}
 			For a price of : {{price_total}}{{symbolCurrency}}
+		{{/with}}
+		{{#with agent}}
+			<img border="0" height="60" width="120" hspace="0" src="{{image_url}}"/>
 		{{/with}}
 		<br /><br />
 	{{/each}}
