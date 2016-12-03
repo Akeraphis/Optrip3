@@ -88,7 +88,7 @@ Meteor.methods({
 	},
 
 	getLiveFlightFaresInCollection : function(codeDep, ca, departureDate, returnDate, currency, nbAdults){
-
+		console.log("get in collection");
 		var dateNow = new Date();
 		var dateThreshold = new Date();
 		dateThreshold.setDate(dateNow.getDate()-dateFlightRefresh);
@@ -104,14 +104,14 @@ Meteor.methods({
 		}
 		else if(res && res.dateUpdate < dateThreshold){
 			//Remove the field and Retrieve
-			var ff = getLiveFlightPrices2(codeDep, ca, departureDate, returnDate, currency, nbAdults);
+			var ff = Meteor.call("getLiveFlightPrices2",codeDep, ca, departureDate, returnDate, currency, nbAdults);
 			LiveFlightPrices.update({ departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate}, {dateUpdate : dateNow, flightFare : ff });
 			ffs = { departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff };
 			console.log("alert live flight price no entry");
 		}
 		else{
 			//Enter the missing search in the table and retrieve the result
-			var ff = getLiveFlightPrices2(codeDep, ca, departureDate, returnDate, currency, nbAdults);
+			var ff = Meteor.call("getLiveFlightPrices2",codeDep, ca, departureDate, returnDate, currency, nbAdults);
 			ffs = { departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff };
 			LiveFlightPrices.insert({ departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff });
 			console.log("alert live flight price no entry");
