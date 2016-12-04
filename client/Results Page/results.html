@@ -42,11 +42,11 @@
 <template name="minFlight">
 	<div>
 		{{#with minLiveFlight}}
-			{{#with InboundLeg}}
+			{{#with OutboundLeg}}
 				{{>leg}}
 			{{/with}}
 			<br/>
-			{{#with OutboundLeg}}
+			{{#with InboundLeg}}
 				{{>leg}}
 			{{/with}}
 			<br/>
