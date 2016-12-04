@@ -10,6 +10,7 @@ Meteor.methods({
 		var optimalTrip = [];
 		var departureDate = makeDate(depDate).yyyymmdd();
 		var lfp = {};
+		var clfp = {};
 
 		//Get ip
 		var ip = Meteor.call('getIp', ipDays);
@@ -55,14 +56,15 @@ Meteor.methods({
 		console.log("---- Step 9 completed : Live flight prices retrieved ----");
 
 		//console.log("---- Step 9 completed : Hotel Details retrieved ----");
+		clfp = Meteor.call("cheapestLfp", lfp);
 
 		//Step 9. Call hotel live prices for selecetd IP days
 
 		//Step 10. Call car rental live prices for selected starting IP
 
 		//Step 11. Return : trip flights to starting IP selected, car rentals to starting IP selected, hotels list for each IP on each day selected
-				
-		return [optimalTrip, lfp];
+
+		return [optimalTrip, clfp];
 	},
 
 	//return ip from ipDays
@@ -198,9 +200,7 @@ Meteor.methods({
 		});
 
 		return newOrd;
-	},
-
-
+	}
 })
 
 var findCircuitAsync = function(ips, cb){

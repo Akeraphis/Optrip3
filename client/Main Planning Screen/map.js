@@ -340,8 +340,9 @@ Template.home.events({
 					else{
 						Session.set("results", res[0][1]);
 						Session.set("minTotalPrice", res[0][0]);
-						Session.set("optimalCircuit", res[0][2])
+						Session.set("optimalCircuit", res[0][2]);
 						console.log(res);
+						Session.set("totalResults", res);
 						drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
 					}
 				});
