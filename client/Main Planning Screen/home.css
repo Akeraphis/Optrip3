@@ -9,11 +9,11 @@
 }
 
 .map {
-    position: absolute;
+    /*position: absolute;
     top : 200px;
-    left: 20px;
+    left: 20px;*/
 	height: 600px;
-    width: 1200px;
+    width: 1400px;
     margin: 0;
     padding: 20px;
     font: 14px/16px Arial, Helvetica, sans-serif;
@@ -21,6 +21,7 @@
     background: rgba(255,255,255,0.8);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
     border-radius: 5px;
+    margin-left: 20px;
 }
 
 .info {
@@ -46,6 +47,12 @@ a { text-decoration: none; margin: 0 10px; }
     text-align: center;
 }
 
+.startingPanel {
+    width : 1400px;
+    margin-left: 20px;
+
+}
+
 
 /* Optimize button */
 
@@ -69,16 +76,10 @@ a { text-decoration: none; margin: 0 10px; }
     border-color: rgba(0,0,0,0.9);
 }
 
-.startingPanel {
-    position : absolute;
-    left : 1240px;
-    top : 200px;
-    height: 600px;
-}
-
-.form-control{
+#departurePoint{
     margin-left : 20px;
     margin-right: 20px;
+    width:300px;
 }
 
 .currencies{

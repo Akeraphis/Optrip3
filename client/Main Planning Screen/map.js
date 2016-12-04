@@ -306,7 +306,7 @@ Template.home.events({
 		//create all variables to get values in the form
 		var departureFrom = document.getElementById("departurePoint");
 		var departureDate = document.getElementById("departureDate");
-		var nbDaysElements = document.getElementsByClassName('NbDays');
+		var nbDaysElements = document.getElementsById('NbDays');
 		var nbPersons = document.getElementById("NbPerson");
 		var nbDays = [];
 

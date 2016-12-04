@@ -1,14 +1,21 @@
 <template name="home">
-
-	{{> inputAutocomplete settings=settings id="departurePoint" class="form-control" name="departurePoint" placeholder="Departure from" }}<br />
 	<div>
-		<table>
-			<tr>
-				<td>{{> map}}</td>
-				<td></td>
-				<td>{{> inputPanel}}</td>
-			</tr>
-		</table>
+		<div class="row">
+			<div class="col-md-10">
+				{{> inputAutocomplete settings=settings id="departurePoint" class="form-control" name="departurePoint" placeholder="Departure from" }}<br />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-10">
+			{{> inputPanel}}
+				</div>
+		</div>
+		<div class="row">
+			<div class="col-md-10">
+				<h4>Which locations do you want to visit ?</h4>
+				<center>{{> map}}</center>
+			</div>
+		</div>
 	</div>
 	<div class="currencies">
 		<right>{{>currencies}}</right>
@@ -16,11 +23,14 @@
 </template>
 
 <template name="selectedIPs">
-			<h4>Which locations do you want to visit ?</h4>
 			<div id="selectedIP">
 				<ul>
 					{{#each selectedIp}}
-						<li>{{city}} in {{country}} for <input type="number" class="NbDays" min="0" max="99" value="1"/> nights</li>
+						<span class="label label-success">{{city}}</span>
+						<div class="input-group">
+							<input type="number" class="form-control" id="NbDays" min="0" max="99" value="1" aria-describedby="basic-addon2">
+							<span class="input-group-addon" id="basic-addon2">nights</span>
+						</div>
 					{{/each}}
 				</ul>
 			</div>
@@ -32,7 +42,7 @@
 
 <template name="departureDate">
 	<label>Departure Date : </label>
-	<input type="date" id="departureDate"/>
+	<input type="date" id="departureDate" class="form-control"/>
 </template>
 
 <template name="optimizeButton">
@@ -42,15 +52,24 @@
 <template name='inputPanel'>
 	<div>
 		<form class='startingPanel'>
-		    <div class="well">
-   				<center><br />
-   				{{> departureDate}}<br />
-   				<label>Number of travelers :</label>
-   				<input type="number" class="NbPerson" id="NbPerson" min="0" max="99" value="2"/>
-   				{{> selectedIPs}}
-   				<br />
-				{{> optimizeButton}}</center>
-			</div>
+			    <div class="well">
+			    	<div class="row">
+			    		<div class="col-md-4">			    	
+			    			<div class="row">
+			    				<div class="col-md-8">{{> departureDate}}</div>
+			    			</div><br/>
+			    			<div class="row">
+					    		<div class="col-md-4"><label>Travelers :</label></div>
+					    		<div class="col-md-4"><input type="number" class="form-control" id="NbPerson" min="0" max="99" value="2"/></div>
+					    	</div>
+					    </div>
+			    		<div class="col-md-4">{{> selectedIPs}}</div>
+			    	</div>
+			    	<div class="row">
+			    		<div class="col-md-8"></div>
+			    		<div class="col-md-4">{{> optimizeButton}}</div>
+			    	</div>
+				</div>
 		</form><br />
 	</div>
 </template>
