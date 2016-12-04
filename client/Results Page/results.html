@@ -1,6 +1,5 @@
 <template name="results">
 	<div>
-		
 		<table>
 			<tr>
 				<td>{{> minPrice}}</td>
@@ -34,7 +33,7 @@
 </template>
 
 <template name="minPrice">
-		<h1> Total Price : {{minTotalPrice}} {{symbolCurrency}}</h1>
+		<h1 id="minTotalPrice">Total Price : {{minTotalPrice}} {{symbolCurrency}}</h1>
 		<h4>Flight (per person): {{minFlightPrice}} {{symbolCurrency}}</h4>
 		<h4>Car Rental : {{minCarPrice}} {{symbolCurrency}}</h4>
 		<h4>Hotel Total : {{minHotelPrices}} {{symbolCurrency}}</h4>
@@ -42,12 +41,51 @@
 
 <template name="minFlight">
 	<div>
-		<h4>Flight Destination : {{minFlightArrival}} </h4>
-		<h4>{{isDirect}}</h4>
-		<h4>Company : {{carrierOutbound}}/{{carrierInbound}}</h4>
-		<h4>Outbound : {{orginOutboundAirport}} --> {{destinationOutboundAirport}}</h4>
-		<h4>Inbound : {{orginInboundAirport}} --> {{destinationInboundAirport}}</h4>
+		{{#with minLiveFlight}}
+			{{#with OutboundLeg}}
+				{{>leg}}
+			{{/with}}
+			<br/>
+			{{#with InboundLeg}}
+				{{>leg}}
+			{{/with}}
+			<br/>
+			{{#with Itineraries}}
+				{{#with Agents}}
+					Booking with : <img border="0" height="60" width="120" hspace="0" src="{{ImageUrl}}"/>
+				{{/with}}
+				{{#with PricingOptions}}
+					<h3>{{Price}} {{symbolCurrency}}</h3>
+					<a href="{{DeepLinkurl}}">Book here !</a>
+				{{/with}}
+			{{/with}}
+		{{/with}}
 	</div>
+</template>
+
+<template name="leg">
+	<h4>{{Directionality}}</h4><br/>
+	{{#each Segments}}
+		Departure : {{DepartureDateTime}} from
+		{{#with OriginStation}}
+			{{Name}}  {{Type}}
+		{{/with}}
+		<br/>
+		Arrival : {{ArrivalDateTime}} at
+		{{#with DestinationStation}}
+			{{Name}}  {{Type}}
+		{{/with}}
+		<br/>
+		Duration : {{Duration}}
+		<br/>
+		{{#with Carrier}}
+			{{Name}}
+			<img border="0" height="60" width="120" hspace="0" src="{{ImageUrl}}"/>
+		{{/with}}
+		<br/>
+		Flight Number : {{FlightNumber}}
+		<br/>
+	{{/each}}
 </template>
 	
 <template name="minCar">
@@ -77,11 +115,9 @@
 		<br />
 			Amenities : 
 			<table>
-				<tr>
 				{{#each amenities}}
-					<td>{{name}}</td>
+					<tr>{{name}}</tr>
 				{{/each}}
-				</tr>
 			</table>
 		{{/with}}
 		<br />

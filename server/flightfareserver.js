@@ -34,7 +34,7 @@ getFlightFares = function(codeDep, codeArr, departureDate, returnDate, currency)
 			console.log(e);
 		}
 
-    return res;
+    return res.data;
 };
 
 getFlightFaresInCollection = function(codeDep, codeArr, departureDate, returnDate, currency){
