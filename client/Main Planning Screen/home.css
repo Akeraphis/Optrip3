@@ -1,10 +1,6 @@
-.mainLayout {
-    background-color: #c9cce3;
-}
-
 .titleSite{
     font-weight: 900;
-    font : 80px Arial;
+    font : 120px Arial;
     color : darkblue;
 }
 
@@ -13,15 +9,14 @@
     top : 200px;
     left: 20px;*/
 	height: 600px;
-    width: 1400px;
-    margin: 0;
-    padding: 20px;
+    width: 1200px;
+    padding: 5px;
     font: 14px/16px Arial, Helvetica, sans-serif;
     background: white;
     background: rgba(255,255,255,0.8);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    border-radius: 5px;
-    margin-left: 20px;
+    border-radius: 1px;
+    margin-left: 1 0px;
 }
 
 .info {
@@ -37,20 +32,9 @@
     color: #777;
 }
 
-.hot-container p { margin-top: 10px; }
-a { text-decoration: none; margin: 0 10px; }
-
-.hot-container {
-    min-height: 100px;
-    margin-top: 100px;
-    width: 100%;
-    text-align: center;
-}
-
 .startingPanel {
     width : 1400px;
     margin-left: 20px;
-
 }
 
 
@@ -79,11 +63,29 @@ a { text-decoration: none; margin: 0 10px; }
 #departurePoint{
     margin-left : 20px;
     margin-right: 20px;
-    width:300px;
+    width:500px;
 }
 
+#departureDate{
+ 
+    margin-right: 20px;
+    width:500px;
+}
+
+#NbDays{
+    margin-right: 20px;
+    width:500px;
+}
 .currencies{
     position: fixed;
     bottom: 0;
     right: 0;
+}
+
+#dropdownMenu1{
+    width: 500px;
+}
+
+#dropdownMenu2{
+    width: 500px;
 }

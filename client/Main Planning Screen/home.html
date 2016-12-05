@@ -1,20 +1,17 @@
 <template name="home">
-	<div>
-		<div class="row">
-			<div class="col-md-10">
+	<div class="row">
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+		    		<h3 class="panel-title">Where do you want to go ?</h3>
+		  		</div><br/>
 				{{> inputAutocomplete settings=settings id="departurePoint" class="form-control" name="departurePoint" placeholder="Departure from" }}<br />
+				{{> inputPanel}}
+				<center>{{> optimizeButton}}</center><br/>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-10">
-			{{> inputPanel}}
-				</div>
-		</div>
-		<div class="row">
-			<div class="col-md-10">
-				<h4>Which locations do you want to visit ?</h4>
-				<center>{{> map}}</center>
-			</div>
+		<div class="col-md-8">
+			<center>{{> map}}</center>
 		</div>
 	</div>
 	<div class="currencies">
@@ -23,17 +20,15 @@
 </template>
 
 <template name="selectedIPs">
-			<div id="selectedIP">
-				<ul>
-					{{#each selectedIp}}
-						<span class="label label-success">{{city}}</span>
-						<div class="input-group">
-							<input type="number" class="form-control" id="NbDays" min="0" max="99" value="1" aria-describedby="basic-addon2">
-							<span class="input-group-addon" id="basic-addon2">nights</span>
-						</div>
-					{{/each}}
-				</ul>
+	<div id="selectedIP">
+		{{#each selectedIp}}
+			<span class="label label-success">{{city}}</span>
+			<div class="input-group">
+				<input type="number" class="form-control" id="NbDays" min="0" max="99" value="1" aria-describedby="basic-addon2">
+				<span class="input-group-addon" id="basic-addon2">nights</span>
 			</div>
+		{{/each}}
+	</div>
 </template>
 
 <template name="displayDeparture">
@@ -41,43 +36,49 @@
 </template>
 
 <template name="departureDate">
-	<label>Departure Date : </label>
-	<input type="date" id="departureDate" class="form-control"/>
+	<div class="depDate">
+		<label>Departure Date : </label>
+		<input type="date" id="departureDate" class="form-control" value="2017-01-19"/>
+	</div><br/>
 </template>
 
 <template name="optimizeButton">
 		<button type="submit" class="optimizeButton" name="optimize">Optimize my trip !</button>
+		<br/>
 </template>
 
 <template name='inputPanel'>
-	<div>
-		<form class='startingPanel'>
-			    <div class="well">
-			    	<div class="row">
-			    		<div class="col-md-4">			    	
-			    			<div class="row">
-			    				<div class="col-md-8">{{> departureDate}}</div>
-			    			</div><br/>
-			    			<div class="row">
-					    		<div class="col-md-4"><label>Travelers :</label></div>
-					    		<div class="col-md-4"><input type="number" class="form-control" id="NbPerson" min="0" max="99" value="2"/></div>
-					    	</div>
-					    </div>
-			    		<div class="col-md-4">{{> selectedIPs}}</div>
-			    	</div>
-			    	<div class="row">
-			    		<div class="col-md-8"></div>
-			    		<div class="col-md-4">{{> optimizeButton}}</div>
-			    	</div>
-				</div>
+	<div class='startingPanel'>
+		<form>
+			{{> departureDate}}
+			{{> nbTravelers}}
+			{{> selectedIPs}}
 		</form><br />
 	</div>
 </template>
 
 <template name="currencies">
-	<select id="cur" value="EUR">
+	<select class="selectedIpicker" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="cur" value="EUR">
 		{{#each Currencies}}
 			<option>{{Code}}</option>
 		{{/each}}
 	</select>
 </template>
+
+<template name="nbTravelers">
+	<div class="dropdown">
+	  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+	    Travelers
+	  </button>
+	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="dropdownMenu2">
+	    <li class="dropdown-header">Adults</li>
+	    <li><input type="number" class="form-control" id="NbPerson" min="0" max="99" value="2"/></li>
+	    <li class="dropdown-header">Children</li>
+	    <li><input type="number" class="form-control" id="NbChildren" min="0" max="99" value="0"/></li>
+	    <li class="dropdown-header">Infants</li>
+	    <li><input type="number" class="form-control" id="NbInfants" min="0" max="99" value="0"/></li>
+	  </ul>
+	</div><br/>
+</template>
+
+
