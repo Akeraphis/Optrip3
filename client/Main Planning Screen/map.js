@@ -306,8 +306,10 @@ Template.home.events({
 		//create all variables to get values in the form
 		var departureFrom = document.getElementById("departurePoint");
 		var departureDate = document.getElementById("departureDate");
-		var nbDaysElements = document.getElementsById('NbDays');
+		var nbDaysElements = document.getElementsByName('NbDays');
 		var nbPersons = document.getElementById("NbPerson");
+		var nbChildren = document.getElementById("NbChildren");
+		var nbInfants = document.getElementById("NbInfants");
 		var nbDays = [];
 
 		Session.set("nbPersons", nbPersons.value);
@@ -324,6 +326,8 @@ Template.home.events({
 		var totalDays = 0;
 
 		Router.go('/optimization/results');
+
+		console.log(Session.get('selectedIp'), Session.get('nbDays'));
 
 		//Call the update method for selectedIPDays
 		Meteor.call("updateIpDays", Session.get('selectedIp'), Session.get('nbDays'), function(error, result){

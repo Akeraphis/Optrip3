@@ -7,7 +7,6 @@
 		  		</div><br/>
 				{{> inputAutocomplete settings=settings id="departurePoint" class="form-control" name="departurePoint" placeholder="Departure from" }}<br />
 				{{> inputPanel}}
-				<center>{{> optimizeButton}}</center><br/>
 			</div>
 		</div>
 		<div class="col-md-8">
@@ -24,7 +23,7 @@
 		{{#each selectedIp}}
 			<span class="label label-success">{{city}}</span>
 			<div class="input-group">
-				<input type="number" class="form-control" id="NbDays" min="0" max="99" value="1" aria-describedby="basic-addon2">
+				<input type="number" class="form-control" name="NbDays" id="NbDays" min="0" max="99" value="1" aria-describedby="basic-addon2">
 				<span class="input-group-addon" id="basic-addon2">nights</span>
 			</div>
 		{{/each}}
@@ -52,7 +51,8 @@
 		<form>
 			{{> departureDate}}
 			{{> nbTravelers}}
-			{{> selectedIPs}}
+			{{> selectedIPs}}<br/>
+			{{> optimizeButton}}
 		</form><br />
 	</div>
 </template>
@@ -67,8 +67,8 @@
 
 <template name="nbTravelers">
 	<div class="dropdown">
-	  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-	    Travelers
+	  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" aria-haspopup="true" aria-expanded="true">
+	    Number of Travelers
 	  </button>
 	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="dropdownMenu2">
 	    <li class="dropdown-header">Adults</li>

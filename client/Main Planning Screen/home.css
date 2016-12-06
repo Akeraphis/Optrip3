@@ -73,8 +73,11 @@
 }
 
 #NbDays{
-    margin-right: 20px;
-    width:500px;
+    width:440px;
+}
+
+#basic-addon2{
+    width:50px;
 }
 .currencies{
     position: fixed;
