@@ -58,13 +58,14 @@ Meteor.methods({
 		//console.log("---- Step 9 completed : Hotel Details retrieved ----");
 		clfp = Meteor.call("cheapestLfp", lfp);
 
-		//Step 9. Call hotel live prices for selecetd IP days
+		//Step 7. Replace cheapest price
+		var newFlightPrice = clfp.Itineraries.PricingOptions.Price;
 
 		//Step 10. Call car rental live prices for selected starting IP
 
 		//Step 11. Return : trip flights to starting IP selected, car rentals to starting IP selected, hotels list for each IP on each day selected
 
-		return [optimalTrip, clfp];
+		return [optimalTrip, clfp, newFlightPrice];
 	},
 
 	//return ip from ipDays

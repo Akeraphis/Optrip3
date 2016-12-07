@@ -46,20 +46,23 @@ Template.results.helpers({
 Template.minPrice.helpers({
 
 	minTotalPrice : function(){
-		return Session.get("minTotalPrice")
+		var res = Session.get("results");
+		if(res.length >1){
+			return Math.round(res[1][0].price_all_days+(Session.get("totalResults"))[2]+(res[2])[0]);
+		}
 	},
 
 	minCarPrice : function(){
 		var res = Session.get("results");
 		if(res.length >1){
-			return res[1][0].price_all_days;
+			return Math.round(res[1][0].price_all_days);
 		}
 	},
 
 	minFlightPrice : function(){
-		var res = Session.get("results");
+		var res = Session.get("totalResults");
 		if(res.length >1){
-			return ((res[0])[0]);
+			return Math.round(res[2]);
 		}
 	},
 
@@ -67,7 +70,7 @@ Template.minPrice.helpers({
 		var res = Session.get("results");
 		var hp = [];
 		if(res.length >1){
-			return (res[2])[0];
+			return Math.round((res[2])[0]);
 		}
 	},
 
