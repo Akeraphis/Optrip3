@@ -313,6 +313,7 @@ Template.home.events({
 		var nbDays = [];
 
 		Session.set("nbPersons", nbPersons.value);
+		console.log("Adults :", Session.get("nbPersons"));
 		Session.set("departureDate", departureDate.value);
 		Session.set("departureFrom", departureFrom.value);
 

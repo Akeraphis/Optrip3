@@ -34,10 +34,12 @@
 <template name="minPrice">
 	<div class="panel panel-primary">
 		<div class="panel-heading"><h3>Total Price : {{minTotalPrice}} {{symbolCurrency}}</h3></div>
-		<div class="panel-body"><h4>Flight (per person): {{minFlightPrice}} {{symbolCurrency}}</h4>
-		<h4>Car Rental : {{minCarPrice}} {{symbolCurrency}}</h4>
-		<h4>Hotel Total : {{minHotelPrices}} {{symbolCurrency}}</h4></div>
-	</div>
+		<div class="panel-body">
+			For {{nbPersons}} adults :
+			<h4>Flight: {{minFlightPrice}} {{symbolCurrency}}</h4>
+			<h4>Car Rental : {{minCarPrice}} {{symbolCurrency}}</h4>
+			<h4>Hotel Total : {{minHotelPrices}} {{symbolCurrency}}</h4></div>
+		</div>
 </template>
 
 <template name="minFlight">
@@ -45,49 +47,55 @@
 		<div class="panel-heading">Flight</div>
 		<div class="panel-body">
 			{{#with minLiveFlight}}
-				{{#with OutboundLeg}}
-					{{>leg}}
-				{{/with}}
-				<br/>
-				{{#with InboundLeg}}
-					{{>leg}}
-				{{/with}}
-				<br/>
 				{{#with Itineraries}}
 					{{#with Agents}}
-						Booking with : <img border="0" height="60" width="120" hspace="0" src="{{ImageUrl}}"/>
+						<img border="0" height="60" width="120" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
 					{{/with}}
 					{{#with PricingOptions}}
 						<h3>{{Price}} {{symbolCurrency}}</h3>
-						<a href="{{DeepLinkurl}}">Book here !</a>
 					{{/with}}
+					<br/>
 				{{/with}}
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" class="active"><a href="#outbound" aria-controls="home" role="tab" data-toggle="tab">Outbound</a></li>
+					<li role="presentation"><a href="#inbound" aria-controls="home" role="tab" data-toggle="tab">Inbound</a></li>
+				</ul>
+				<br/>
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane fade in active" id="outbound">
+						{{#with OutboundLeg}}
+							{{>leg}}
+						{{/with}}
+					</div>
+					<div role="tabpanel" class="tab-pane fade" id="inbound">
+						{{#with InboundLeg}}
+							{{>leg}}
+						{{/with}}
+					</div>
+				</div>
+				<br/>
 			{{/with}}
 		</div>
 	</div>
 </template>
 
 <template name="leg">
-	<h4>{{Directionality}}</h4><br/>
 	{{#each Segments}}
-		Departure : {{DepartureDateTime}} from
-		{{#with OriginStation}}
-			{{Name}}  {{Type}}
-		{{/with}}
-		<br/>
-		Arrival : {{ArrivalDateTime}} at
-		{{#with DestinationStation}}
-			{{Name}}  {{Type}}
-		{{/with}}
-		<br/>
-		Duration : {{Duration}}
-		<br/>
 		{{#with Carrier}}
-			{{Name}}
-			<img border="0" height="60" width="120" hspace="0" src="{{ImageUrl}}"/>
+			<img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
 		{{/with}}
 		<br/>
 		Flight Number : {{FlightNumber}}
+		<br/><br/>
+		{{DepartureDateTime}}<br/>
+		{{#with OriginStation}}
+			<h4>{{Name}}  {{Type}}</h4>
+		{{/with}}
+		<br/>in {{Duration}} minutes to<br/><br/>
+		{{ArrivalDateTime}}<br/>
+		{{#with DestinationStation}}
+			<h5>{{Name}}  {{Type}}</h5>
+		{{/with}}
 		<br/>
 	{{/each}}
 </template>
@@ -96,14 +104,15 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">Car</div>
 		<div class="panel-body">
+			<img border="0" height="60" width="120" hspace="0" src="{{minWebsiteImage}}"/>
+			<h3>{{minCarPrice}} {{symbolCurrency}}</h3>
 			<h4>Vehicle : {{minVehicle}}</h4>
-			<img border="0" height="60" width="120" hspace="0" src="{{minWebsiteImage}}"/><h4>Proposed by : {{minWebsiteName}}</h4>
-			<h4>Car Class : {{minCarClass}}</h4>
-			<h4>{{minManual}}</h4>
-			<h4>{{minDoors}} doors</h4>
-			<h4>{{minSeats}} seats</h4>
-			<h4>Fuel policy : {{minFuel}}</h4>
-			<h4>{{minUnlimitedMileage}}</h4>
+			<br/><br/>
+			Car Class : {{minCarClass}}
+			{{minManual}} car with {{minDoors}} doors and{{minSeats}} seats
+			<br/>
+			Fuel policy : {{minFuel}}
+			{{minUnlimitedMileage}}
 		</div>
 	</div>
 </template>

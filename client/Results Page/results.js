@@ -32,6 +32,13 @@ Template.relaunch.events({
 	}
 });
 
+Template.minFlight.events({
+	'click #myTabs a': function(e){
+		e.preventDefault()
+  		$(this).tab('show')
+	}
+})
+
 Template.results.helpers({
 	results : function(){
 		if (Session.get("minTotalPrice")<Infinity){
@@ -62,7 +69,7 @@ Template.minPrice.helpers({
 	minFlightPrice : function(){
 		var res = Session.get("totalResults");
 		if(res.length >1){
-			return Math.round(res[2]);
+			return Math.round(res[2]*Session.get('nbPersons'));
 		}
 	},
 
@@ -78,7 +85,12 @@ Template.minPrice.helpers({
 		var cur = Session.get("selectedCurrency");
 		var cur2 = Currencies.findOne({Code : cur});
 		return cur2.Symbol;
-	}
+	},
+
+	nbPersons : function(){
+		return Session.get('nbPersons');
+	},
+
 });
 
 Template.minFlight.helpers({
@@ -139,7 +151,7 @@ Template.minCar.helpers({
 		var res = Session.get("results");
 		var unlim = false;
 		if(res.length >1){
-			unlim = res[1][0].value_add.included_mileage_unlimited;
+			unlim = res[1][0].value_add.included_mileage.unlimited;
 		}
 		if(unlim){
 			return "Unlimited Mileage";
