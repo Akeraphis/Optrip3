@@ -206,7 +206,7 @@ function drawRoute(map, request){
 		}
 	}
 
-	var request = {
+	var req2 = {
     	origin: request[0].ip.city,
     	destination: request[0].ip.city,
     	waypoints : waypts,
@@ -214,7 +214,7 @@ function drawRoute(map, request){
     	travelMode: google.maps.TravelMode.DRIVING
   	};
 
-	directionsService.route(request, function(response, status) {
+	directionsService.route(req2, function(response, status) {
 		if (status == google.maps.DirectionsStatus.OK) {
 			directionsDisplay.setDirections(response);
 		}
@@ -348,7 +348,8 @@ Template.home.events({
 						Session.set("optimalCircuit", res[0][2]);
 						console.log(res);
 						Session.set("totalResults", res);
-						drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
+						var request = Session.get("optimalCircuit");
+						drawRoute(GoogleMaps.maps.map.instance, request);
 					}
 				});
 			}

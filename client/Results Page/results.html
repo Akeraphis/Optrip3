@@ -87,14 +87,14 @@
 		<br/>
 		Flight Number : {{FlightNumber}}
 		<br/><br/>
-		{{DepartureDateTime}}<br/>
+		{{getDepDate}} leaving at {{getDepTime}}<br/>
 		{{#with OriginStation}}
-			<h4>{{Name}}  {{Type}}</h4>
+			<b>{{Name}}  {{Type}}</b>
 		{{/with}}
 		<br/>in {{Duration}} minutes to<br/><br/>
-		{{ArrivalDateTime}}<br/>
+		{{getArrDate}} landing at {{getArrTime}}<br/>
 		{{#with DestinationStation}}
-			<h5>{{Name}}  {{Type}}</h5>
+			<b>{{Name}}  {{Type}}</b>
 		{{/with}}
 		<br/>
 	{{/each}}
@@ -108,50 +108,60 @@
 			<h3>{{minCarPrice}} {{symbolCurrency}}</h3>
 			<h4>Vehicle : {{minVehicle}}</h4>
 			<br/><br/>
-			Car Class : {{minCarClass}}
-			{{minManual}} car with {{minDoors}} doors and{{minSeats}} seats
+			Car Class : {{minCarClass}}<br/>
+			{{minManual}} car with {{minDoors}} doors and {{minSeats}} seats
 			<br/>
 			Fuel policy : {{minFuel}}
+			<br/>
 			{{minUnlimitedMileage}}
 		</div>
-	</div>
+	</div>	
 </template>
 		
 <template name="minHotel">
 	<div class="panel panel-default">
 		<div class="panel-heading">Hotels </div>
-		<div class="panel-body">
-			{{#each minHotels}}
-				Stay in : {{city}}, from {{checkin}} to {{checkout}}
-				{{#with hotel}}
-				<br />
-					Hotel Name : {{name}}
-				<br />
-					Popularity : {{popularity_desc}} {{popularity}}%
-				<br />
-					Distance from center : {{distance_from_search}}km
-				<br />
-					Stars : {{star_rating}}
-				<br />
-					Amenities : 
-					<table>
-						{{#each amenities}}
-							<tr>{{name}}</tr>
-						{{/each}}
-					</table>
-				{{/with}}
-				<br />
-				{{#with minQuote}}
-					For a price of : {{price_total}}{{symbolCurrency}}
-				{{/with}}
-				{{#with agent}}
-					<img border="0" height="60" width="120" hspace="0" src="{{image_url}}"/>
-				{{/with}}
-				<br /><br />
-			{{/each}}
+			<div class="panel-body">
+				{{#each minHotels}}
+					<div class="col-sm-6 col-md-4">
+						<div class="thumbnail">
+							<img src="..." alt="...">
+							<div class="caption">
+								<h3>{{city}}</h3>
+								{{#with hotel}}
+									<h4>{{name}}, {{star_rating}} stars</h4>
+								{{/with}}
+								<p>
+									{{#with agent}}
+										<img border="0" height="60" width="120" hspace="0" class="img-rounded" src="{{image_url}}"/>
+									{{/with}}
+									from {{checkin}} to {{checkout}}
+									{{#with minQuote}}
+										<h4>{{price_total}}{{symbolCurrency}}</h4>
+									{{/with}}<br/>
+									{{#with hotel}}
+										{{popularity_desc}} {{popularity}}%<br/>
+										<i>{{distance_from_search}}km from center </i><br/>
+										<a class="btn btn-primary" role="button" data-toggle="collapse" href="#{{hotel_id}}" aria-expanded="false" aria-controls="{{hotel_id}}">
+											Amenities
+										</a>
+										<div class="collapse" id="{{hotel_id}}">
+											<div class="well">
+												<table>
+													{{#each amenities}}
+														<tr>{{name}}</tr>
+													{{/each}}
+												</table>
+											</div>
+										</div>
+									{{/with}}
+								</p>
+							</div>
+						</div>
+					</div>
+				{{/each}}
+			</div>
 		</div>
-	</div>
-
 </template>
 
 <template name="options">

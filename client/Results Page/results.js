@@ -1,10 +1,6 @@
 var countProgress=0;
 Template.relaunch.events({
-	'click .relaunch': function(e){
-
-		Pace.restart();
-		Pace.start();
-
+	'click .optimizeButton': function(e){
 		console.log(Session.get("departureFrom"), Session.get("departureDate"), Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get('selectedIp'), Session.get('nbDays'));
 
 		Meteor.call("updateIpDays", Session.get('selectedIp'), Session.get('nbDays'), function(error, result){
@@ -23,7 +19,7 @@ Template.relaunch.events({
 						Session.set("results", res[0][1]);
 						Session.set("optimalCircuit", res[0][2]);
 						Session.set("totalResults", res);
-						Pace.stop();
+						drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
 					}
 				});
 
@@ -106,6 +102,27 @@ Template.minFlight.helpers({
 		return cur2.Symbol;
 	}
 });
+
+Template.leg.helpers({
+	getDepDate: function(){
+		console.log(this);
+		var depDateTime = this.DepartureDateTime;
+		return depDateTime.substring(0, depDateTime.indexOf("T"));
+	},
+	getDepTime: function(){
+		var depDateTime = this.DepartureDateTime;
+		return depDateTime.substring(depDateTime.indexOf("T")+1);
+	},
+	getArrDate: function(){
+		console.log(this);
+		var depDateTime = this.ArrivalDateTime;
+		return depDateTime.substring(0, depDateTime.indexOf("T"));
+	},
+	getArrTime: function(){
+		var depDateTime = this.ArrivalDateTime;
+		return depDateTime.substring(depDateTime.indexOf("T")+1);
+	}
+})
 
 Template.minCar.helpers({
 
@@ -208,6 +225,19 @@ Template.minCar.helpers({
 		}
 		return cc;
 	},
+
+	minCarPrice : function(){
+		var res = Session.get("results");
+		if(res.length >1){
+			return Math.round(res[1][0].price_all_days);
+		}
+	},
+
+	symbolCurrency : function(){
+		var cur = Session.get("selectedCurrency");
+		var cur2 = Currencies.findOne({Code : cur});
+		return cur2.Symbol;
+	}
 });
 
 Template.minHotel.helpers({
