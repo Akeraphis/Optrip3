@@ -90,7 +90,6 @@ Template.minPrice.helpers({
 	nbPersons : function(){
 		return Session.get('nbPersons');
 	},
-
 });
 
 Template.minFlight.helpers({
