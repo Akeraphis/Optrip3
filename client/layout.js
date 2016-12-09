@@ -25,6 +25,7 @@ Template.dropDownCurrency.events({
 		var currency = ($(e.currentTarget)[0].text).substring(0,3);
 		Session.set("selectedCurrency", currency);
         console.log("currency : " + Session.get('selectedCurrency'));
+        document.getElementById("curr").innerHTML=$(e.currentTarget)[0].text;
 	}
 })
 
@@ -39,5 +40,6 @@ Template.dropDownLocale.events({
 		var locale = ($(e.currentTarget)[0].text).substring(0,5);
 		Session.set("selectedLocal", locale);
         console.log("locale : " + Session.get('selectedLocal'));
+        document.getElementById("loca").innerHTML=($(e.currentTarget)[0].text).substring(8);
 	}
 })
