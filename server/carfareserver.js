@@ -1,6 +1,5 @@
 //var apiKey = "cl675979726025908356913469447815";
 var apiKey = "prtl6749387986743898559646983194";
-var locale = "en-GB";
 var market = "FR";
 var dateCarRefresh = 1;
 
@@ -12,7 +11,7 @@ Meteor.methods({
 
 Meteor.methods({
 
-	'updateCarFares': function(codeArr, depDate, retDate, currency, alreadyExists){
+	'updateCarFares': function(codeArr, depDate, retDate, currency, alreadyExists, locale){
 
 		var pickupdatetime = depDate + "T10:00";
 		var dropoffdatetime = retDate + "T18:00";
@@ -20,6 +19,8 @@ Meteor.methods({
 		var driverage = 30;
 		var res = {};
 		var dateNow = new Date();
+
+		console.log("locale",locale);
 
 		var url = "http://partners.api.skyscanner.net/apiservices/carhire/liveprices/v2/"+market+"/"+currency+"/"+locale+"/"+codeArr+"/"+codeArr+"/"+pickupdatetime+"/"+dropoffdatetime+"/"+driverage+"?apiKey="+apiKey+"&userip="+userip
 		
@@ -71,7 +72,7 @@ Meteor.methods({
 
 	},*/
 
-	'getCarFaresInCollection': function(ca, depDate, retDate, currency){
+	'getCarFaresInCollection': function(ca, depDate, retDate, currency, locale){
 		
 		var dateNow = new Date();
 		var dateThreshold = new Date();
@@ -86,7 +87,7 @@ Meteor.methods({
 		}
 		else if(res && res.dateUpdate < dateThreshold){
 			//Remove the field and Retrieve
-			Meteor.call("updateCarFares", ca, depDate, retDate, currency, true, function(err, result){
+			Meteor.call("updateCarFares", ca, depDate, retDate, currency,  true, locale,function(err, result){
 				if(!err){
 					cfs = { pickUp : ca, departureDate : depDate, returnDate : retDate, dateUpdate : dateNow, carFare : result };
 				}
@@ -95,7 +96,7 @@ Meteor.methods({
 		}
 		else{
 			//Enter the missing search in the table and retrieve the result
-			Meteor.call("updateCarFares", ca, depDate, retDate, currency, false, function(err, result){
+			Meteor.call("updateCarFares", ca, depDate, retDate, currency,  false, locale,function(err, result){
 				if(!err){
 					cfs = { pickUp : ca, departureDate : depDate, returnDate : retDate, dateUpdate : dateNow, carFare : result };
 				}

@@ -5,12 +5,15 @@ var markers = [];
 var googleKey = 'AIzaSyBa-oHgHxxTBaIhoFz8koYTBlHcuCyfiIk';
 
 Session.set("selectedCurrency", "EUR");
+Session.set("selectedLocal", "en-GB");
 Session.set('nbPersons', 2);
 Session.set('departureFrom',"");
 Session.set('departureDate', "");
 Session.set('nbDays', []);
 Session.set("minTotalPrice", Infinity);
 Session.set("results", []);
+Session.set("nbChildren", 0);
+Session.set("nbInfants", 0);
 
 
 //Open Google maps on startup; fill in the key
@@ -313,6 +316,8 @@ Template.home.events({
 		var nbDays = [];
 
 		Session.set("nbPersons", nbPersons.value);
+		Session.set("nbChildren", nbChildren.value);
+		Session.set("nbInfants", nbInfants.value);
 		console.log("Adults :", Session.get("nbPersons"));
 		Session.set("departureDate", departureDate.value);
 		Session.set("departureFrom", departureFrom.value);
@@ -337,8 +342,9 @@ Template.home.events({
 			}
 			else{
 
-								//send this information to the server to optimize and return result
-				Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), function(error, res){
+				console.log(Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"));
+				//send this information to the server to optimize and return result
+				Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), function(error, res){
 					if(error){
 						alert("This is an error while updating the fares!");
 					}
@@ -362,7 +368,7 @@ Template.home.events({
 		var departureFrom = document.getElementById("departurePoint");
 
 		if(departureFrom.value.length >= 1){
-			var depAutoSuggest = Meteor.call("getPlaceAutosuggest", departureFrom.value, "EUR", function(error, result){
+			var depAutoSuggest = Meteor.call("getPlaceAutosuggest", departureFrom.value, "EUR", "en-GB", function(error, result){
 			if(error){
 				alert("There is no autocomplete suggested !");
 			}

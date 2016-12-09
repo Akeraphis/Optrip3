@@ -27,3 +27,17 @@ Template.dropDownCurrency.events({
         console.log("currency : " + Session.get('selectedCurrency'));
 	}
 })
+
+Template.dropDownLocale.helpers({
+	Locales: function(){
+    	return Locales.find().fetch();
+	}
+})
+
+Template.dropDownLocale.events({
+	"click .loc": function(e){
+		var locale = ($(e.currentTarget)[0].text).substring(0,5);
+		Session.set("selectedLocal", locale);
+        console.log("locale : " + Session.get('selectedLocal'));
+	}
+})
