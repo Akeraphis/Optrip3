@@ -392,18 +392,3 @@ Template.home.events({
 	//-------------------------------------------------------------------------------------------------
 	//-------------------------------------------------------------------------------------------------
 });
-
-Template.currencies.helpers({
-
-	Currencies: function(){
-    	return Currencies.find().fetch();
-	}
-});
-
-Template.currencies.events({
-	"change #cur": function(e){
-		var currency = $(e.currentTarget).val();
-		Session.set("selectedCurrency", currency);
-        console.log("currency : " + Session.get('selectedCurrency'));
-	}
-})

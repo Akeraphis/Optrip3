@@ -13,9 +13,6 @@
 			<center>{{> map}}</center>
 		</div>
 	</div>
-	<div class="currencies">
-		<right>{{>currencies}}</right>
-	</div>
 </template>
 
 <template name="selectedIPs">
@@ -55,14 +52,6 @@
 			{{> optimizeButton}}
 		</form><br />
 	</div>
-</template>
-
-<template name="currencies">
-	<select class="selectedIpicker" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="cur" value="EUR">
-		{{#each Currencies}}
-			<option>{{Code}}</option>
-		{{/each}}
-	</select>
 </template>
 
 <template name="nbTravelers">
