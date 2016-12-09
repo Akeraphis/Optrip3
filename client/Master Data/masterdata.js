@@ -192,4 +192,12 @@ Template.mdothers.events({
 	'click .flushAllLocales': function(){
 		Meteor.call('flushAllLocales', function(err,id){if(err){alert(err.reason);}})
 	},
+	'click .getAllMarkets': function(){
+		var res = Meteor.call('retrieveMarkets');
+		console.log(res);
+	},
+
+	'click .flushAllMarkets': function(){
+		Meteor.call('flushAllMarkets', function(err,id){if(err){alert(err.reason);}})
+	}
 });

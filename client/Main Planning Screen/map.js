@@ -14,6 +14,7 @@ Session.set("minTotalPrice", Infinity);
 Session.set("results", []);
 Session.set("nbChildren", 0);
 Session.set("nbInfants", 0);
+Session.set("selectedMarket", "FR");
 
 
 //Open Google maps on startup; fill in the key
@@ -342,9 +343,9 @@ Template.home.events({
 			}
 			else{
 
-				console.log(Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"));
+				console.log(Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"));
 				//send this information to the server to optimize and return result
-				Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), function(error, res){
+				Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"), function(error, res){
 					if(error){
 						alert("This is an error while updating the fares!");
 					}
@@ -368,7 +369,7 @@ Template.home.events({
 		var departureFrom = document.getElementById("departurePoint");
 
 		if(departureFrom.value.length >= 1){
-			var depAutoSuggest = Meteor.call("getPlaceAutosuggest", departureFrom.value, "EUR", "en-GB", function(error, result){
+			var depAutoSuggest = Meteor.call("getPlaceAutosuggest", departureFrom.value, "EUR", "en-GB", "FR", function(error, result){
 			if(error){
 				alert("There is no autocomplete suggested !");
 			}

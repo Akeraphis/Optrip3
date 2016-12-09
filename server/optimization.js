@@ -1,5 +1,5 @@
 Meteor.methods({
-	findOptimalTrip: function(codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson, nbChildren, nbInfants, locale){
+	findOptimalTrip: function(codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson, nbChildren, nbInfants, locale, market){
 		
 		//for each possible arrival airport take, the cheapest flight
 		//find the optimal circuit for the selected airport
@@ -37,11 +37,11 @@ Meteor.methods({
 					pickUp = pickUpDate.yyyymmdd();
 					dropOff = dropOffDate.yyyymmdd();
 
-					var carCode = getHotelAutoSuggest(ac.ip.city, currency);
+					var carCode = getHotelAutoSuggest(ac.ip.city, currency, locale, market);
 					var minQuoteCar = {};
 					var minPriceCar = Infinity;
 
-					var result = Meteor.call("getCarFaresInCollection", carCode, pickUp, dropOff, currency, locale);
+					var result = Meteor.call("getCarFaresInCollection", carCode, pickUp, dropOff, currency, locale, market);
 
 					_.forEach(result.carFare.cars, function(quote){
 						if(quote.price_all_days < minPriceCar){
@@ -56,7 +56,7 @@ Meteor.methods({
 					
 					if(minPriceCar<Infinity){
 
-						var res3 = Meteor.call("getCheapestHotel", ac, pickUp, CodeArrOrderedLeft, CodeArrOrderedRight, departureDate, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale);
+						var res3 = Meteor.call("getCheapestHotel", ac, pickUp, CodeArrOrderedLeft, CodeArrOrderedRight, departureDate, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale, market);
 
 						console.log("3 -----> Leaving after " + i + " days, the hotel best possible combination price is :" + res3[0]);
 
@@ -76,7 +76,7 @@ Meteor.methods({
 		return [cheapestFlightHotelAndCarPrice, cheapestQuote, optimalCircuit];
 	},
 
-	updateFares : function(codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson, nbChildren, nbInfants, locale){
+	updateFares : function(codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson, nbChildren, nbInfants, locale, market){
 
 		// 1. Retrieve possible flight arrival places
 		_.forEach(flightTable, function(ft){
@@ -99,10 +99,10 @@ Meteor.methods({
 				pickUp = pickUpDate.yyyymmdd();
 				dropOff = dropOffDate.yyyymmdd();
 
-				var carCode = getHotelAutoSuggest(ac.ip.city, currency, locale);
+				var carCode = getHotelAutoSuggest(ac.ip.city, currency, locale, market);
 
 
-				Meteor.call("getCarFaresInCollection", carCode, pickUp, dropOff, currency, locale, function(err,result){
+				Meteor.call("getCarFaresInCollection", carCode, pickUp, dropOff, currency, locale, market, function(err,result){
 					if(!err){
 						console.log("---- Step 5 completed : Hotel Fares retrieved ----");
 					}
@@ -111,7 +111,7 @@ Meteor.methods({
 					}
 				});
 
-				Meteor.call("getCheapestHotel", ac, pickUp, CodeArrOrderedLeft, CodeArrOrderedRight, departureDate, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale, function(err, result){
+				Meteor.call("getCheapestHotel", ac, pickUp, CodeArrOrderedLeft, CodeArrOrderedRight, departureDate, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale, market, function(err, result){
 					if(!err){
 						console.log("---- Step 6 completed : Car Fares retrieved ----");
 					}
@@ -173,18 +173,18 @@ Meteor.methods({
 		return [minPrice, ft.arrivalCode, minQuote, ft.flightFare.Places, ft.flightFare.Carriers]
 	},
 
-	getCheapestHotel : function(codeArr, pickUp, leftCircuit, rightCircuit, departureDate, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale){
+	getCheapestHotel : function(codeArr, pickUp, leftCircuit, rightCircuit, departureDate, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale, market){
 
 		var countDays = 0;
 
 		//Run Hotel Fare for left Circuit
-		var resLeft = Meteor.call("getCircuitCheapestPrice", leftCircuit, pickUp, countDays, currency, nbPerson, nbChildren, nbInfants, locale);
+		var resLeft = Meteor.call("getCircuitCheapestPrice", leftCircuit, pickUp, countDays, currency, nbPerson, nbChildren, nbInfants, locale, market);
 
 		//Run Hotel Fare for right Circuit
-		var resRight = Meteor.call("getCircuitCheapestPrice", rightCircuit, pickUp, countDays, currency, nbPerson, nbChildren, nbInfants, locale);
+		var resRight = Meteor.call("getCircuitCheapestPrice", rightCircuit, pickUp, countDays, currency, nbPerson, nbChildren, nbInfants, locale, market);
 
 		//Add the cost of the hotel for the starting ip beginning and end of the trip
-		var firstLastRes = Meteor.call("getCheapestHotelFirstLastIP", codeArr, departureDate, pickUp, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale);
+		var firstLastRes = Meteor.call("getCheapestHotelFirstLastIP", codeArr, departureDate, pickUp, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale, market);
 
 		var resHotelQuote = [];
 		var resHotelMinPrice = 0;
@@ -260,7 +260,7 @@ Meteor.methods({
 
 	},
 
-	getCircuitCheapestPrice : function(Circuit, pickUpDate, countDays, currency, nbPerson, nbChildren, nbInfants, locale){
+	getCircuitCheapestPrice : function(Circuit, pickUpDate, countDays, currency, nbPerson, nbChildren, nbInfants, locale, market){
 
 		var minPrice = Infinity;
 		var total_min_price = 0;
@@ -283,7 +283,7 @@ Meteor.methods({
 				var ag = {};
 
 
-				var resHotel = getHotelFaresInCollection(start, end, arr, currency, nbPerson, nbChildren, nbInfants, locale);
+				var resHotel = getHotelFaresInCollection(start, end, arr, currency, nbPerson, nbChildren, nbInfants, locale, market);
 
 				_.forEach(resHotel.hotelFare, function(hf){
 					_.forEach(hf.agent_prices, function(ap){
@@ -310,10 +310,10 @@ Meteor.methods({
 
 	},
 
-	getCheapestHotelFirstLastIP : function(arr, departureDate, pickUp, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale){
+	getCheapestHotelFirstLastIP : function(arr, departureDate, pickUp, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale, market){
 
-		var firstresHotel = getHotelFaresInCollection(departureDate, pickUp, arr, currency, nbPerson, nbChildren, nbInfants, locale);
-		var lastresHotel = getHotelFaresInCollection(dropOff, returnDate, arr, currency, nbPerson, nbChildren, nbInfants, locale);
+		var firstresHotel = getHotelFaresInCollection(departureDate, pickUp, arr, currency, nbPerson, nbChildren, nbInfants, locale, market);
+		var lastresHotel = getHotelFaresInCollection(dropOff, returnDate, arr, currency, nbPerson, nbChildren, nbInfants, locale, market);
 
 		var minFirstQuote = {};
 		var minFirstPrice = Infinity;

@@ -43,3 +43,18 @@ Template.dropDownLocale.events({
         document.getElementById("loca").innerHTML=($(e.currentTarget)[0].text).substring(8);
 	}
 })
+
+Template.dropDownMarket.helpers({
+	Markets: function(){
+    	return Markets.find().fetch();
+	}
+})
+
+Template.dropDownMarket.events({
+	"click .mar": function(e){
+		var market = ($(e.currentTarget)[0].text).substring(0,2);
+		Session.set("selectedMarket", market);
+        console.log("market : " + Session.get('selectedMarket'));
+        document.getElementById("mark").innerHTML=($(e.currentTarget)[0].text).substring(5);
+	}
+})

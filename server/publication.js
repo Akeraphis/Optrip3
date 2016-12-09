@@ -57,3 +57,9 @@ Meteor.publish("allLocales", function(){
 		fields: {content :0}
 	});
 });
+
+Meteor.publish("allMarkets", function(){
+	return Markets.find({},{
+		fields: {content :0}
+	});
+});
