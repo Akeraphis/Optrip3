@@ -1,5 +1,5 @@
 var apiKey = "cl675979726025908356913469447815";
-var dateFlightRefresh = 1;
+var dateFlightRefresh = 5;
 
 Meteor.methods({
 

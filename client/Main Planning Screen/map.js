@@ -319,7 +319,6 @@ Template.home.events({
 		Session.set("nbPersons", nbPersons.value);
 		Session.set("nbChildren", nbChildren.value);
 		Session.set("nbInfants", nbInfants.value);
-		console.log("Adults :", Session.get("nbPersons"));
 		Session.set("departureDate", departureDate.value);
 		Session.set("departureFrom", departureFrom.value);
 
@@ -342,7 +341,7 @@ Template.home.events({
 				console.log(error.reason);
 			}
 			else{
-
+				Session.set("ipDays", result);
 				console.log(Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"));
 				//send this information to the server to optimize and return result
 				Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"), function(error, res){
@@ -353,10 +352,10 @@ Template.home.events({
 						Session.set("results", res[0][1]);
 						Session.set("minTotalPrice", res[0][0]);
 						Session.set("optimalCircuit", res[0][2]);
+						Session.set("newIpDays", res[0][3]);
 						console.log(res);
 						Session.set("totalResults", res);
-						var request = Session.get("optimalCircuit");
-						drawRoute(GoogleMaps.maps.map.instance, request);
+						drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
 					}
 				});
 			}
@@ -378,16 +377,9 @@ Template.home.events({
 				//Meteor.call("flushAllSuggests");
 
 				//Refresh collection
-
-				if(result.Places[0]){Meteor.call("insertAutoSuggest", result.Places[0]);}
-				if(result.Places[1]){Meteor.call("insertAutoSuggest", result.Places[1]);}
-				if(result.Places[2]){Meteor.call("insertAutoSuggest", result.Places[2]);}
-				if(result.Places[3]){Meteor.call("insertAutoSuggest", result.Places[3]);}
-				if(result.Places[4]){Meteor.call("insertAutoSuggest", result.Places[4]);}
-				if(result.Places[5]){Meteor.call("insertAutoSuggest", result.Places[5]);}
-				if(result.Places[6]){Meteor.call("insertAutoSuggest", result.Places[6]);}
-				if(result.Places[7]){Meteor.call("insertAutoSuggest", result.Places[7]);}
-				if(result.Places[8]){Meteor.call("insertAutoSuggest", result.Places[8]);}
+				for (var i = result.Places.length - 1; i >= 0; i--) {
+					Meteor.call("insertAutoSuggest", result.Places[0]);
+				}
 			}
 
 			});	

@@ -1,6 +1,6 @@
 //var apiKey = "cl675979726025908356913469447815";
 var apiKey = "prtl6749387986743898559646983194";
-var dateCarRefresh = 1;
+var dateCarRefresh = 5;
 
 Meteor.methods({
 

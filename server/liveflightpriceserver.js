@@ -1,6 +1,6 @@
 //var apiKey = "cl675979726025908356913469447815";
 var apiKey = "prtl6749387986743898559646983194";
-var dateFlightRefresh = 1;
+var dateFlightRefresh = 51;
 
 Meteor.methods({
 	getLiveFlightPrices : function(codeDep, ca, departureDate, returnDate, currency, nbAdults, nbChildren, nbInfants, locale, market){

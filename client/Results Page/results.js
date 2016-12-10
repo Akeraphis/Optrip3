@@ -8,24 +8,26 @@ Template.relaunch.events({
 				console.log(error.reason);
 			}
 			else{
+				Session.set("ipDays", result);
+				console.log(Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"));
 				//send this information to the server to optimize and return result
 				Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"), function(error, res){
 					if(error){
-						alert("This is an error while optimizing the trip!");
+						alert("This is an error while updating the fares!");
 					}
 					else{
-						console.log(res);
-						Session.set("minTotalPrice", res[0][0]);
 						Session.set("results", res[0][1]);
+						Session.set("minTotalPrice", res[0][0]);
 						Session.set("optimalCircuit", res[0][2]);
+						Session.set("newIpDays", res[0][3]);
+						console.log(res);
 						Session.set("totalResults", res);
-						drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
 					}
 				});
-
 			}
 		});
-	}
+	},
+
 });
 
 Template.minFlight.events({
@@ -104,8 +106,7 @@ Template.minFlight.helpers({
 });
 
 Template.leg.helpers({
-	getDepDate: function(){
-		console.log(this);
+	getDepDate: function(){	
 		var depDateTime = this.DepartureDateTime;
 		return depDateTime.substring(0, depDateTime.indexOf("T"));
 	},
@@ -114,7 +115,6 @@ Template.leg.helpers({
 		return depDateTime.substring(depDateTime.indexOf("T")+1);
 	},
 	getArrDate: function(){
-		console.log(this);
 		var depDateTime = this.ArrivalDateTime;
 		return depDateTime.substring(0, depDateTime.indexOf("T"));
 	},
@@ -253,4 +253,42 @@ Template.minHotel.helpers({
 		var cur2 = Currencies.findOne({Code : cur});
 		return cur2.Symbol;
 	}
+});
+
+Template.tripDays.helpers({
+	ipDays : function(){
+		return Session.get("newIpDays");
+	},
+	getCityStep : function(){
+		return this.ip.city+"/"+this.step;
+	}
+});
+
+Template.tripDays.events({
+	'click .form-control': function(e){
+		var ses = Session.get("newIpDays");
+		var res = [];
+
+		_.forEach(Session.get("newIpDays"), function(ipDays){
+			if(ipDays.ip.city == e.target.name.substring(0, e.target.name.indexOf("/")) && ipDays.step == e.target.name.substring(e.target.name.indexOf("/")+1)){
+				res.push({ip : ipDays.ip, nbDays : e.target.value, step : ipDays.step})
+			}
+			else{
+				res.push(ipDays);
+			}
+		});
+
+		Session.set("newIpDays", res),
+		console.log(Session.get("newIpDays"));
+	},
+})
+
+$(document).ready(function() {
+
+    // page is now ready, initialize the calendar...
+
+    $('#calendar').fullCalendar({
+        // put your options and callbacks here
+    })
+
 });

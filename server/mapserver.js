@@ -68,6 +68,55 @@ Meteor.methods({
 		return [optimalTrip, clfp, newFlightPrice];
 	},
 
+	refreshTrip: function(departureFrom, depDate, ipDays, currency, nbPerson, nbChildren, nbInfants, locale, market){
+
+		var optimalTrip = [];
+		var departureDate = makeDate(depDate).yyyymmdd();
+		var lfp = {};
+		var clfp = {};
+
+		//Get ip
+		var ip = Meteor.call('getIp', ipDays);
+
+		//Get total Days
+		var totalDays = Meteor.call('getTotalDays', ipDays);
+
+		//Add Date to YYYY-MM-DD
+		var returnDate = Meteor.call('addToYYYYMMDD', departureDate, totalDays);
+		
+		//Step 1. Get locations of departure	
+		var Dep = AutoSuggest.findOne({PlaceName: departureFrom});
+		var codeDep = Dep.PlaceId;
+		console.log("---- Step 1 completed : Code of location of departure retrieved ----");
+		
+		//Step 2. Get locations of arrivals
+		var codeArr = Meteor.call('getCodeArr', ipDays, currency, locale, market);
+		console.log("---- Step 2 completed : Code of locations of arrivals retrieved ----");
+
+		//Step 3. Get all the possible flights from departures to arrivals in Json format
+		var flightTable = getFlightFaresInCollection(codeDep, codeArr, departureDate, returnDate, currency, locale, market);
+		console.log("---- Step 3 completed : Flights Fares retrieved ----");
+
+		//Step 5. Get all the possible hotel and car rates for the trip
+		var optimalTrip = Meteor.call("refreshTrip", codeArr, departureDate, returnDate, flightTable, currency, nbPerson, nbChildren, nbInfants, locale, market);
+
+		//Step 6. Get the live flight prices
+		lfp = Meteor.call("getLiveFlightFaresInCollection", codeDep, optimalTrip[1][0][1].code, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
+		console.log("---- Step 9 completed : Live flight prices retrieved ----");
+
+		//console.log("---- Step 9 completed : Hotel Details retrieved ----");
+		clfp = Meteor.call("cheapestLfp", lfp);
+
+		//Step 7. Replace cheapest price
+		var newFlightPrice = clfp.Itineraries.PricingOptions.Price;
+
+		//Step 10. Call car rental live prices for selected starting IP
+
+		//Step 11. Return : trip flights to starting IP selected, car rentals to starting IP selected, hotels list for each IP on each day selected
+
+		return [optimalTrip, clfp, newFlightPrice];
+	},
+
 	//return ip from ipDays
 	getIp : function(ipDays){
 

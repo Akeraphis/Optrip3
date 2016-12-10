@@ -1,6 +1,6 @@
 var apiKey = "prtl6749387986743898559646983194";
 var rooms = 1;
-var dateHotelRefresh = 1;
+var dateHotelRefresh = 5;
 
 getHotelAutoSuggest = function(ipCity, currency, locale, market){
 
