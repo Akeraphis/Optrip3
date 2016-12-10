@@ -28,4 +28,5 @@ dburles:google-maps
 session
 msavin:mongol
 http
-fullcalendar:fullcalendar
+rzymek:fullcalendar
+momentjs:moment

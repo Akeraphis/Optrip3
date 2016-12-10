@@ -261,6 +261,26 @@ Template.tripDays.helpers({
 	},
 	getCityStep : function(){
 		return this.ip.city+"/"+this.step;
+	},
+	populateCalendar : function(){
+		$('#myCalendar').fullCalendar({
+			events: [
+				{
+					title: 'Event1',
+					start: '2016-12-25',
+					end: '2016-12-27'
+				},
+				{
+					title: 'Event2',
+					start: '2011-12-29',
+					end: '2016-12-30'
+				}
+				// etc...
+			],
+			color: 'yellow',   // an option!
+			textColor: 'black' // an option!
+		});
+		$('#myCalendar').fullCalendar('refetchEvents');
 	}
 });
 
@@ -281,14 +301,27 @@ Template.tripDays.events({
 		Session.set("newIpDays", res),
 		console.log(Session.get("newIpDays"));
 	},
+	'click .popEvents': function(){
+		console.log("Populating events")
+		$('#calendar').fullCalendar({
+		    events: [
+		        {
+		            title  : 'event1',
+		            start  : '2017-01-01'
+		        },
+		        {
+		            title  : 'event2',
+		            start  : '2017-01-05',
+		            end    : '2017-01-07'
+		        },
+		        {
+		            title  : 'event3',
+		            start  : '2017-01-09 12:30:00',
+		            allDay : false // will make the time show
+		        }
+		    ]
+		});
+		//$('#myCalendar').fullCalendar('refetchEvents');
+		//$('#myCalendar').fullCalendar('renderEvent', event);
+	}
 })
-
-$(document).ready(function() {
-
-    // page is now ready, initialize the calendar...
-
-    $('#calendar').fullCalendar({
-        // put your options and callbacks here
-    })
-
-});

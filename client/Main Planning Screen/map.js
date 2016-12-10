@@ -391,3 +391,29 @@ Template.home.events({
 	//-------------------------------------------------------------------------------------------------
 	//-------------------------------------------------------------------------------------------------
 });
+
+Template.Calendar.events({
+	'click .popEvents': function(){
+		console.log("Populating events")
+		$('#calendar').fullCalendar({
+		    events: [
+		        {
+		            title  : 'event1',
+		            start  : '2017-01-01'
+		        },
+		        {
+		            title  : 'event2',
+		            start  : '2017-01-05',
+		            end    : '2017-01-07'
+		        },
+		        {
+		            title  : 'event3',
+		            start  : '2017-01-09 12:30:00',
+		            allDay : false // will make the time show
+		        }
+		    ]
+		});
+		$('#myCalendar').fullCalendar('refetchEvents');
+		//$('#myCalendar').fullCalendar('renderEvent', event);
+	}
+})
