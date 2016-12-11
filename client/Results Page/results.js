@@ -261,26 +261,6 @@ Template.tripDays.helpers({
 	},
 	getCityStep : function(){
 		return this.ip.city+"/"+this.step;
-	},
-	populateCalendar : function(){
-		$('#myCalendar').fullCalendar({
-			events: [
-				{
-					title: 'Event1',
-					start: '2016-12-25',
-					end: '2016-12-27'
-				},
-				{
-					title: 'Event2',
-					start: '2011-12-29',
-					end: '2016-12-30'
-				}
-				// etc...
-			],
-			color: 'yellow',   // an option!
-			textColor: 'black' // an option!
-		});
-		$('#myCalendar').fullCalendar('refetchEvents');
 	}
 });
 
@@ -303,25 +283,44 @@ Template.tripDays.events({
 	},
 	'click .popEvents': function(){
 		console.log("Populating events")
-		$('#calendar').fullCalendar({
-		    events: [
-		        {
-		            title  : 'event1',
-		            start  : '2017-01-01'
-		        },
-		        {
-		            title  : 'event2',
-		            start  : '2017-01-05',
-		            end    : '2017-01-07'
-		        },
-		        {
-		            title  : 'event3',
-		            start  : '2017-01-09 12:30:00',
-		            allDay : false // will make the time show
-		        }
-		    ]
-		});
-		//$('#myCalendar').fullCalendar('refetchEvents');
-		//$('#myCalendar').fullCalendar('renderEvent', event);
+		var event={id:1 , title: 'New event', start:  new Date()};
+
+		$('#myCalendar').fullCalendar( 'renderEvent', event, true);
 	}
-})
+});
+
+Template.tripDays.onRendered(function(){
+		var newIpDays = Session.get("newIpDays");
+		var depDate = Session.get('departureDate');
+		var countDays=0;
+
+		_.forEach(Session.get("newIpDays"), function(ipDays){
+			var startDate = moment(depDate).add(countDays, 'days');
+			var endDate = moment(depDate).add(ipDays.nbDays + countDays,'days');
+			var event ={title : ipDays.ip.city, start : startDate, end : endDate, color:'red'};
+			$('#myCalendar').fullCalendar( 'renderEvent', event);
+			countDays= countDays+ipDays.nbDays;
+		});
+		var endTrip = moment(depDate).add(countDays, 'days');
+		var event2= {title : "trip", start : depDate, end: endTrip };
+
+		$('#myCalendar').fullCalendar( 'renderEvent', event2, true);
+		$('#myCalendar').fullCalendar( 'gotoDate', moment(depDate) )
+
+});
+/*
+makeDate = function(dateString){
+
+	var year = dateString.substring(0, getPosition(dateString, "-", 1));
+	var month = dateString.substring(5, getPosition(dateString, "-", 2));
+	var day = dateString.substring(getPosition(dateString, "-", 2)+1, 10);
+
+	var newMonth = (parseInt(month) - 1).toString();
+
+	res = new Date(year, newMonth, day);
+	return res
+};
+
+getPosition = function(str, m, i) {
+   return str.split(m, i).join(m).length;
+};*/

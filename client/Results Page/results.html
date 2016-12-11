@@ -1,17 +1,17 @@
 <template name="results">
 	{{#if results}}
 	<div class="row">
-		<div class="col-md-2">{{> minPrice}}<br/>{{>tripDays}}<br/>{{>options}}<br/>{{> relaunch}}</div>
+		<div class="col-md-2">{{> minPrice}}<br/>{{>options}}<br/>{{> relaunch}}</div>
 		<div class="col-md-10">
 				<div class="row">
+				<div class="col-md-6">
+					{{>tripDays}}
+				</div>
 				<div class="col-md-3">
 					{{> minFlight}}
 				</div>
 				<div class="col-md-3">
 					{{> minCar}}
-				</div>
-				<div class="col-md-6">
-					{{>map}}
 				</div>
 			</div>
 			<div class="row">
@@ -168,20 +168,5 @@
 </template>
 
 <template name="tripDays">
-	<!--
-	<b>Order Trip</b>
-	{{#each ipDays}}
-		<div class="well well-sm">
-			{{#with ip}}
-				<b>{{city}} :</b>
-			{{/with}}
-			<div class="input-group">
-				<input type="number" class="form-control" name="{{getCityStep}}" min="0" max="99" value="{{nbDays}}"/>
-				<span class="input-group-addon" id="basic-addon2">nights</span>
-			</div>
-		</div>
-	{{/each}}
-	-->
-	<button class="popEvents">Populate</button>
 	{{> fullcalendar id="myCalendar"}}
 </template>
