@@ -1,13 +1,9 @@
 //var apiKey = "cl675979726025908356913469447815";
 var apiKey = "prtl6749387986743898559646983194";
-var market = "FR";
-var locale = "en-GB";
-var dateFlightRefresh = 1;
-var nbChildren = 0;
-var nbInfants = 0;
+var dateFlightRefresh = 51;
 
 Meteor.methods({
-	getLiveFlightPrices : function(codeDep, ca, departureDate, returnDate, currency, nbAdults){
+	getLiveFlightPrices : function(codeDep, ca, departureDate, returnDate, currency, nbAdults, nbChildren, nbInfants, locale, market){
 		var url = "http://partners.api.skyscanner.net/apiservices/pricing/v1.0/";
 		var res2 = {};
 
@@ -50,7 +46,7 @@ Meteor.methods({
 		return res2;
 	},
 
-	getLiveFlightPrices2 : function(codeDep, ca, departureDate, returnDate, currency, nbAdults){
+	getLiveFlightPrices2 : function(codeDep, ca, departureDate, returnDate, currency, nbAdults, nbChildren, nbInfants, locale, market){
 		var url = "http://partners.api.skyscanner.net/apiservices/pricing/v1.0/";
 		var res2 = {};
 
@@ -87,7 +83,7 @@ Meteor.methods({
 		return res2.data;
 	},
 
-	getLiveFlightFaresInCollection : function(codeDep, ca, departureDate, returnDate, currency, nbAdults){
+	getLiveFlightFaresInCollection : function(codeDep, ca, departureDate, returnDate, currency, nbAdults, nbChildren, nbInfants, locale, market){
 		console.log("get in collection");
 		var dateNow = new Date();
 		var dateThreshold = new Date();
@@ -104,14 +100,14 @@ Meteor.methods({
 		}
 		else if(res && res.dateUpdate < dateThreshold){
 			//Remove the field and Retrieve
-			var ff = Meteor.call("getLiveFlightPrices2",codeDep, ca, departureDate, returnDate, currency, nbAdults);
+			var ff = Meteor.call("getLiveFlightPrices2",codeDep, ca, departureDate, returnDate, currency, nbAdults, nbChildren, nbInfants, locale, market);
 			LiveFlightPrices.update({ departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate}, {dateUpdate : dateNow, flightFare : ff });
 			ffs = { departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff };
 			console.log("alert live flight price no entry");
 		}
 		else{
 			//Enter the missing search in the table and retrieve the result
-			var ff = Meteor.call("getLiveFlightPrices2",codeDep, ca, departureDate, returnDate, currency, nbAdults);
+			var ff = Meteor.call("getLiveFlightPrices2",codeDep, ca, departureDate, returnDate, currency, nbAdults, nbChildren, nbInfants, locale, market);
 			ffs = { departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff };
 			LiveFlightPrices.insert({ departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff });
 			console.log("alert live flight price no entry");

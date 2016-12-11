@@ -1,140 +1,172 @@
 <template name="results">
-	<div>
-		<table>
-			<tr>
-				<td>{{> minPrice}}</td>
-				<td>{{> relaunch}}</td>
-			</tr>
-			{{#if results}}
-			<tr>
-				<td>{{> minFlight}}</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>{{> minCar}}</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>{{> minHotel}}</td>
-				<td></td>
-			</tr>
-			{{/if}}
-		</table>
+	{{#if results}}
+	<div class="row">
+		<div class="col-md-2">{{> minPrice}}<br/>{{>options}}<br/>{{> relaunch}}</div>
+		<div class="col-md-10">
+				<div class="row">
+				<div class="col-md-6">
+					{{>tripDays}}
+				</div>
+				<div class="col-md-3">
+					{{> minFlight}}
+				</div>
+				<div class="col-md-3">
+					{{> minCar}}
+				</div>
+			</div>
+			<div class="row">
+				{{> minHotel}}
+			</div>
+		</div>
 	</div>
-	<div class="currencies">
-		<right>{{>currencies}}</right>
-	</div>
+	{{/if}}
 </template>
 
 <template name="relaunch">
 	<div>
-		<button type="submit" class="relaunch" name="refreshResults">Refresh</button>
+		<button type="submit" class="optimizeButton" name="refreshResults">Refresh</button>
 	</div>
 </template>
 
 <template name="minPrice">
-		<h1 id="minTotalPrice">Total Price : {{minTotalPrice}} {{symbolCurrency}}</h1>
-		<h4>Flight (per person): {{minFlightPrice}} {{symbolCurrency}}</h4>
-		<h4>Car Rental : {{minCarPrice}} {{symbolCurrency}}</h4>
-		<h4>Hotel Total : {{minHotelPrices}} {{symbolCurrency}}</h4>
+	<div class="panel panel-primary">
+		<div class="panel-heading"><h3>Total Price : {{minTotalPrice}} {{symbolCurrency}}</h3></div>
+		<div class="panel-body">
+			For {{nbPersons}} adults :
+			<h4>Flight: {{minFlightPrice}} {{symbolCurrency}}</h4>
+			<h4>Car Rental : {{minCarPrice}} {{symbolCurrency}}</h4>
+			<h4>Hotel Total : {{minHotelPrices}} {{symbolCurrency}}</h4></div>
+		</div>
 </template>
 
 <template name="minFlight">
-	<div>
-		{{#with minLiveFlight}}
-			{{#with OutboundLeg}}
-				{{>leg}}
-			{{/with}}
-			<br/>
-			{{#with InboundLeg}}
-				{{>leg}}
-			{{/with}}
-			<br/>
-			{{#with Itineraries}}
-				{{#with Agents}}
-					Booking with : <img border="0" height="60" width="120" hspace="0" src="{{ImageUrl}}"/>
+	<div class="panel panel-default">
+		<div class="panel-heading">Flight</div>
+		<div class="panel-body">
+			{{#with minLiveFlight}}
+				{{#with Itineraries}}
+					{{#with Agents}}
+						<img border="0" height="60" width="120" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
+					{{/with}}
+					{{#with PricingOptions}}
+						<h3>{{Price}} {{symbolCurrency}}</h3>
+					{{/with}}
+					<br/>
 				{{/with}}
-				{{#with PricingOptions}}
-					<h3>{{Price}} {{symbolCurrency}}</h3>
-					<a href="{{DeepLinkurl}}">Book here !</a>
-				{{/with}}
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" class="active"><a href="#outbound" aria-controls="home" role="tab" data-toggle="tab">Outbound</a></li>
+					<li role="presentation"><a href="#inbound" aria-controls="home" role="tab" data-toggle="tab">Inbound</a></li>
+				</ul>
+				<br/>
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane fade in active" id="outbound">
+						{{#with OutboundLeg}}
+							{{>leg}}
+						{{/with}}
+					</div>
+					<div role="tabpanel" class="tab-pane fade" id="inbound">
+						{{#with InboundLeg}}
+							{{>leg}}
+						{{/with}}
+					</div>
+				</div>
+				<br/>
 			{{/with}}
-		{{/with}}
+		</div>
 	</div>
 </template>
 
 <template name="leg">
-	<h4>{{Directionality}}</h4><br/>
 	{{#each Segments}}
-		Departure : {{DepartureDateTime}} from
-		{{#with OriginStation}}
-			{{Name}}  {{Type}}
-		{{/with}}
-		<br/>
-		Arrival : {{ArrivalDateTime}} at
-		{{#with DestinationStation}}
-			{{Name}}  {{Type}}
-		{{/with}}
-		<br/>
-		Duration : {{Duration}}
-		<br/>
 		{{#with Carrier}}
-			{{Name}}
-			<img border="0" height="60" width="120" hspace="0" src="{{ImageUrl}}"/>
+			<img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
 		{{/with}}
 		<br/>
 		Flight Number : {{FlightNumber}}
+		<br/><br/>
+		{{getDepDate}} leaving at {{getDepTime}}<br/>
+		{{#with OriginStation}}
+			<b>{{Name}}  {{Type}}</b>
+		{{/with}}
+		<br/>in {{Duration}} minutes to<br/><br/>
+		{{getArrDate}} landing at {{getArrTime}}<br/>
+		{{#with DestinationStation}}
+			<b>{{Name}}  {{Type}}</b>
+		{{/with}}
 		<br/>
 	{{/each}}
 </template>
 	
 <template name="minCar">
-	<h4>Vehicle : {{minVehicle}}</h4>
-	<img border="0" height="60" width="120" hspace="0" src="{{minWebsiteImage}}"/><h4>Proposed by : {{minWebsiteName}}</h4>
-	<h4>Car Class : {{minCarClass}}</h4>
-	<h4>{{minManual}}</h4>
-	<h4>{{minDoors}} doors</h4>
-	<h4>{{minSeats}} seats</h4>
-	<h4>Fuel policy : {{minFuel}}</h4>
-	<h4>{{minUnlimitedMileage}}</h4>
+	<div class="panel panel-default">
+		<div class="panel-heading">Car</div>
+		<div class="panel-body">
+			<img border="0" height="60" width="120" hspace="0" src="{{minWebsiteImage}}"/>
+			<h3>{{minCarPrice}} {{symbolCurrency}}</h3>
+			<h4>Vehicle : {{minVehicle}}</h4>
+			<br/><br/>
+			Car Class : {{minCarClass}}<br/>
+			{{minManual}} car with {{minDoors}} doors and {{minSeats}} seats
+			<br/>
+			Fuel policy : {{minFuel}}
+			<br/>
+			{{minUnlimitedMileage}}
+		</div>
+	</div>	
 </template>
 		
 <template name="minHotel">
-	<h3>Hotels :</h3> 
-	{{#each minHotels}}
-		Stay in : {{city}}, from {{checkin}} to {{checkout}}
-		{{#with hotel}}
-		<br />
-			Hotel Name : {{name}}
-		<br />
-			Popularity : {{popularity_desc}} {{popularity}}%
-		<br />
-			Distance from center : {{distance_from_search}}km
-		<br />
-			Stars : {{star_rating}}
-		<br />
-			Amenities : 
-			<table>
-				{{#each amenities}}
-					<tr>{{name}}</tr>
+	<div class="panel panel-default">
+		<div class="panel-heading">Hotels </div>
+			<div class="panel-body">
+				{{#each minHotels}}
+					<div class="col-sm-6 col-md-4">
+						<div class="thumbnail">
+							<img src="..." alt="...">
+							<div class="caption">
+								<h3>{{city}}</h3>
+								{{#with hotel}}
+									<h4>{{name}}, {{star_rating}} stars</h4>
+								{{/with}}
+								<p>
+									{{#with agent}}
+										<img border="0" height="60" width="120" hspace="0" class="img-rounded" src="{{image_url}}"/>
+									{{/with}}
+									from {{checkin}} to {{checkout}}
+									{{#with minQuote}}
+										<h4>{{price_total}}{{symbolCurrency}}</h4>
+									{{/with}}<br/>
+									{{#with hotel}}
+										{{popularity_desc}} {{popularity}}%<br/>
+										<i>{{distance_from_search}}km from center </i><br/>
+										<a class="btn btn-primary" role="button" data-toggle="collapse" href="#{{hotel_id}}" aria-expanded="false" aria-controls="{{hotel_id}}">
+											Amenities
+										</a>
+										<div class="collapse" id="{{hotel_id}}">
+											<div class="well">
+												<table>
+													{{#each amenities}}
+														<tr>{{name}}</tr>
+													{{/each}}
+												</table>
+											</div>
+										</div>
+									{{/with}}
+								</p>
+							</div>
+						</div>
+					</div>
 				{{/each}}
-			</table>
-		{{/with}}
-		<br />
-		{{#with minQuote}}
-			For a price of : {{price_total}}{{symbolCurrency}}
-		{{/with}}
-		{{#with agent}}
-			<img border="0" height="60" width="120" hspace="0" src="{{image_url}}"/>
-		{{/with}}
-		<br /><br />
-	{{/each}}
+			</div>
+		</div>
 </template>
 
-<template name="hotel">
-	
+<template name="options">
+	<div class="panel panel-default">
+		<div class="panel-heading">Trip Options</div>
+	</div>
 </template>
 
-<template name="tripSummary">
-
+<template name="tripDays">
+	{{> fullcalendar id="myCalendar"}}
 </template>

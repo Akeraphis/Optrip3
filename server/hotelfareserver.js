@@ -1,10 +1,8 @@
 var apiKey = "prtl6749387986743898559646983194";
-var market = "FR";
-var locale = "en-GB";
 var rooms = 1;
-var dateHotelRefresh = 1;
+var dateHotelRefresh = 5;
 
-getHotelAutoSuggest = function(ipCity, currency){
+getHotelAutoSuggest = function(ipCity, currency, locale, market){
 
 	var query = ipCity;
 	var url = "http://partners.api.skyscanner.net/apiservices/hotels/autosuggest/v2/"+market+"/"+currency+"/"+locale+"/"+query+"?apikey="+apiKey;
@@ -40,7 +38,7 @@ getHotelFares = function(sessionKey){
 	return res;
 };
 
-getHotelSessionKey = function(entityid, checkindate, checkoutdate, currency, nbPerson){
+getHotelSessionKey = function(entityid, checkindate, checkoutdate, currency, nbPerson, nbChildren, nbInfants, locale, market){
 
 	var url = "http://partners.api.skyscanner.net/apiservices/hotels/liveprices/v2/" + market +"/" +  currency + "/" + locale + "/" + entityid + "/" + checkindate + "/" + checkoutdate + "/" + nbPerson + "/" + rooms + "?apiKey=" + apiKey;
 	var res = {};
@@ -59,14 +57,14 @@ getHotelSessionKey = function(entityid, checkindate, checkoutdate, currency, nbP
 };
 
 
-getHotelFaresInCollection = function(departureDate, returnDate, ipa, currency,nbPerson){
+getHotelFaresInCollection = function(departureDate, returnDate, ipa, currency,nbPerson, nbChildren, nbInfants, locale, market){
 
 	var dateNow = new Date();
 	var dateThreshold = new Date();
 	dateThreshold.setDate(dateNow.getDate()-dateHotelRefresh);
 	var hfs = {};
 	var ipcity = ipa.ip.city;
-	var ipcode = getHotelAutoSuggest(ipcity, currency);
+	var ipcode = getHotelAutoSuggest(ipcity, currency, locale, market);
 
 	var res = HotelFares.findOne({city : ipcity, checkin : departureDate, checkout : returnDate});
 
@@ -78,7 +76,7 @@ getHotelFaresInCollection = function(departureDate, returnDate, ipa, currency,nb
 	}
 	else if(res && res.dateUpdate < dateThreshold){
 		//Remove the field and Retrieve
-		var sessionKey = getHotelSessionKey(ipcode, departureDate, returnDate, currency, nbPerson);
+		var sessionKey = getHotelSessionKey(ipcode, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
 		var hf = getHotelFares(sessionKey);
 
 		var result = HotelFares.update({city : ipcity, checkin : departureDate, checkout : returnDate}, {dateUpdate : dateNow, hotelFare : hf.data.hotels_prices, agents : hf.data.agents});
@@ -88,7 +86,7 @@ getHotelFaresInCollection = function(departureDate, returnDate, ipa, currency,nb
 	}
 	else{
 		//Enter the missing search in the table and retrieve the result
-		var sessionKey = getHotelSessionKey(ipcode, departureDate, returnDate, currency, nbPerson);
+		var sessionKey = getHotelSessionKey(ipcode, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
 		var hf = getHotelFares(sessionKey);
 
 		_.forEach(hf.data.hotels_prices, function(hp){
