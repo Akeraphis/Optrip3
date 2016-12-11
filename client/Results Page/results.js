@@ -263,8 +263,8 @@ Template.tripDays.onRendered(function(){
 		var countDays=0;
 
 		_.forEach(Session.get("newIpDays"), function(ipDays){
-			var startDate = moment(depDate).add(countDays, 'days');
-			var endDate = moment(depDate).add(ipDays.nbDays + countDays,'days');
+			var startDate = moment(depDate+'T15').add(countDays, 'days');
+			var endDate = moment(depDate+'T10').add(ipDays.nbDays + countDays,'days');
 			var event ={title : ipDays.ip.city, start : startDate, end : endDate, color:'red'};
 			$('#myCalendar').fullCalendar( 'renderEvent', event, true);
 			countDays= countDays+ipDays.nbDays;
@@ -277,7 +277,6 @@ Template.tripDays.onRendered(function(){
 
 		//Display Flights
 		var minFlight = Session.get("totalResults")[1]
-		console.log(Session.get("totalResults")[1].InboundLeg, Session.get("totalResults")[1].OutboundLeg);
 		var outboundFlight = {title : 'Outbound Flight', start : moment(Session.get("totalResults")[1].OutboundLeg.Departure), end : moment(Session.get("totalResults")[1].OutboundLeg.Arrival), color:'green'};
 		var inboundFlight= {title : 'Inbound Flight', start : moment(Session.get("totalResults")[1].InboundLeg.Departure), end : moment(Session.get("totalResults")[1].InboundLeg.Arrival), color:'green'};
 		$('#myCalendar').fullCalendar( 'renderEvent', outboundFlight, true);

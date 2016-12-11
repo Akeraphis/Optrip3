@@ -17,10 +17,12 @@ Meteor.methods({
 
 		//Get total Days
 		var totalDays = Meteor.call('getTotalDays', ipDays);
+		console.log("total days", totalDays);
 
 		//Add Date to YYYY-MM-DD
 		var returnDate = Meteor.call('addToYYYYMMDD', departureDate, totalDays);
-		
+		console.log("return", returnDate)
+
 		//Step 1. Get locations of departure	
 		var Dep = AutoSuggest.findOne({PlaceName: departureFrom});
 		var codeDep = Dep.PlaceId;
@@ -132,7 +134,7 @@ Meteor.methods({
 	//return total days from ip
 	getTotalDays : function(ipDays){
 
-		var totalDays = 1;
+		var totalDays = 0;
 
 		_.forEach(ipDays, function(ipd){
 			totalDays = totalDays + parseInt(ipd.nbDays);
