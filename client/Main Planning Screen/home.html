@@ -13,9 +13,6 @@
 			<center>{{> map}}</center>
 		</div>
 	</div>
-	<div class="currencies">
-		<right>{{>currencies}}</right>
-	</div>
 </template>
 
 <template name="selectedIPs">
@@ -57,14 +54,6 @@
 	</div>
 </template>
 
-<template name="currencies">
-	<select class="selectedIpicker" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="cur" value="EUR">
-		{{#each Currencies}}
-			<option>{{Code}}</option>
-		{{/each}}
-	</select>
-</template>
-
 <template name="nbTravelers">
 	<div class="dropdown">
 	  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" aria-haspopup="true" aria-expanded="true">
@@ -80,5 +69,3 @@
 	  </ul>
 	</div><br/>
 </template>
-
-

@@ -5,8 +5,6 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.7/angular-material.min.css"> 
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<script src="/pace/pace.js"></script>
-  		<link href="progressBar.css" rel="stylesheet" />
 	</head>
 	<body class='mainLayout'>
 		{{> NavBar}}
@@ -20,7 +18,6 @@
 <template name="NavBar">
 	<nav class="navbar navbar-default">
 	  <div class="container-fluid">
-	    <!-- Brand and toggle get grouped for better mobile display -->
 	    <div class="navbar-header">
 	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
 	        <span class="sr-only">Toggle navigation</span>
@@ -31,12 +28,11 @@
 	      <a class="navbar-brand" href="#">Optrip</a>
 	    </div>
 
-	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav navbar-right">
-	     	<li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Country</a>
-	        </li>
+	      	{{>dropDownCurrency}}
+	      	{{>dropDownLocale}}
+	      	{{>dropDownMarket}}
 	        <li><a href="#">SkyScanner</a></li>
 	        <li class="dropdown">
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Parameters</a>
@@ -49,8 +45,41 @@
 	          </ul>
 	        </li>
 	      </ul>
-	    </div><!-- /.navbar-collapse -->
-	  </div><!-- /.container-fluid -->
+	    </div>
+	  </div>
 	</nav>
+</template>
 
+<template name="dropDownCurrency">
+	<li class="dropdown">
+		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="curr">Euro - €</a>
+		<ul class="dropdown-menu">
+			{{#each Currencies}}
+				<li><a href="#" class="cur">{{Code}} - {{Symbol}}</a></li>
+			{{/each}}
+		</ul>
+	</li>
+</template>
+
+
+<template name="dropDownLocale">
+	<li class="dropdown">
+		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="loca">English (GB)</a>
+		<ul class="dropdown-menu">
+			{{#each Locales}}
+				<li><a href="#" class="loc" id="loca">{{Code}} - {{Name}}</a></li>
+			{{/each}}
+		</ul>
+	</li>
+</template>
+
+<template name="dropDownMarket">
+	<li class="dropdown">
+		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="mark">France</a>
+		<ul class="dropdown-menu">
+			{{#each Markets}}
+				<li><a href="#" class="mar" id="mark">{{Code}} - {{Name}}</a></li>
+			{{/each}}
+		</ul>
+	</li>
 </template>

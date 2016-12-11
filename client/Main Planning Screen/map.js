@@ -5,12 +5,16 @@ var markers = [];
 var googleKey = 'AIzaSyBa-oHgHxxTBaIhoFz8koYTBlHcuCyfiIk';
 
 Session.set("selectedCurrency", "EUR");
+Session.set("selectedLocal", "en-GB");
 Session.set('nbPersons', 2);
 Session.set('departureFrom',"");
 Session.set('departureDate', "");
 Session.set('nbDays', []);
 Session.set("minTotalPrice", Infinity);
 Session.set("results", []);
+Session.set("nbChildren", 0);
+Session.set("nbInfants", 0);
+Session.set("selectedMarket", "FR");
 
 
 //Open Google maps on startup; fill in the key
@@ -206,7 +210,7 @@ function drawRoute(map, request){
 		}
 	}
 
-	var request = {
+	var req2 = {
     	origin: request[0].ip.city,
     	destination: request[0].ip.city,
     	waypoints : waypts,
@@ -214,7 +218,7 @@ function drawRoute(map, request){
     	travelMode: google.maps.TravelMode.DRIVING
   	};
 
-	directionsService.route(request, function(response, status) {
+	directionsService.route(req2, function(response, status) {
 		if (status == google.maps.DirectionsStatus.OK) {
 			directionsDisplay.setDirections(response);
 		}
@@ -313,6 +317,8 @@ Template.home.events({
 		var nbDays = [];
 
 		Session.set("nbPersons", nbPersons.value);
+		Session.set("nbChildren", nbChildren.value);
+		Session.set("nbInfants", nbInfants.value);
 		Session.set("departureDate", departureDate.value);
 		Session.set("departureFrom", departureFrom.value);
 
@@ -335,9 +341,10 @@ Template.home.events({
 				console.log(error.reason);
 			}
 			else{
-
-								//send this information to the server to optimize and return result
-				Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), function(error, res){
+				Session.set("ipDays", result);
+				console.log(Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"));
+				//send this information to the server to optimize and return result
+				Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"), function(error, res){
 					if(error){
 						alert("This is an error while updating the fares!");
 					}
@@ -345,6 +352,7 @@ Template.home.events({
 						Session.set("results", res[0][1]);
 						Session.set("minTotalPrice", res[0][0]);
 						Session.set("optimalCircuit", res[0][2]);
+						Session.set("newIpDays", res[0][3]);
 						console.log(res);
 						Session.set("totalResults", res);
 						drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
@@ -360,7 +368,7 @@ Template.home.events({
 		var departureFrom = document.getElementById("departurePoint");
 
 		if(departureFrom.value.length >= 1){
-			var depAutoSuggest = Meteor.call("getPlaceAutosuggest", departureFrom.value, "EUR", function(error, result){
+			var depAutoSuggest = Meteor.call("getPlaceAutosuggest", departureFrom.value, "EUR", "en-GB", "FR", function(error, result){
 			if(error){
 				alert("There is no autocomplete suggested !");
 			}
@@ -369,16 +377,9 @@ Template.home.events({
 				//Meteor.call("flushAllSuggests");
 
 				//Refresh collection
-
-				if(result.Places[0]){Meteor.call("insertAutoSuggest", result.Places[0]);}
-				if(result.Places[1]){Meteor.call("insertAutoSuggest", result.Places[1]);}
-				if(result.Places[2]){Meteor.call("insertAutoSuggest", result.Places[2]);}
-				if(result.Places[3]){Meteor.call("insertAutoSuggest", result.Places[3]);}
-				if(result.Places[4]){Meteor.call("insertAutoSuggest", result.Places[4]);}
-				if(result.Places[5]){Meteor.call("insertAutoSuggest", result.Places[5]);}
-				if(result.Places[6]){Meteor.call("insertAutoSuggest", result.Places[6]);}
-				if(result.Places[7]){Meteor.call("insertAutoSuggest", result.Places[7]);}
-				if(result.Places[8]){Meteor.call("insertAutoSuggest", result.Places[8]);}
+				for (var i = result.Places.length - 1; i >= 0; i--) {
+					Meteor.call("insertAutoSuggest", result.Places[0]);
+				}
 			}
 
 			});	
@@ -390,18 +391,3 @@ Template.home.events({
 	//-------------------------------------------------------------------------------------------------
 	//-------------------------------------------------------------------------------------------------
 });
-
-Template.currencies.helpers({
-
-	Currencies: function(){
-    	return Currencies.find().fetch();
-	}
-});
-
-Template.currencies.events({
-	"change #cur": function(e){
-		var currency = $(e.currentTarget).val();
-		Session.set("selectedCurrency", currency);
-        console.log("currency : " + Session.get('selectedCurrency'));
-	}
-})

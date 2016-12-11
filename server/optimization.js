@@ -1,5 +1,5 @@
 Meteor.methods({
-	findOptimalTrip: function(codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson){
+	findOptimalTrip: function(codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson, nbChildren, nbInfants, locale, market){
 		
 		//for each possible arrival airport take, the cheapest flight
 		//find the optimal circuit for the selected airport
@@ -7,6 +7,7 @@ Meteor.methods({
 		var cheapestFlightHotelAndCarPrice = Infinity;
 		var cheapestQuote = [];
 		var minCar = [];
+		var newIpDays = [];
 
 		// 1. Retrieve possible flight arrival places
 		_.forEach(flightTable, function(ft){
@@ -37,11 +38,11 @@ Meteor.methods({
 					pickUp = pickUpDate.yyyymmdd();
 					dropOff = dropOffDate.yyyymmdd();
 
-					var carCode = getHotelAutoSuggest(ac.ip.city, currency);
+					var carCode = getHotelAutoSuggest(ac.ip.city, currency, locale, market);
 					var minQuoteCar = {};
 					var minPriceCar = Infinity;
 
-					var result = Meteor.call("getCarFaresInCollection", carCode, pickUp, dropOff, currency);
+					var result = Meteor.call("getCarFaresInCollection", carCode, pickUp, dropOff, currency, locale, market);
 
 					_.forEach(result.carFare.cars, function(quote){
 						if(quote.price_all_days < minPriceCar){
@@ -56,13 +57,15 @@ Meteor.methods({
 					
 					if(minPriceCar<Infinity){
 
-						var res3 = Meteor.call("getCheapestHotel", ac, pickUp, CodeArrOrderedLeft, CodeArrOrderedRight, departureDate, returnDate, dropOff, currency, nbPerson);
+						var res3 = Meteor.call("getCheapestHotel", ac, pickUp, CodeArrOrderedLeft, CodeArrOrderedRight, departureDate, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale, market);
 
 						console.log("3 -----> Leaving after " + i + " days, the hotel best possible combination price is :" + res3[0]);
 
 						if(res[0]*nbPerson+minPriceCar+res3[0] < cheapestFlightHotelAndCarPrice){
 							cheapestFlightHotelAndCarPrice = res[0]*nbPerson+minPriceCar+res3[0];
 							cheapestQuote = [res, minCar,res3];
+							console.log(i)
+							newIpDays = Meteor.call("getNewIpDays", res3[2], i, ac);
 
 							console.log("4. So the cheapest option to leave from:" + res[1].ip.city + " amounts to : ", res[0]*2+minPriceCar+res3[0]);
 							
@@ -73,10 +76,10 @@ Meteor.methods({
 		});
 
 		console.log("----------------   OPTIMIZED PRICE : " + cheapestFlightHotelAndCarPrice + "---------------------");
-		return [cheapestFlightHotelAndCarPrice, cheapestQuote, optimalCircuit];
+		return [cheapestFlightHotelAndCarPrice, cheapestQuote, optimalCircuit, newIpDays];
 	},
 
-	updateFares : function(codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson){
+	updateFares : function(codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson, nbChildren, nbInfants, locale, market){
 
 		// 1. Retrieve possible flight arrival places
 		_.forEach(flightTable, function(ft){
@@ -99,10 +102,10 @@ Meteor.methods({
 				pickUp = pickUpDate.yyyymmdd();
 				dropOff = dropOffDate.yyyymmdd();
 
-				var carCode = getHotelAutoSuggest(ac.ip.city, currency);
+				var carCode = getHotelAutoSuggest(ac.ip.city, currency, locale, market);
 
 
-				Meteor.call("getCarFaresInCollection", carCode, pickUp, dropOff, currency, function(err,result){
+				Meteor.call("getCarFaresInCollection", carCode, pickUp, dropOff, currency, locale, market, function(err,result){
 					if(!err){
 						console.log("---- Step 5 completed : Hotel Fares retrieved ----");
 					}
@@ -111,7 +114,7 @@ Meteor.methods({
 					}
 				});
 
-				Meteor.call("getCheapestHotel", ac, pickUp, CodeArrOrderedLeft, CodeArrOrderedRight, departureDate, returnDate, dropOff, currency, nbPerson, function(err, result){
+				Meteor.call("getCheapestHotel", ac, pickUp, CodeArrOrderedLeft, CodeArrOrderedRight, departureDate, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale, market, function(err, result){
 					if(!err){
 						console.log("---- Step 6 completed : Car Fares retrieved ----");
 					}
@@ -173,21 +176,22 @@ Meteor.methods({
 		return [minPrice, ft.arrivalCode, minQuote, ft.flightFare.Places, ft.flightFare.Carriers]
 	},
 
-	getCheapestHotel : function(codeArr, pickUp, leftCircuit, rightCircuit, departureDate, returnDate, dropOff, currency, nbPerson){
+	getCheapestHotel : function(codeArr, pickUp, leftCircuit, rightCircuit, departureDate, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale, market){
 
 		var countDays = 0;
 
 		//Run Hotel Fare for left Circuit
-		var resLeft = Meteor.call("getCircuitCheapestPrice", leftCircuit, pickUp, countDays, currency, nbPerson);
+		var resLeft = Meteor.call("getCircuitCheapestPrice", leftCircuit, pickUp, countDays, currency, nbPerson, nbChildren, nbInfants, locale, market);
 
 		//Run Hotel Fare for right Circuit
-		var resRight = Meteor.call("getCircuitCheapestPrice", rightCircuit, pickUp, countDays, currency, nbPerson);
+		var resRight = Meteor.call("getCircuitCheapestPrice", rightCircuit, pickUp, countDays, currency, nbPerson, nbChildren, nbInfants, locale, market);
 
 		//Add the cost of the hotel for the starting ip beginning and end of the trip
-		var firstLastRes = Meteor.call("getCheapestHotelFirstLastIP", codeArr, departureDate, pickUp, returnDate, dropOff, currency, nbPerson);
+		var firstLastRes = Meteor.call("getCheapestHotelFirstLastIP", codeArr, departureDate, pickUp, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale, market);
 
 		var resHotelQuote = [];
 		var resHotelMinPrice = 0;
+		var circuit = [];
 
 		//take the minimum of the options
 		if (resLeft[0] < resRight[0]){
@@ -199,6 +203,7 @@ Meteor.methods({
 			});
 
 			resHotelQuote.push(firstLastRes[3]);
+			circuit = leftCircuit;
 		}
 		else{
 			resHotelMinPrice = resRight[0] + firstLastRes[0] + firstLastRes[2];
@@ -209,9 +214,10 @@ Meteor.methods({
 			});
 
 			resHotelQuote.push(firstLastRes[3]);
+			circuit = rightCircuit;
 		}
 
-		return [resHotelMinPrice, resHotelQuote];
+		return [resHotelMinPrice, resHotelQuote, circuit];
 	},
 
 	getCodeArrOrderLeft : function(codeArr, optimalCircuit){
@@ -260,7 +266,7 @@ Meteor.methods({
 
 	},
 
-	getCircuitCheapestPrice : function(Circuit, pickUpDate, countDays, currency, nbPerson){
+	getCircuitCheapestPrice : function(Circuit, pickUpDate, countDays, currency, nbPerson, nbChildren, nbInfants, locale, market){
 
 		var minPrice = Infinity;
 		var total_min_price = 0;
@@ -283,7 +289,7 @@ Meteor.methods({
 				var ag = {};
 
 
-				var resHotel = getHotelFaresInCollection(start, end, arr, currency, nbPerson);
+				var resHotel = getHotelFaresInCollection(start, end, arr, currency, nbPerson, nbChildren, nbInfants, locale, market);
 
 				_.forEach(resHotel.hotelFare, function(hf){
 					_.forEach(hf.agent_prices, function(ap){
@@ -310,10 +316,10 @@ Meteor.methods({
 
 	},
 
-	getCheapestHotelFirstLastIP : function(arr, departureDate, pickUp, returnDate, dropOff, currency, nbPerson){
+	getCheapestHotelFirstLastIP : function(arr, departureDate, pickUp, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale, market){
 
-		var firstresHotel = getHotelFaresInCollection(departureDate, pickUp, arr, currency, nbPerson);
-		var lastresHotel = getHotelFaresInCollection(dropOff, returnDate, arr, currency, nbPerson);
+		var firstresHotel = getHotelFaresInCollection(departureDate, pickUp, arr, currency, nbPerson, nbChildren, nbInfants, locale, market);
+		var lastresHotel = getHotelFaresInCollection(dropOff, returnDate, arr, currency, nbPerson, nbChildren, nbInfants, locale, market);
 
 		var minFirstQuote = {};
 		var minFirstPrice = Infinity;
@@ -368,8 +374,28 @@ Meteor.methods({
 		return res;
 	},
 
+	getNewIpDays : function(circuit, i, ac){
+		var newIpDays = [];
+		var k=0;
+
+		_.forEach(circuit, function(ipDays){
+			if(k==0){
+				console.log("Pisa :", i);
+				newIpDays.push({ip : ipDays.ip, nbDays : i, step : "start"});
+			}
+			else{
+				newIpDays.push({ip : ipDays.ip, nbDays : ipDays.nbDays, step :"inter"});
+			}
+			k++;
+		});
+
+		newIpDays.push({ip : circuit[0].ip, nbDays : circuit[0].nbDays-i, step : "end"});
+
+		return newIpDays;
+	}
+
 });
 
 Array.prototype.move = function (from, to) {
-  this.splice(to, 0, this.splice(from, 1)[0]);
+	this.splice(to, 0, this.splice(from, 1)[0]);
 };
