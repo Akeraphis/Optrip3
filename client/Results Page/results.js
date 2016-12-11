@@ -255,41 +255,9 @@ Template.minHotel.helpers({
 	}
 });
 
-Template.tripDays.helpers({
-	ipDays : function(){
-		return Session.get("newIpDays");
-	},
-	getCityStep : function(){
-		return this.ip.city+"/"+this.step;
-	}
-});
-
-Template.tripDays.events({
-	'click .form-control': function(e){
-		var ses = Session.get("newIpDays");
-		var res = [];
-
-		_.forEach(Session.get("newIpDays"), function(ipDays){
-			if(ipDays.ip.city == e.target.name.substring(0, e.target.name.indexOf("/")) && ipDays.step == e.target.name.substring(e.target.name.indexOf("/")+1)){
-				res.push({ip : ipDays.ip, nbDays : e.target.value, step : ipDays.step})
-			}
-			else{
-				res.push(ipDays);
-			}
-		});
-
-		Session.set("newIpDays", res),
-		console.log(Session.get("newIpDays"));
-	},
-	'click .popEvents': function(){
-		console.log("Populating events")
-		var event={id:1 , title: 'New event', start:  new Date()};
-
-		$('#myCalendar').fullCalendar( 'renderEvent', event, true);
-	}
-});
-
 Template.tripDays.onRendered(function(){
+
+		//Display trip stops
 		var newIpDays = Session.get("newIpDays");
 		var depDate = Session.get('departureDate');
 		var countDays=0;
@@ -298,7 +266,7 @@ Template.tripDays.onRendered(function(){
 			var startDate = moment(depDate).add(countDays, 'days');
 			var endDate = moment(depDate).add(ipDays.nbDays + countDays,'days');
 			var event ={title : ipDays.ip.city, start : startDate, end : endDate, color:'red'};
-			$('#myCalendar').fullCalendar( 'renderEvent', event);
+			$('#myCalendar').fullCalendar( 'renderEvent', event, true);
 			countDays= countDays+ipDays.nbDays;
 		});
 		var endTrip = moment(depDate).add(countDays, 'days');
@@ -307,20 +275,12 @@ Template.tripDays.onRendered(function(){
 		$('#myCalendar').fullCalendar( 'renderEvent', event2, true);
 		$('#myCalendar').fullCalendar( 'gotoDate', moment(depDate) )
 
+		//Display Flights
+		var minFlight = Session.get("totalResults")[1]
+		console.log(Session.get("totalResults")[1].InboundLeg, Session.get("totalResults")[1].OutboundLeg);
+		var outboundFlight = {title : 'Outbound Flight', start : moment(Session.get("totalResults")[1].OutboundLeg.Departure), end : moment(Session.get("totalResults")[1].OutboundLeg.Arrival), color:'green'};
+		var inboundFlight= {title : 'Inbound Flight', start : moment(Session.get("totalResults")[1].InboundLeg.Departure), end : moment(Session.get("totalResults")[1].InboundLeg.Arrival), color:'green'};
+		$('#myCalendar').fullCalendar( 'renderEvent', outboundFlight, true);
+		$('#myCalendar').fullCalendar( 'renderEvent', inboundFlight, true);
+
 });
-/*
-makeDate = function(dateString){
-
-	var year = dateString.substring(0, getPosition(dateString, "-", 1));
-	var month = dateString.substring(5, getPosition(dateString, "-", 2));
-	var day = dateString.substring(getPosition(dateString, "-", 2)+1, 10);
-
-	var newMonth = (parseInt(month) - 1).toString();
-
-	res = new Date(year, newMonth, day);
-	return res
-};
-
-getPosition = function(str, m, i) {
-   return str.split(m, i).join(m).length;
-};*/
