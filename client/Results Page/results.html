@@ -1,11 +1,13 @@
 <template name="results">
 	{{#if results}}
 	<div class="row">
-		<div class="col-md-2">{{> minPrice}}<br/>{{>options}}<br/>{{> relaunch}}</div>
+		<div class="col-md-2">{{> minPrice}}<br/>{{> relaunch}}<br/>{{>options}}</div>
 		<div class="col-md-10">
 				<div class="row">
 				<div class="col-md-6">
-					{{>tripDays}}
+					{{#if gotLiveFlight}}
+						{{>tripDays}}	
+					{{/if}}
 				</div>
 				<div class="col-md-3">
 					{{> minFlight}}
@@ -30,7 +32,7 @@
 
 <template name="minPrice">
 	<div class="panel panel-primary">
-		<div class="panel-heading"><h3>Total Price : {{minTotalPrice}} {{symbolCurrency}}</h3></div>
+		<div class="panel-heading"><h2>Total Price : {{minTotalPrice}} {{symbolCurrency}}</h2></div>
 		<div class="panel-body">
 			For {{nbPersons}} adults :
 			<h4>Flight: {{minFlightPrice}} {{symbolCurrency}}</h4>
@@ -162,8 +164,49 @@
 </template>
 
 <template name="options">
-	<div class="panel panel-default">
-		<div class="panel-heading">Trip Options</div>
+	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+	  <div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="headingOne">
+	      <h4 class="panel-title">
+	        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+		        Flight Options
+	        </a>
+	      </h4>
+	    </div>
+	    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+	      <div class="list-group">
+	        Bla bla
+	      </div>
+	    </div>
+	  </div>
+	  <div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="headingTwo">
+	      <h4 class="panel-title">
+	        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+	        	Car Options
+	        </a>
+	      </h4>
+	    </div>
+	    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+	      <div class="panel-body">
+	      	bla bla 2
+	      </div>
+	    </div>
+	  </div>
+	  <div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="headingThree">
+	      <h4 class="panel-title">
+	        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+	          Hotel Options
+	        </a>
+	      </h4>
+	    </div>
+	    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+	      <div class="panel-body">
+	        blabla 3
+	      </div>
+	    </div>
+	  </div>
 	</div>
 </template>
 

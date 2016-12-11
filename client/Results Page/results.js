@@ -1,4 +1,6 @@
 var countProgress=0;
+Session.set("minLFP", {});
+
 Template.relaunch.events({
 	'click .optimizeButton': function(e){
 		console.log(Session.get("departureFrom"), Session.get("departureDate"), Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get('selectedIp'), Session.get('nbDays'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"));
@@ -22,6 +24,7 @@ Template.relaunch.events({
 						Session.set("newIpDays", res[0][3]);
 						console.log(res);
 						Session.set("totalResults", res);
+						Session.set("liveFlights", res[1]);
 					}
 				});
 			}
@@ -40,6 +43,15 @@ Template.minFlight.events({
 Template.results.helpers({
 	results : function(){
 		if (Session.get("minTotalPrice")<Infinity){
+		//if (Session.get("minLFP").Itineraries){
+			return true;
+		}
+		else{
+			return false;
+		}
+	},
+	gotLiveFlight : function(){
+		if (Session.get("minLFP").Itineraries){
 			return true;
 		}
 		else{
@@ -52,8 +64,8 @@ Template.minPrice.helpers({
 
 	minTotalPrice : function(){
 		var res = Session.get("results");
-		if(res.length >1){
-			return Math.round(res[1][0].price_all_days+(Session.get("totalResults"))[2]+(res[2])[0]);
+		if(res.length >1 && Session.get("minLFP").Itineraries){
+			return Math.round(res[1][0].price_all_days+(Session.get("minLFP")).Itineraries.PricingOptions.Price+(res[2])[0]);
 		}
 	},
 
@@ -65,9 +77,9 @@ Template.minPrice.helpers({
 	},
 
 	minFlightPrice : function(){
-		var res = Session.get("totalResults");
-		if(res.length >1){
-			return Math.round(res[2]*Session.get('nbPersons'));
+		var res = (Session.get("minLFP"));
+		if(res.Itineraries){
+			return Math.round(res.Itineraries.PricingOptions.Price*Session.get('nbPersons'));
 		}
 	},
 
@@ -93,10 +105,8 @@ Template.minPrice.helpers({
 Template.minFlight.helpers({
 
 	minLiveFlight : function(){
-		var res = Session.get("totalResults");
-		if(res[1].Currencies.length >=1){
-			return res[1];
-		}
+		var res = Session.get("minLFP");
+		return res;
 	},
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
@@ -104,6 +114,18 @@ Template.minFlight.helpers({
 		return cur2.Symbol;
 	}
 });
+
+Template.minPrice.onRendered(function(){
+
+	Meteor.call("cheapestLfp", Session.get("liveFlights"), function(err, res){
+		if (!err){
+			console.log(res);
+			if(res.Currencies.length >=1){
+				Session.set("minLFP", res)
+			}
+		}
+	});
+})
 
 Template.leg.helpers({
 	getDepDate: function(){	
@@ -265,22 +287,23 @@ Template.tripDays.onRendered(function(){
 	_.forEach(Session.get("newIpDays"), function(ipDays){
 		var startDate = moment(depDate+' 15:00').add(countDays, 'days');
 		var endDate = moment(depDate+' 10:00').add(ipDays.nbDays + countDays,'days');
-		console.log(startDate, endDate)
 		var event ={title : ipDays.ip.city, start : startDate, end : endDate, color:'red', editable :'true'};
 		$('#myCalendar').fullCalendar( 'renderEvent', event, true);
 		countDays= countDays+ipDays.nbDays;
 	});
 
-	var event2 = {title : "trip", start : moment(Session.get("totalResults")[1].OutboundLeg.Departure), end: moment(Session.get("totalResults")[1].InboundLeg.Arrival), editable : 'true' };
+	if(Session.get("minLFP").Itineraries){
+		var event2 = {title : "trip", start : moment(Session.get("minLFP").OutboundLeg.Departure), end: moment(Session.get("minLFP").InboundLeg.Arrival), editable : 'true' };
 
-	$('#myCalendar').fullCalendar( 'renderEvent', event2, true);
-	$('#myCalendar').fullCalendar( 'gotoDate', moment(depDate) );
+		$('#myCalendar').fullCalendar( 'renderEvent', event2, true);
+		$('#myCalendar').fullCalendar( 'gotoDate', moment(depDate) );
 
-	//Display Flights
-	var outboundFlight = {title : 'Outbound Flight', start : moment(Session.get("totalResults")[1].OutboundLeg.Departure), end : moment(Session.get("totalResults")[1].OutboundLeg.Arrival), color:'green'};
-	var inboundFlight= {title : 'Inbound Flight', start : moment(Session.get("totalResults")[1].InboundLeg.Departure), end : moment(Session.get("totalResults")[1].InboundLeg.Arrival), color:'green'};
-	$('#myCalendar').fullCalendar( 'renderEvent', outboundFlight, true);
-	$('#myCalendar').fullCalendar( 'renderEvent', inboundFlight, true);
+		//Display Flights
+		var outboundFlight = {title : 'Outbound Flight', start : moment(Session.get("minLFP").OutboundLeg.Departure), end : moment(Session.get("minLFP").OutboundLeg.Arrival), color:'green'};
+		var inboundFlight= {title : 'Inbound Flight', start : moment(Session.get("minLFP").InboundLeg.Departure), end : moment(Session.get("minLFP").InboundLeg.Arrival), color:'green'};
+		$('#myCalendar').fullCalendar( 'renderEvent', outboundFlight, true);
+		$('#myCalendar').fullCalendar( 'renderEvent', inboundFlight, true);
+	}
 });
 
 Template.tripDays.events({

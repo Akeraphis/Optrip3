@@ -15,6 +15,7 @@ Session.set("results", []);
 Session.set("nbChildren", 0);
 Session.set("nbInfants", 0);
 Session.set("selectedMarket", "FR");
+Session.set("liveFlights", []);
 
 
 //Open Google maps on startup; fill in the key
@@ -355,6 +356,7 @@ Template.home.events({
 						Session.set("newIpDays", res[0][3]);
 						console.log(res);
 						Session.set("totalResults", res);
+						Session.set("liveFlights", res[1]);
 						drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
 					}
 				});

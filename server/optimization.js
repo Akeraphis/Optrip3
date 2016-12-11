@@ -64,7 +64,6 @@ Meteor.methods({
 						if(res[0]*nbPerson+minPriceCar+res3[0] < cheapestFlightHotelAndCarPrice){
 							cheapestFlightHotelAndCarPrice = res[0]*nbPerson+minPriceCar+res3[0];
 							cheapestQuote = [res, minCar,res3];
-							console.log(i)
 							newIpDays = Meteor.call("getNewIpDays", res3[2], i, ac);
 
 							console.log("4. So the cheapest option to leave from:" + res[1].ip.city + " amounts to : ", res[0]*2+minPriceCar+res3[0]);
