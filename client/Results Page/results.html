@@ -116,7 +116,7 @@
 						<tr>
 						{{#with Agents}}
 							{{#with getAgent this}}
-								<td><img border="0" height="20" width="40" hspace="0" class="img-rounded" src="{{ImageUrl}}"/></td>
+								<td><img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/></td>
 								<td>{{Type}}</td>
 							{{/with}}
 						{{/with}}
@@ -141,6 +141,9 @@
 		{{#each SegmentIds}}
 			{{Directionality}}
 			{{>displaySegment segId=this}}
+			<br/>
+			Total Duration : {{Duration}} minutes
+			<br/>
 		{{/each}}
 	{{/with}}
 </template>
@@ -152,7 +155,7 @@
 			<b>{{Name}} {{Type}}</b>
 		{{/with}}<br/>
 		{{#with getCar OperatingCarrier}}
-			<img border="0" height="20" width="40" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
+			<img border="0" height="45" width=90 hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
 		{{/with}}<br/>
 		<b>{{Duration}} minutes</b>
 		<br/>
