@@ -90,12 +90,42 @@
 	      </div>
 	      <div class="modal-body">
 	      	{{#each allItineraries}}
-	      		{{>displayLeg legId=this.InboundLegId}}
-	      		 -- {{OutboundLegId}}
-	      		{{#each PricingOptions}}
-	      			{{Price}}
-	      		{{/each}}
-	      		<br/>
+	      		<div class="well">
+	      			<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active"><a href="#{{OutboundLegId}}" aria-controls="home" role="tab" data-toggle="tab">Outbound</a></li>
+						<li role="presentation"><a href="#{{InboundLegId}}" aria-controls="home" role="tab" data-toggle="tab">Inbound</a></li>
+					</ul>
+					<br/>
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="{{OutboundLegId}}">
+							{{>displayLeg legId=this.OutboundLegId}}
+						</div>
+						<div role="tabpanel" class="tab-pane fade" id="{{InboundLegId}}">
+							{{>displayLeg legId=this.InboundLegId}}
+						</div>
+					</div>
+					<br/>
+					Sold by :
+					<table class="table table-striped">
+					<tr>
+						<th>Carrier</th>
+						<th>Carrier Type</th>
+						<th>Price</th>
+					</tr>
+					{{#each PricingOptions}}
+						<tr>
+						{{#with Agents}}
+							{{#with getAgent this}}
+								<td><img border="0" height="20" width="40" hspace="0" class="img-rounded" src="{{ImageUrl}}"/></td>
+								<td>{{Type}}</td>
+							{{/with}}
+						{{/with}}
+						<td><h4>{{Price}} {{symbolCurrency}}</h4></td>
+						</tr>				
+					{{/each}}
+					</table>
+					<br/>
+	      		</div>
 	      	{{/each}}
 	      </div>
 	      <div class="modal-footer">
@@ -107,7 +137,30 @@
 </template>
 
 <template name="displayLeg">
-	{{lfleg legId}}
+	{{#with lfleg legId}}
+		{{#each SegmentIds}}
+			{{Directionality}}
+			{{>displaySegment segId=this}}
+		{{/each}}
+	{{/with}}
+</template>
+
+<template name="displaySegment">
+	{{#with lfseg segId}}
+		Departure at {{getDepTime}} on {{getDepDate}} from 
+		{{#with getPlace OriginStation}}
+			<b>{{Name}} {{Type}}</b>
+		{{/with}}<br/>
+		{{#with getCar OperatingCarrier}}
+			<img border="0" height="20" width="40" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
+		{{/with}}<br/>
+		<b>{{Duration}} minutes</b>
+		<br/>
+		Arrival at {{getArrTime}} on {{getArrDate}} to 
+		{{#with getPlace DestinationStation}}
+			<b>{{Name}} {{Type}}</b>
+		{{/with}}<br/>
+	{{/with}}
 </template>
 
 <template name="leg">

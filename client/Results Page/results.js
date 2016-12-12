@@ -315,18 +315,87 @@ Template.tripDays.events({
 Template.displayAllFlight.helpers({
 	allItineraries : function(){
 		return Session.get("liveFlights").flightFare.Itineraries;
-	}	
+	},
+	symbolCurrency : function(){
+		var cur = Session.get("selectedCurrency");
+		var cur2 = Currencies.findOne({Code : cur});
+		return cur2.Symbol;
+	},
+	getAgent : function(agentId){
+		var res = Session.get("liveFlights").flightFare.Agents;
+		var agent={};
+
+		_.forEach(res, function(ag){
+			if(agentId == ag.Id){
+				agent=ag
+			}
+		});
+		return agent
+	}
 });
 
 Template.displayLeg.helpers({
 	lfleg : function(legId){
 		var res = Session.get("liveFlights").flightFare.Legs;
+		var lfleg={};
 
 		_.forEach(res, function(leg){
 			if(legId == leg.Id){
-				console.log(leg.Departure);
-				return leg.Departure
+				lfleg=leg
 			}
 		});
+		return lfleg
+	}
+});
+
+Template.displaySegment.helpers({
+	lfseg : function(segId){
+		var res = Session.get("liveFlights").flightFare.Segments;
+		var lfseg={};
+
+		_.forEach(res, function(seg){
+			if(segId == seg.Id){
+				lfseg=seg
+			}
+		});
+		return lfseg
+	},
+	getPlace : function(placeId){
+		var res = Session.get("liveFlights").flightFare.Places;
+		var place={};
+
+		_.forEach(res, function(pl){
+			if(placeId == pl.Id){
+				place=pl
+			}
+		});
+		return place
+	},
+	getCar : function(carId){
+		var res = Session.get("liveFlights").flightFare.Carriers;
+		var carrier={};
+
+		_.forEach(res, function(car){
+			if(carId == car.Id){
+				carrier=car
+			}
+		});
+		return carrier
+	},
+	getDepDate: function(){	
+		var depDateTime = this.DepartureDateTime;
+		return depDateTime.substring(0, depDateTime.indexOf("T"));
+	},
+	getDepTime: function(){
+		var depDateTime = this.DepartureDateTime;
+		return depDateTime.substring(depDateTime.indexOf("T")+1);
+	},
+	getArrDate: function(){
+		var depDateTime = this.ArrivalDateTime;
+		return depDateTime.substring(0, depDateTime.indexOf("T"));
+	},
+	getArrTime: function(){
+		var depDateTime = this.ArrivalDateTime;
+		return depDateTime.substring(depDateTime.indexOf("T")+1);
 	}
 })
