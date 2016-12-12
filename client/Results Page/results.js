@@ -11,7 +11,6 @@ Template.relaunch.events({
 			}
 			else{
 				Session.set("ipDays", result);
-				console.log(Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"));
 				//send this information to the server to optimize and return result
 				Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"), function(error, res){
 					if(error){
@@ -119,7 +118,6 @@ Template.minPrice.onRendered(function(){
 
 	Meteor.call("cheapestLfp", Session.get("liveFlights"), function(err, res){
 		if (!err){
-			console.log(res);
 			if(res.Currencies.length >=1){
 				Session.set("minLFP", res)
 			}
@@ -313,3 +311,22 @@ Template.tripDays.events({
 		}
 	},
 });
+
+Template.displayAllFlight.helpers({
+	allItineraries : function(){
+		return Session.get("liveFlights").flightFare.Itineraries;
+	}	
+});
+
+Template.displayLeg.helpers({
+	lfleg : function(legId){
+		var res = Session.get("liveFlights").flightFare.Legs;
+
+		_.forEach(res, function(leg){
+			if(legId == leg.Id){
+				console.log(leg.Departure);
+				return leg.Departure
+			}
+		});
+	}
+})
