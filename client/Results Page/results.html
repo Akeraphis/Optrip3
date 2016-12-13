@@ -121,6 +121,7 @@
 							{{/with}}
 						{{/with}}
 						<td><h4>{{Price}} {{symbolCurrency}}</h4></td>
+						<td><button class="btn btn-success" type="button" id="selectFlight">Select</button></td>
 						</tr>				
 					{{/each}}
 					</table>
@@ -142,9 +143,9 @@
 			{{Directionality}}
 			{{>displaySegment segId=this}}
 			<br/>
-			Total Duration : {{Duration}} minutes
-			<br/>
 		{{/each}}
+		Total Duration : {{Duration}} minutes
+		<br/>
 	{{/with}}
 </template>
 

@@ -334,6 +334,12 @@ Template.displayAllFlight.helpers({
 	}
 });
 
+Template.displayAllFlight.events({
+	'click #selectFlight': function(){
+		console.log("select flight", this, Template.parentData(1), Template.parentData(0), Template.parentData(2), Template.parentData(3), Template.parentData(4));
+	}
+});
+
 Template.displayLeg.helpers({
 	lfleg : function(legId){
 		var res = Session.get("liveFlights").flightFare.Legs;
