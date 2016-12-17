@@ -356,7 +356,7 @@ Template.displayAllFlight.events({
 
 		_.forEach(It, function(itin){
 			_.forEach(itin.PricingOptions, function(po){
-				if(po.DeepLinkUrl == link){
+				if(po.DeepLinkUrl == link && po.Price == this.Price ){
 					res = itin;
 				}
 			})
