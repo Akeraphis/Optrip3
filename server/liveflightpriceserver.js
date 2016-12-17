@@ -157,7 +157,7 @@ Meteor.methods({
 
 		_.forEach(lfp.flightFare.Segments, function(seg){
 			_.forEach(inboundleg.SegmentIds, function(segid){
-				if(segid==seg.Id){
+				if(segid==seg.Id && seg.Directionality=="Inbound"){
 					var segment = {};
 					var carrier = {};
 					var startPlace = {};
@@ -184,7 +184,7 @@ Meteor.methods({
 				}
 			});
 			_.forEach(outboundleg.SegmentIds, function(segid){
-				if(segid==seg.Id){
+				if(segid==seg.Id && seg.Directionality=="Outbound"){
 					var segment = {};
 					var carrier = {};
 					var startPlace = {};
