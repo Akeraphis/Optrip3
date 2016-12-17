@@ -24,12 +24,12 @@ Template.relaunch.events({
 						console.log(res);
 						Session.set("totalResults", res);
 						Session.set("liveFlights", res[1]);
+						Session.set("selectedLiveFlights", res[1]);
 					}
 				});
 			}
 		});
 	},
-
 });
 
 Template.minFlight.events({
@@ -116,7 +116,7 @@ Template.minFlight.helpers({
 
 Template.minPrice.onRendered(function(){
 
-	Meteor.call("cheapestLfp", Session.get("liveFlights"), function(err, res){
+	Meteor.call("cheapestLfp", Session.get("selectedLiveFlights"), function(err, res){
 		if (!err){
 			if(res.Currencies.length >=1){
 				Session.set("minLFP", res)
@@ -312,7 +312,7 @@ Template.tripDays.events({
 
 Template.displayAllFlight.helpers({
 	allItineraries : function(){
-		return Session.get("liveFlights").flightFare.Itineraries;
+		return Session.get("selectedLiveFlights").flightFare.Itineraries;
 	},
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
@@ -336,11 +336,6 @@ Template.priceOptions.helpers({
 		});
 		return agent
 	},
-	getIt : function(it){
-		//var res = it.InboundLegId + it.OutboundLegId;
-		console.log(it);
-		return it.InboundLegId
-	},
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
 		var cur2 = Currencies.findOne({Code : cur});
@@ -352,7 +347,7 @@ Template.displayAllFlight.events({
 	'click .pricingOption': function(e){
 		var link = this.DeepLinkUrl;
 		var price = this.Price;
-		var It = Session.get("liveFlights").flightFare.Itineraries;
+		var It = Session.get("selectedLiveFlights").flightFare.Itineraries;
 		var res = {};
 
 		_.forEach(It, function(itin){
@@ -363,12 +358,10 @@ Template.displayAllFlight.events({
 			})
 		});
 
-		console.log(res, this);
-
-		var res2 = getLfp(res, this, Session.get("liveFlights"));
+		var res2 = getLfp(res, this, Session.get("selectedLiveFlights"));
 		Session.set("minLFP", res2);
-		console.log(Session.get("minLFP"))
-
+		console.log(Session.get("minLFP"));
+		$('#myModal').modal('hide');
 	}
 });
 
@@ -436,7 +429,37 @@ Template.displaySegment.helpers({
 		var depDateTime = this.ArrivalDateTime;
 		return depDateTime.substring(depDateTime.indexOf("T")+1);
 	}
-})
+});
+
+Template.nbStops.events({
+	'click .list-group' : function(e){
+		addFlightsByStops(document.getElementById("direct").checked, document.getElementById("oneStop").checked, document.getElementById("twoStops").checked);
+		Session.set("minLFP", cheapestLfp(Session.get("selectedLiveFlights")));
+	},
+});
+
+Template.tripLength.onRendered(function(){
+
+	var dur = getMinMaxDuration();
+
+	var $range = $("#durationFlight");
+
+	$range.ionRangeSlider({
+	    type: "double",
+	    grid: true,
+	    min: 0,
+	    max: dur[1],
+	    from: dur[0],
+	    to: dur[1],
+	    step: 0.5,
+	    postfix: "hours",
+	    onFinish: function (data) {
+			console.log("onFinish", data);
+			addFlightsByDurations(data.from, data.to);
+			Session.set("minLFP", cheapestLfp(Session.get("selectedLiveFlights")));
+		},
+	});
+});
 
 getLfp = function(itin, po, lfp){
 
@@ -462,8 +485,6 @@ getLfp = function(itin, po, lfp){
 			outboundleg = leg;
 		}
 	});
-
-	console.log("legs : ", inboundleg, outboundleg);
 
 	_.forEach(lfp.flightFare.Agents, function(ag){
 		if(ag.Id==minAgId){
@@ -533,4 +554,186 @@ getLfp = function(itin, po, lfp){
 	outboundleg = {Arrival : outboundleg.Arrival, Departure : outboundleg.Departure, Directionality : outboundleg.Directionality, Duration : outboundleg.Duration, JourneyMode : outboundleg.JourneyMode, Segments : minOutboundSegments};
 	clfp = {arrivalCode : lfp.arrivalCode, departureCode : lfp.departureCode, departureDate : lfp.departureDate, returnDate: lfp.returnDate, Currencies : lfp.flightFare.Currencies, Itineraries : clfpItin, InboundLeg : inboundleg, OutboundLeg : outboundleg}
 	return clfp;
-}
+};
+
+addFlightsByStops = function(direct, oneStop, twoStops){
+	var ff = Session.get("liveFlights");
+	var resItin = [];
+
+	_.forEach(ff.flightFare.Itineraries, function(itin){
+		var inboundleg = getLeg(itin.InboundLegId);
+		var outboundleg = getLeg(itin.OutboundLegId);
+		var countSegIn = inboundleg.SegmentIds.length;
+		var countSegOut = outboundleg.SegmentIds.length;
+
+		if(direct && countSegIn == 1 && countSegOut == 1){
+			resItin.push(itin);
+		}
+		else if(oneStop && (countSegIn == 2 || countSegOut == 2)){
+			resItin.push(itin);
+		}
+		else if(twoStops && (countSegIn > 2 || countSegOut>2)){
+			resItin.push(itin);
+		}
+	});
+
+	ff.flightFare.Itineraries = resItin;
+
+	Session.set("selectedLiveFlights", ff);
+};
+
+getLeg = function(legId){
+	var ff = Session.get("liveFlights").flightFare;
+	var res = {};
+
+	_.forEach(ff.Legs, function(leg){
+		if(legId==leg.Id){
+			res = leg
+		}
+	});
+
+	return res;	
+};
+
+cheapestLfp = function(lfp){
+	var clfp = {};
+	var clfpItin = {};
+	var minPrice = Infinity;
+	var inboundleg = {};
+	var outboundleg = {};
+	var minAgent = {};
+	var minAgId = "";
+	var minInboundSegments = [];
+	var minOutboundSegments = [];
+	var minInboundCarriers = [];
+	var minOutboundCarriers = [];
+
+
+	_.forEach(lfp.flightFare.Itineraries, function(itin){
+		_.forEach(itin.PricingOptions, function(po){
+			if(po.Price<minPrice){
+				minPrice = po.Price;
+				clfpItin = {InboundLegId : itin.InboundLegId, OutboundLegId : itin.OutboundLegId, PricingOptions : po};
+				minAgId = po.Agents[0];
+			}
+		});
+	});
+
+	_.forEach(lfp.flightFare.Legs, function(leg){
+		if(leg.Id==clfpItin.InboundLegId){
+			inboundleg = leg;
+		}
+		else if (leg.Id == clfpItin.OutboundLegId){
+			outboundleg = leg;
+		}
+	});
+
+	_.forEach(lfp.flightFare.Agents, function(ag){
+		if(ag.Id==minAgId){
+			minAgent = ag;
+		}
+	});
+
+	_.forEach(lfp.flightFare.Segments, function(seg){
+		_.forEach(inboundleg.SegmentIds, function(segid){
+			if(segid==seg.Id){
+				var segment = {};
+				var carrier = {};
+				var startPlace = {};
+				var endPlace = {};
+				var operatingCarrier = {};
+				_.forEach(lfp.flightFare.Carriers, function(c){
+					if(seg.Carrier==c.Id){
+						carrier = c;
+					}
+					if(seg.OperatingCarrier ==c.Id){
+						operatingCarrier =c;
+					}
+				});
+				_.forEach(lfp.flightFare.Places, function(p){
+					if(seg.DestinationStation==p.Id){
+						endPlace = p;
+					}
+					if(seg.OriginStation==p.Id){
+						startPlace = p;
+					}
+				});	
+				segment = {ArrivalDateTime : seg.ArrivalDateTime, Carrier: carrier, DepartureDateTime : seg.DepartureDateTime, DestinationStation : endPlace, Directionality : seg.Directionality, Duration : seg.Duration, FlightNumber : seg.FlightNumber, Id : seg.Id, JourneyMode : seg.JourneyMode, OperatingCarrier : operatingCarrier, OriginStation : startPlace}
+				minInboundSegments.push(segment);	
+			}
+		});
+		_.forEach(outboundleg.SegmentIds, function(segid){
+			if(segid==seg.Id){
+				var segment = {};
+				var carrier = {};
+				var startPlace = {};
+				var endPlace = {};
+				var operatingCarrier = {};
+				_.forEach(lfp.flightFare.Carriers, function(c){
+					if(seg.Carrier==c.Id){
+						carrier = c;
+					}
+					if(seg.OperatingCarrier ==c.Id){
+						operatingCarrier =c;
+					}
+				});
+				_.forEach(lfp.flightFare.Places, function(p){
+					if(seg.DestinationStation==p.Id){
+						endPlace = p;
+					}
+					if(seg.OriginStation==p.Id){
+						startPlace = p;
+					}
+				});	
+				segment = {ArrivalDateTime : seg.ArrivalDateTime, Carrier: carrier, DepartureDateTime : seg.DepartureDateTime, DestinationStation : endPlace, Directionality : seg.Directionality, Duration : seg.Duration, FlightNumber : seg.FlightNumber, Id : seg.Id, JourneyMode : seg.JourneyMode, OperatingCarrier : operatingCarrier, OriginStation : startPlace}
+				minOutboundSegments.push(segment);
+			}
+		});
+	});
+
+	clfpItin = {InboundLegId : clfpItin.InboundLegId, OutboundLegId : clfpItin.OutboundLegId, PricingOptions : clfpItin.PricingOptions, Agents : minAgent};
+	inboundleg = {Arrival : inboundleg.Arrival, Departure : inboundleg.Departure, Directionality : inboundleg.Directionality, Duration : inboundleg.Duration, JourneyMode : inboundleg.JourneyMode, Segments : minInboundSegments};
+	outboundleg = {Arrival : outboundleg.Arrival, Departure : outboundleg.Departure, Directionality : outboundleg.Directionality, Duration : outboundleg.Duration, JourneyMode : outboundleg.JourneyMode, Segments : minOutboundSegments};
+	clfp = {arrivalCode : lfp.arrivalCode, departureCode : lfp.departureCode, departureDate : lfp.departureDate, returnDate: lfp.returnDate, Currencies : lfp.flightFare.Currencies, Itineraries : clfpItin, InboundLeg : inboundleg, OutboundLeg : outboundleg}
+	return clfp;
+};
+
+getMinMaxDuration = function(){
+	var res = Session.get("selectedLiveFlights");
+	var min = Infinity;
+	var max = 0;
+
+	_.forEach(res.flightFare.Legs,  function(leg){
+		if(leg.Duration<min){
+			min = leg.Duration;
+		}
+		else if(leg.Duration>max){
+			max = leg.Duration;
+		}
+	});
+
+	var minDur = Math.round(min/30)/2;
+	var maxDur = Math.round(max/30)/2;
+
+	return [minDur, maxDur]
+};
+
+addFlightsByDurations = function(min, max){
+	var ff = Session.get("liveFlights");
+	var resItin = [];
+
+	_.forEach(ff.flightFare.Itineraries, function(itin){
+		var inboundleg = getLeg(itin.InboundLegId);
+		var outboundleg = getLeg(itin.OutboundLegId);
+		var durationLegIn = inboundleg.Duration;
+		var durationLegOut = outboundleg.Duration;
+
+		if(durationLegIn>=min*60 && durationLegIn<=max*60 && durationLegOut>=min*60 && durationLegOut<=max*60){
+			resItin.push(itin);
+		}
+	});
+
+	ff.flightFare.Itineraries = resItin;
+
+	Session.set("selectedLiveFlights", ff);
+};

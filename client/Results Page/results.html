@@ -268,9 +268,8 @@
 	      </h4>
 	    </div>
 	    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-	      <div class="list-group">
-	        Bla bla
-	      </div>
+	      {{> nbStops}}
+	      {{> tripLength}}
 	    </div>
 	  </div>
 	  <div class="panel panel-default">
@@ -306,4 +305,18 @@
 
 <template name="tripDays">
 	{{> fullcalendar id="myCalendar"}}
+</template>
+
+<template name='nbStops'>
+	<div class="list-group">
+		<b>Number of Stops :</b><br/>
+		<input type="checkbox" class="flightLegOption" id="direct" checked>Direct flight<br/>
+		<input type="checkbox" class="flightLegOption" id="oneStop" checked>1 stop<br/>
+		<input type="checkbox" class="flightLegOption" id="twoStops" checked>2+ stops<br/>
+	</div><br/>
+</template>
+
+<template name='tripLength'>
+	<b>Duration Range :</b><br/>
+	<input type="rangeslide" id="durationFlight"/>
 </template>
