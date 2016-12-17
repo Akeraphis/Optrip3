@@ -433,7 +433,8 @@ Template.displaySegment.helpers({
 
 Template.nbStops.events({
 	'click .list-group' : function(e){
-		addFlightsByStops(document.getElementById("direct").checked, document.getElementById("oneStop").checked, document.getElementById("twoStops").checked);
+		filterFlights(document.getElementById("direct").checked, document.getElementById("oneStop").checked, document.getElementById("twoStops").checked, $("#durationFlight").data("ionRangeSlider").result.from, $("#durationFlight").data("ionRangeSlider").result.to);
+		console.log($("#durationFlight").data("ionRangeSlider").result.from)
 		Session.set("minLFP", cheapestLfp(Session.get("selectedLiveFlights")));
 	},
 });
@@ -454,8 +455,7 @@ Template.tripLength.onRendered(function(){
 	    step: 0.5,
 	    postfix: "hours",
 	    onFinish: function (data) {
-			console.log("onFinish", data);
-			addFlightsByDurations(data.from, data.to);
+			filterFlights(document.getElementById("direct").checked, document.getElementById("oneStop").checked, document.getElementById("twoStops").checked, data.from, data.to);
 			Session.set("minLFP", cheapestLfp(Session.get("selectedLiveFlights")));
 		},
 	});
@@ -729,6 +729,39 @@ addFlightsByDurations = function(min, max){
 		var durationLegOut = outboundleg.Duration;
 
 		if(durationLegIn>=min*60 && durationLegIn<=max*60 && durationLegOut>=min*60 && durationLegOut<=max*60){
+			resItin.push(itin);
+		}
+	});
+
+	ff.flightFare.Itineraries = resItin;
+
+	Session.set("selectedLiveFlights", ff);
+};
+
+filterFlights = function(direct, oneStop, twoStops, minDuration, maxDuration){
+	var ff = Session.get("liveFlights");
+	var resItin = [];
+
+	_.forEach(ff.flightFare.Itineraries, function(itin){
+		var inboundleg = getLeg(itin.InboundLegId);
+		var outboundleg = getLeg(itin.OutboundLegId);
+		var countSegIn = inboundleg.SegmentIds.length;
+		var countSegOut = outboundleg.SegmentIds.length;
+		var durationLegIn = inboundleg.Duration;
+		var durationLegOut = outboundleg.Duration;
+
+		//filtered out if not direct
+		if(!direct && (countSegIn==1 || countSegOut==1)){}
+		//filtered out if not one stop
+		else if(!oneStop && (countSegIn==2 || countSegOut==2)){}
+		//filtered out for legs with more than 2 stops
+		else if(!twoStops && (countSegIn>2 || countSegOut>2)){}
+		//filtered out if leg in is not in duration range
+		else if(durationLegIn<minDuration*60 || durationLegIn>maxDuration*60){}
+		//same for leg out
+		else if(durationLegOut<minDuration*60 || durationLegOut>maxDuration*60){}
+		//if not skimmed out by filters then add to the selection list
+		else{
 			resItin.push(itin);
 		}
 	});
