@@ -351,12 +351,13 @@ Template.priceOptions.helpers({
 Template.displayAllFlight.events({
 	'click .pricingOption': function(e){
 		var link = this.DeepLinkUrl;
+		var price = this.Price;
 		var It = Session.get("liveFlights").flightFare.Itineraries;
 		var res = {};
 
 		_.forEach(It, function(itin){
 			_.forEach(itin.PricingOptions, function(po){
-				if(po.DeepLinkUrl == link && po.Price == this.Price ){
+				if(po.DeepLinkUrl == link && po.Price == price ){
 					res = itin;
 				}
 			})
@@ -472,8 +473,7 @@ getLfp = function(itin, po, lfp){
 
 	_.forEach(lfp.flightFare.Segments, function(seg){
 		_.forEach(inboundleg.SegmentIds, function(segid){
-			if(segid==seg.Id && seg.Directionality=="Inbound"){
-				console.log(segid, seg.Id)
+			if(segid==seg.Id){
 				var segment = {};
 				var carrier = {};
 				var startPlace = {};
@@ -501,7 +501,6 @@ getLfp = function(itin, po, lfp){
 		});
 		_.forEach(outboundleg.SegmentIds, function(segid){
 			if(segid==seg.Id && seg.Directionality=="Outbound"){
-				console.log(seg.Id, segid);
 				var segment = {};
 				var carrier = {};
 				var startPlace = {};
@@ -529,7 +528,7 @@ getLfp = function(itin, po, lfp){
 		});
 	});
 
-	clfpItin = {InboundLegId : itin.InboundLegId, OutboundLegId : itin.OutboundLegId, PricingOptions : itin.PricingOptions, Agents : minAgent};
+	clfpItin = {InboundLegId : itin.InboundLegId, OutboundLegId : itin.OutboundLegId, PricingOptions : po, Agents : minAgent};
 	inboundleg = {Arrival : inboundleg.Arrival, Departure : inboundleg.Departure, Directionality : inboundleg.Directionality, Duration : inboundleg.Duration, JourneyMode : inboundleg.JourneyMode, Segments : minInboundSegments};
 	outboundleg = {Arrival : outboundleg.Arrival, Departure : outboundleg.Departure, Directionality : outboundleg.Directionality, Duration : outboundleg.Duration, JourneyMode : outboundleg.JourneyMode, Segments : minOutboundSegments};
 	clfp = {arrivalCode : lfp.arrivalCode, departureCode : lfp.departureCode, departureDate : lfp.departureDate, returnDate: lfp.returnDate, Currencies : lfp.flightFare.Currencies, Itineraries : clfpItin, InboundLeg : inboundleg, OutboundLeg : outboundleg}
