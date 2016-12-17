@@ -105,27 +105,7 @@
 						</div>
 					</div>
 					<br/>
-					Sold by :
-					<table class="table table-striped">
-					<tr>
-						<th>Carrier</th>
-						<th>Carrier Type</th>
-						<th>Price</th>
-					</tr>
-					{{#each PricingOptions}}
-						<tr>
-						{{#with Agents}}
-							{{#with getAgent this}}
-								<td><img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/></td>
-								<td>{{Type}}</td>
-							{{/with}}
-						{{/with}}
-						<td><h4>{{Price}} {{symbolCurrency}}</h4></td>
-						<td><button class="btn btn-success" type="button" id="selectFlight">Select</button></td>
-						</tr>				
-					{{/each}}
-					</table>
-					<br/>
+					{{> priceOptions itineraries=this}}
 	      		</div>
 	      	{{/each}}
 	      </div>
@@ -164,6 +144,31 @@
 		{{#with getPlace DestinationStation}}
 			<b>{{Name}} {{Type}}</b>
 		{{/with}}<br/>
+	{{/with}}
+</template>
+
+<template name="priceOptions">
+	{{#with itin itineraries}}
+		<table class="table table-striped">
+			<tr>
+				<th>Carrier</th>
+				<th>Carrier Type</th>
+				<th>Price</th>
+			</tr>
+			{{#each PricingOptions}}
+				<tr>
+				{{#with Agents}}
+					{{#with getAgent this}}
+						<td><img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/></td>
+						<td>{{Type}}</td>
+					{{/with}}
+				{{/with}}
+				<td><h4>{{Price}} {{symbolCurrency}}</h4></td>
+				<td><button class="btn btn-success pricingOption" type="button" >Select</button></td>
+				</tr>				
+			{{/each}}
+		</table>
+		<br/>
 	{{/with}}
 </template>
 
