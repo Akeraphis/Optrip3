@@ -1,7 +1,7 @@
 Template.displayAllCars.helpers({
 	allCars : function(){
-		var slc = filterCars();
-		return slc;
+		filterCars();
+		return Session.get("selectedLiveCars").carFare.cars;
 	},
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
@@ -49,11 +49,12 @@ Template.carAgents.events({
 
 filterCars = function(){
 	var maxNumber = 30;
-	var slc = Session.get("selectedLiveCars").carFare.cars;
-	var maxCarPrice= Infinity;
+	var result = Session.get("results");
+	var slc = result[1][4];
+	var maxCarPrice = Infinity;
 	var res = [];
 
-	_.forEach(slc, function(car){
+	_.forEach(slc.carFare.cars, function(car){
 		if (sanitycheckAgent(car.website_id, getSelectedAgents())){}
 		else if(car.price_all_days<maxCarPrice){
 			res.push(car);
@@ -75,7 +76,10 @@ filterCars = function(){
 			maxCarPrice = res[res.length-1].price_all_days;
 		}
 	});
-	return res;
+
+	slc.carFare.cars = res;
+
+	Session.set("selectedLiveCars", slc);
 }
 
 getSelectedAgents = function(){
@@ -88,7 +92,6 @@ getSelectedAgents = function(){
 		}
 	});
 
-	console.log(res);
 	return res;
 };
 
@@ -100,6 +103,8 @@ sanitycheckAgent = function(agId, agents){
 			res = false;
 		}
 	});
-
+	if(agents.length == 0){
+		res = false;
+	}
 	return res
 };

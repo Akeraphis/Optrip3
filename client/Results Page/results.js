@@ -148,23 +148,9 @@ Template.leg.helpers({
 Template.minCar.helpers({
 
 	minVehicle : function(){
-		var res = Session.get("results");
-		if(res.length >1){
-			return res[1][0].vehicle;
-		}
+		return (Session.get("selectedLiveCars").carFare.cars)[0];	
 	},
-	minDoors : function(){
-		var res = Session.get("results");
-		if(res.length >1){
-			return res[1][0].doors;
-		}
-	},
-	minManual : function(){
-		var res = Session.get("results");
-		var manual = false ;
-		if(res.length >1){
-			manual =res[1][0].manual;
-		}
+	getManual : function(manual){
 		if(manual){
 			return "Manual";
 			}
@@ -172,82 +158,42 @@ Template.minCar.helpers({
 			return "Not manual";
 		}
 	},
-	minSeats : function(){
-		var res = Session.get("results");
-		if(res.length >1){
-			return res[1][0].seats;
-		}
-	},
-	minFuel : function(){
-		var res = Session.get("results");
-		if(res.length >1){
-			return res[1][0].value_add.fuel.policy;
-		}
-	},
-	minUnlimitedMileage : function(){
-		var res = Session.get("results");
-		var unlim = false;
-		if(res.length >1){
-			unlim = res[1][0].value_add.included_mileage.unlimited;
-		}
-		if(unlim){
-			return "Unlimited Mileage";
-			}
-		else{
-			return "Limited Mileage";
-		}
-	},
-	minWebsiteImage : function(){
-		var res = Session.get("results");
-		var webim = "";
-
-		if(res.length>1){
-			var webid = res[1][0].website_id;
-			var Websites = (res[1])[1];
-
-			_.forEach(Websites, function(wb){
-				if(wb.id == webid){
-					webim = wb.image_url;
-				}
-			});
-		}
-		return webim;
-	},
-	minCarClass : function(){
-		var res = Session.get("results");
-		var cc = "";
-
-		if(res.length>1){
-			var ccid = res[1][0].car_class_id;
-			var Classes = (res[1])[2];
-
-			_.forEach(Classes, function(cl){
-				if(cl.id == ccid){
-					cc = cl.name;
-				}
-			});
-		}
-		return cc;
-	},
-	minCarPrice : function(){
-		var res = Session.get("results");
-		if(res.length >1){
-			return Math.round(res[1][0].price_all_days);
-		}
-	},
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
 		var cur2 = Currencies.findOne({Code : cur});
 		return cur2.Symbol;
 	},
-	getVehicleImage : function(){
-		var imId = Session.get("results")[1][0].image_id;
+	getVehicleImage : function(imId){
 		var res = Session.get("selectedLiveCars").carFare.images;
 		var imUrl = "";
 
 		_.forEach(res, function(im){
 			if(im.id==imId){
 				imUrl = im.url;
+			}
+		});
+
+		return imUrl;
+	},
+	getCarClass :function(car_class_id){
+		var res = Session.get("selectedLiveCars").carFare.car_classes;
+		var cc = "";
+
+		_.forEach(res, function(im){
+			if(im.id==car_class_id){
+				cc = im.name;
+			}
+		});
+
+		return cc;
+	},
+	getWebsiteImage : function(imId){
+		var res = Session.get("selectedLiveCars").carFare.websites;
+		var imUrl = "";
+
+		_.forEach(res, function(im){
+			if(im.id==imId){
+				imUrl = im.image_url;
 			}
 		});
 

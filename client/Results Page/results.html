@@ -197,20 +197,25 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">Car</div>
 		<div class="panel-body">
-			<img border="0" height="60" width="120" hspace="0" src="{{minWebsiteImage}}"/>
-			<h3>{{minCarPrice}} {{symbolCurrency}}</h3>
-			<img border="0" height="120" width="240" hspace="0" src="{{getVehicleImage}}"/>
-			<h4>{{minVehicle}}</h4>
-			<br/>
-			Pick-Up : {{getDepartureDate}}
-			Drop Off : {{getReturnDate}}
-			<br/>
-			Car Class : {{minCarClass}}<br/>
-			{{minManual}} car with {{minDoors}} doors and {{minSeats}} seats
-			<br/>
-			Fuel policy : {{minFuel}}
-			<br/>
-			{{minUnlimitedMileage}}<br/>
+			{{#with minVehicle}}
+				<img border="0" height="60" width="120" hspace="0" src="{{getWebsiteImage website_id}}"/>
+				<h3>{{price_all_days}} {{symbolCurrency}}</h3>
+				<img border="0" height="120" width="240" hspace="0" src="{{getVehicleImage image_id}}"/>
+				<h4>{{vehicle}}</h4>
+				<br/>
+				Pick-Up : {{getDepartureDate}}
+				Drop Off : {{getReturnDate}}
+				<br/>
+				Car Class : {{getCarClass car_class_id}}<br/>
+				{{getManual manual}} car with {{doors}} doors and {{seats}} seats
+				<br/>
+				{{#with value_add}}
+					{{#with fuel}}
+						Fuel : {{type}}, {{policy}}
+					{{/with}}
+				{{/with}}
+				<br/>
+			{{/with}}
 			{{>displayAllCars}}
 		</div>
 	</div>	
