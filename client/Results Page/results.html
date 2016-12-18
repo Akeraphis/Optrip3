@@ -259,6 +259,7 @@
 		<div class="panel-heading">Hotels </div>
 			<div class="panel-body">
 				{{#each minHotels}}
+				{{#with data}}
 					<div class="col-sm-6 col-md-4">
 						<div class="thumbnail">
 							<img src="..." alt="...">
@@ -290,6 +291,7 @@
 							</div>
 						</div>
 					</div>
+				{{/with}}
 				{{/each}}
 			</div>
 		</div>
