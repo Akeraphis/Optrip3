@@ -65,14 +65,14 @@ Template.minPrice.helpers({
 	minTotalPrice : function(){
 		var res = Session.get("results");
 		if(res.length >1 && Session.get("minLFP").Itineraries){
-			return Math.round(res[1][0].price_all_days+(Session.get("minLFP")).Itineraries.PricingOptions.Price+(res[2])[0]);
+			return Math.round(Session.get("selectedLiveCars").carFare.cars[0].price_all_days+(Session.get("minLFP")).Itineraries.PricingOptions.Price+(res[2])[0]);
 		}
 	},
 
 	minCarPrice : function(){
 		var res = Session.get("results");
 		if(res.length >1){
-			return Math.round(res[1][0].price_all_days);
+			return Math.round(Session.get("selectedLiveCars").carFare.cars[0].price_all_days);
 		}
 	},
 
