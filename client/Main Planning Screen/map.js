@@ -359,6 +359,7 @@ Template.home.events({
 						Session.set("liveFlights", res[1]);
 						Session.set("selectedLiveFlights", res[1]);
 						Session.set("selectedLiveCars", res[0][1][1][4]);
+						Session.set("selectedLiveHotels", res[2]);
 						drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
 					}
 				});

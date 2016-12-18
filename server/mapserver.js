@@ -58,14 +58,14 @@ Meteor.methods({
 		//console.log("---- Step 9 completed : Hotel Details retrieved ----");
 		//clfp = Meteor.call("cheapestLfp", lfp);
 
-		//Step 7. Get the cars list
-		//var lcp = Meteor.call("getCarFaresInCollection", optimalTrip[1][0][1].code, depDate, retDate, currency, locale, market);
+		//Step 7. Get the Hotels live prices
+		var lhp = Meteor.call("getHotelsLivePrices", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
 
 		//Step 10. Call car rental live prices for selected starting IP
 
 		//Step 11. Return : trip flights to starting IP selected, car rentals to starting IP selected, hotels list for each IP on each day selected
 
-		return [optimalTrip, lfp];
+		return [optimalTrip, lfp, lhp];
 	},
 
 	refreshTrip: function(departureFrom, depDate, ipDays, currency, nbPerson, nbChildren, nbInfants, locale, market){

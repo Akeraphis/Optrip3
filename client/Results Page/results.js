@@ -26,6 +26,7 @@ Template.relaunch.events({
 						Session.set("liveFlights", res[1]);
 						Session.set("selectedLiveFlights", res[1]);
 						Session.set("selectedLiveCars", res[0][1][1][4]);
+						Session.set("selectedLiveHotels", res[2]);
 					}
 				});
 			}
@@ -209,10 +210,9 @@ Template.minCar.helpers({
 
 Template.minHotel.helpers({
 	minHotels : function(){
-		var res = Session.get("results");
-		if(res.length >1){
-			return res[2][1];
-		}
+		var res = Session.get("selectedLiveHotels");
+		return getMinHotels(res);
+
 	},
 
 	symbolCurrency : function(){
@@ -280,3 +280,36 @@ Template.priceOptions.helpers({
 		return cur2.Symbol;
 	}
 });
+
+getMinHotels = function(hf){
+
+	var minHotels = [];
+	_.forEach(hf, function(hff){
+		var minhp = Infinity;
+		var minHP = "";
+		var minhotP = {};
+		var temphf = hff;
+
+		_.forEach(hff.data.hotels_prices, function(hp){
+			_.forEach(hp.agent_prices, function(ap){
+				if(ap.price_total < minhp){
+					minhp = ap.price_total;
+					minHP = hp.id
+					minhotP = hp;
+				}
+			});
+		});
+
+		_.forEach(hff.data.hotels, function(hot){
+			if(minHP==hot.hotel_id){
+				temphf.data.hotels = hot;
+				temphf.data.hotels_prices = minhotP;
+				minHotels.push(temphf);
+			}
+		});
+	});
+
+	console.log(minHotels);
+
+	return minHotels
+}

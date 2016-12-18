@@ -5,47 +5,59 @@ var rooms = 1;
 var dateHotelRefresh = 1;
 
 
-getHotelDetails = function(sessionKey, hotelIds){
+getHotelsDetails2 = function(url, hotelsIds){
 	var res = {};
 
-	if(sessionKey){
-		var url2 = "http://partners.api.skyscanner.net"+sessionKey+"&hotelIds="+hotelIds;
-		//var url3 = "http://partners.api.skyscanner.net/apiservices/hotels/livedetails/v2/polldetails/"+sessionKey+"&hotelIds="+hotelIds;
-		try{
-			res = HTTP.call('GET', url2);
-			//HTTP.call('GET', url3);
-		}
-		catch(e){
-			console.log(e);
-		}
+	var url2 = "http://partners.api.skyscanner.net"+url+"&hotelIds="+hotelsIds;
+	//var url3 = "http://partners.api.skyscanner.net/apiservices/hotels/livedetails/v2/polldetails/"+sessionKey+"&hotelIds="+hotelIds;
+	try{
+		res = HTTP.call('GET', url2);
+		//HTTP.call('GET', url3);
+	}
+	catch(e){
+		console.log(e);
 	}
 
 	return res;
 };
 
-getHotelsInCollection = function(sessionKey, hotelid){
+getHotelsInCollection = function(detailsUrl, hotelIds){
+	var hids = []
+	var hfs = [];
 
-	var hfs = {};
-	var res = Hotels.findOne({hotel_id : hotelid});
+	_.forEach(hotelIds, function(hid){
+		
+		var res = Hotels.findOne({hotel_id : hid});
 
-	if(res){
-		hfs = res;
-	}
-	else{
-		//Enter the missing search in the table and retrieve the result
-		var hot = getHotelDetails(sessionKey, hotelid);
+		if(res){
+			hfs.push(res);
+		}
+		else{
+			//Enter the missing search in the table and retrieve the result
+			hids.push(hid);
+		}
+	});
 
-		_.forEach(hot.data.hotels, function(hotel){
-			addHotelInCollection(hotel, hot.data.amenities);
-		});
 
-		hfs = Hotels.findOne({hotel_id : hotelid});;
-		console.log("alert hotel details no entry");
-	}
+	var hot = getHotelDetails2(detailsUrl, idsToString(hids));
+
+	_.forEach(hot.data.hotels, function(hotel){
+		addHotelInCollection(hotel, hot.data.amenities);
+	});
+
+	hfs = Hotels.findOne({hotel_id : hotelid});
 
 	return hfs;
-
 };
+
+idsToString = function(ids){
+	var res =""
+	_.forEach(ids, function(id){
+		res = res + id +','
+	});
+
+	return res.substring(0, res.length-1);
+}
 
 addHotelInCollection = function(input, amenities){
 

@@ -263,19 +263,14 @@
 						<div class="thumbnail">
 							<img src="..." alt="...">
 							<div class="caption">
-								<h3>{{city}}</h3>
-								{{#with hotel}}
-									<h4>{{name}}, {{star_rating}} stars</h4>
+								{{#with hotels}}
+									<h3>{{name}}, {{star_rating}} stars</h3>
 								{{/with}}
 								<p>
-									{{#with agent}}
-										<img border="0" height="60" width="120" hspace="0" class="img-rounded" src="{{image_url}}"/>
-									{{/with}}
-									from {{checkin}} to {{checkout}}
-									{{#with minQuote}}
+									{{#with hotels_prices}}
 										<h4>{{price_total}}{{symbolCurrency}}</h4>
-									{{/with}}<br/>
-									{{#with hotel}}
+									{{/with}}
+									{{#with hotels}}
 										{{popularity_desc}} {{popularity}}%<br/>
 										<i>{{distance_from_search}}km from center </i><br/>
 										<a class="btn btn-primary" role="button" data-toggle="collapse" href="#{{hotel_id}}" aria-expanded="false" aria-controls="{{hotel_id}}">
