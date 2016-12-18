@@ -58,8 +58,8 @@ Meteor.methods({
 		//console.log("---- Step 9 completed : Hotel Details retrieved ----");
 		//clfp = Meteor.call("cheapestLfp", lfp);
 
-		//Step 7. Replace cheapest price
-		//var newFlightPrice = clfp.Itineraries.PricingOptions.Price;
+		//Step 7. Get the cars list
+		//var lcp = Meteor.call("getCarFaresInCollection", optimalTrip[1][0][1].code, depDate, retDate, currency, locale, market);
 
 		//Step 10. Call car rental live prices for selected starting IP
 

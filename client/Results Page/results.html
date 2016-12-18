@@ -32,7 +32,7 @@
 
 <template name="minPrice">
 	<div class="panel panel-primary">
-		<div class="panel-heading"><h2>Total Price : {{minTotalPrice}} {{symbolCurrency}}</h2></div>
+		<div class="panel-heading"><h1>{{minTotalPrice}} {{symbolCurrency}}</h1></div>
 		<div class="panel-body">
 			For {{nbPersons}} adults :
 			<h4>Flight: {{minFlightPrice}} {{symbolCurrency}}</h4>
@@ -199,16 +199,54 @@
 		<div class="panel-body">
 			<img border="0" height="60" width="120" hspace="0" src="{{minWebsiteImage}}"/>
 			<h3>{{minCarPrice}} {{symbolCurrency}}</h3>
-			<h4>Vehicle : {{minVehicle}}</h4>
-			<br/><br/>
+			<img border="0" height="120" width="240" hspace="0" src="{{getVehicleImage}}"/>
+			<h4>{{minVehicle}}</h4>
+			<br/>
+			Pick-Up : {{getDepartureDate}}
+			Drop Off : {{getReturnDate}}
+			<br/>
 			Car Class : {{minCarClass}}<br/>
 			{{minManual}} car with {{minDoors}} doors and {{minSeats}} seats
 			<br/>
 			Fuel policy : {{minFuel}}
 			<br/>
-			{{minUnlimitedMileage}}
+			{{minUnlimitedMileage}}<br/>
+			{{>displayAllCars}}
 		</div>
 	</div>	
+</template>
+
+<template name="displayAllCars">
+	<button class="btn btn-info" type="button" name="otherCars" data-toggle="modal" data-target="#myModal2">Other Cars</button>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title" id="myModalLabel">Cars</h4>
+	      </div>
+	      <div class="modal-body">
+	      	{{#each allCars}}
+	      		<div class="well">
+	      			<img border="0" height="60" width="120" hspace="0" src="{{getWebsiteImage website_id}}"/>
+	      			<h4>Price : {{price_all_days}} {{symbolCurrency}}</h4>
+	      			<br/>
+	      			<img border="0" height="60" width="120" hspace="0" src="{{getCarImage image_id}}"/>
+					{{vehicle}}<br/>
+	      			{{#with location}}
+	      				{{#with pick_up}}
+	      					address : {{address}}
+	      				{{/with}}
+	      			{{/with}}
+	      		</div>
+	      	{{/each}}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </template>
 		
 <template name="minHotel">
@@ -283,7 +321,7 @@
 	    </div>
 	    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
 	      <div class="panel-body">
-	      	bla bla 2
+	      	{{> carAgents}}
 	      </div>
 	    </div>
 	  </div>
@@ -330,4 +368,13 @@
 			<input type="checkbox" name="airportSelected" id="{{Code}}" checked>{{Code}} - {{Name}}<br/>
 		{{/each}}
 	</div><br/>
+</template>
+
+<template name="carAgents">
+	<b>Agents :</b><br/>
+	<div class='carAgentGroup'>
+		{{#each allAgents}}
+			<input type="checkbox" name="agentSelected" id="{{id}}" checked>{{name}}<br/>
+		{{/each}}
+	</div>
 </template>

@@ -25,6 +25,7 @@ Template.relaunch.events({
 						Session.set("totalResults", res);
 						Session.set("liveFlights", res[1]);
 						Session.set("selectedLiveFlights", res[1]);
+						Session.set("selectedLiveCars", res[0][1][1][4]);
 					}
 				});
 			}
@@ -196,22 +197,6 @@ Template.minCar.helpers({
 			return "Limited Mileage";
 		}
 	},
-	minWebsiteName : function(){
-		var res = Session.get("results");
-		var web = "";
-
-		if(res.length>1){
-			var webid = res[1][0].website_id;
-			var Websites = (res[1])[1];
-
-			_.forEach(Websites, function(wb){
-				if(wb.id == webid){
-					web = wb.name;
-				}
-			});
-		}
-		return web;
-	},
 	minWebsiteImage : function(){
 		var res = Session.get("results");
 		var webim = "";
@@ -244,7 +229,6 @@ Template.minCar.helpers({
 		}
 		return cc;
 	},
-
 	minCarPrice : function(){
 		var res = Session.get("results");
 		if(res.length >1){
@@ -255,6 +239,25 @@ Template.minCar.helpers({
 		var cur = Session.get("selectedCurrency");
 		var cur2 = Currencies.findOne({Code : cur});
 		return cur2.Symbol;
+	},
+	getVehicleImage : function(){
+		var imId = Session.get("results")[1][0].image_id;
+		var res = Session.get("selectedLiveCars").carFare.images;
+		var imUrl = "";
+
+		_.forEach(res, function(im){
+			if(im.id==imId){
+				imUrl = im.url;
+			}
+		});
+
+		return imUrl;
+	},
+	getDepartureDate : function(){
+		return Session.get("selectedLiveCars").departureDate;
+	},
+	getReturnDate : function(){
+		return Session.get("selectedLiveCars").returnDate;
 	}
 });
 
@@ -310,17 +313,6 @@ Template.tripDays.events({
 	},
 });
 
-Template.displayAllFlight.helpers({
-	allItineraries : function(){
-		return Session.get("selectedLiveFlights").flightFare.Itineraries;
-	},
-	symbolCurrency : function(){
-		var cur = Session.get("selectedCurrency");
-		var cur2 = Currencies.findOne({Code : cur});
-		return cur2.Symbol;
-	}
-});
-
 Template.priceOptions.helpers({
 	itin : function(Itineraries){
 		return Itineraries
@@ -341,5 +333,4 @@ Template.priceOptions.helpers({
 		var cur2 = Currencies.findOne({Code : cur});
 		return cur2.Symbol;
 	}
-})
-
+});

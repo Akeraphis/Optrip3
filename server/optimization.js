@@ -51,7 +51,7 @@ Meteor.methods({
 						}
 					});
 
-					minCar = [minQuoteCar, result.carFare.websites, result.carFare.car_classes, result.carTypes];
+					minCar = [minQuoteCar, result.carFare.websites, result.carFare.car_classes, result.carTypes, result];
 
 					console.log("2 -----> For the city of " + res[1].ip.city + ", leaving after " + i + " days, the car location price is :" + minPriceCar);
 					
@@ -244,7 +244,6 @@ Meteor.methods({
 		});
 
 		return newCircuit
-
 	},
 
 	getCodeArrOrderReverse : function(codeArr, optimalCircuit){
@@ -262,7 +261,6 @@ Meteor.methods({
 		}			
 
 		return newCircuit
-
 	},
 
 	getCircuitCheapestPrice : function(Circuit, pickUpDate, countDays, currency, nbPerson, nbChildren, nbInfants, locale, market){
@@ -312,7 +310,6 @@ Meteor.methods({
 		});
 
 		return [total_min_price, minQuotes];
-
 	},
 
 	getCheapestHotelFirstLastIP : function(arr, departureDate, pickUp, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale, market){

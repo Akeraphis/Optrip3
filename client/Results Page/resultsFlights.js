@@ -19,6 +19,17 @@ Template.displayAllFlight.events({
 	}
 });
 
+Template.displayAllFlight.helpers({
+	allItineraries : function(){
+		return Session.get("selectedLiveFlights").flightFare.Itineraries;
+	},
+	symbolCurrency : function(){
+		var cur = Session.get("selectedCurrency");
+		var cur2 = Currencies.findOne({Code : cur});
+		return cur2.Symbol;
+	}
+});
+
 Template.displayLeg.helpers({
 	lfleg : function(legId){
 		var res = Session.get("liveFlights").flightFare.Legs;
@@ -148,7 +159,7 @@ Template.depAirport.events({
 		filterFlights(document.getElementById("direct").checked, document.getElementById("oneStop").checked, document.getElementById("twoStops").checked, $("#durationFlight").data("ionRangeSlider").result.from, $("#durationFlight").data("ionRangeSlider").result.to, airports);
 		Session.set("minLFP", cheapestLfp(Session.get("selectedLiveFlights")));
 	},
-})
+});
 
 containsId = function(id, table){
 	var res = false;
@@ -449,7 +460,7 @@ sanitycheckAirport = function(airports, depOutbound, arrInbound){
 	}
 
 	return res
-}
+};
 
 getAirportFromLeg = function(id){
 	var res = [];
