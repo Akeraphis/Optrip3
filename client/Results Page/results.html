@@ -262,28 +262,29 @@
 				{{#with data}}
 					<div class="col-sm-6 col-md-4">
 						<div class="thumbnail">
-							<img src="..." alt="...">
+							<!--{{>carrouselPictures}}-->
 							<div class="caption">
 								{{#with hotels}}
 									<h3>{{name}}, {{star_rating}} stars</h3>
 								{{/with}}
 								<p>
 									{{#with hotels_prices}}
-										<h4>{{price_total}}{{symbolCurrency}}</h4>
+										{{#with agent_prices}}
+											<h4>{{price_total}}{{symbolCurrency}}</h4>
+										{{/with}}
 									{{/with}}
 									{{#with hotels}}
 										{{popularity_desc}} {{popularity}}%<br/>
-										<i>{{distance_from_search}}km from center </i><br/>
+										<i>{{address}} </i><br/>
 										<a class="btn btn-primary" role="button" data-toggle="collapse" href="#{{hotel_id}}" aria-expanded="false" aria-controls="{{hotel_id}}">
-											Amenities
+											Details
 										</a>
 										<div class="collapse" id="{{hotel_id}}">
 											<div class="well">
-												<table>
-													{{#each amenities}}
-														<tr>{{name}}</tr>
-													{{/each}}
-												</table>
+												<b>Description :</b>
+												{{description}}<br/>
+												<b>Amenities :</b>
+												{{>amenities hotel=hotel_id}}
 											</div>
 										</div>
 									{{/with}}
@@ -295,6 +296,51 @@
 				{{/each}}
 			</div>
 		</div>
+</template>
+
+<template name="amenities">
+	{{#with getHotel hotel}}
+		<table>
+			{{#each amenities}}
+				{{hotel}}
+				<tr>{{getAmenities this hotel}}</tr>
+			{{/each}}
+		</table>
+	{{/with}}
+</template>
+
+<template name="carrouselPictures">
+	<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+	  <!-- Indicators -->
+	  <ol class="carousel-indicators">
+	  	{{#with hotels}}
+	  		{{#each images}}
+			    <li data-target="#carousel-example-generic" data-slide-to="{{this}}" class="active"></li>
+			{{/each}}
+	    {{/with}}
+	  </ol>
+
+	  <!-- Wrapper for slides -->
+	  <div class="carousel-inner" role="listbox">
+	  	{{#with hotels}}
+	  		{{#each images}}
+			    <div class="item">
+			      <img src="{{getSource this}}">
+			    </div>
+	    	{{/each}}
+	    {{/with}}
+	  </div>
+
+	  <!-- Controls -->
+	  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+	    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+	    <span class="sr-only">Previous</span>
+	  </a>
+	  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+	    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+	    <span class="sr-only">Next</span>
+	  </a>
+	</div>
 </template>
 
 <template name="options">

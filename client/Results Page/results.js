@@ -212,15 +212,51 @@ Template.minHotel.helpers({
 	minHotels : function(){
 		var res = Session.get("selectedLiveHotels");
 		return getMinHotels(res);
-
 	},
-
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
 		var cur2 = Currencies.findOne({Code : cur});
 		return cur2.Symbol;
-	}
+	},
 });
+
+Template.amenities.helpers({
+	getHotel : function(hotelId){
+		var res ={};
+		var slh = Session.get("selectedLiveHotels");
+
+		_.forEach(slh, function(lh){
+			_.forEach(lh.data.hotels, function(hot){
+				if(hot.hotel_id==hotelId){
+					res = hot;
+				}
+			})
+		});
+
+		return res;
+	},
+	getAmenities:function(id, hid){
+		var res ="";
+		var slh = Session.get("selectedLiveHotels");
+
+		_.forEach(slh, function(lh){
+			if(lh.data.hotels.hotel_id=hid){
+				_.forEach(lh.data.amenities,function(am){
+					if(am.id==id){
+						var res = am.name;
+					}
+				});
+			}
+		});
+		return res;
+	},
+});
+
+Template.carrouselPictures.helpers({
+	getSource : function(id){
+		console.log(id);
+	}
+})
 
 Template.tripDays.onRendered(function(){
 
@@ -289,6 +325,7 @@ getMinHotels = function(hf){
 		var minHP = "";
 		var minhotP = {};
 		var temphf = hff;
+		var minap = {};
 
 		_.forEach(hff.data.hotels_prices, function(hp){
 			_.forEach(hp.agent_prices, function(ap){
@@ -296,6 +333,7 @@ getMinHotels = function(hf){
 					minhp = ap.price_total;
 					minHP = hp.id
 					minhotP = hp;
+					minhotP.agent_prices = ap;
 				}
 			});
 		});
@@ -308,8 +346,6 @@ getMinHotels = function(hf){
 			}
 		});
 	});
-
-	console.log(minHotels);
 
 	return minHotels
 }
