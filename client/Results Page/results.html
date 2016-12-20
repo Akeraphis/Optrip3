@@ -262,15 +262,23 @@
 				{{#with data}}
 					<div class="col-sm-6 col-md-4">
 						<div class="thumbnail">
-							<!--{{>carrouselPictures}}-->
+							{{#with hotels}}
+								{{>carrouselPictures hotelid=hotel_id}}
+							{{/with}}
 							<div class="caption">
 								{{#with hotels}}
-									<h3>{{name}}, {{star_rating}} stars</h3>
+									{{#with place}}
+										<h3>{{name}}</h3>
+									{{/with}}
+									<h4>{{name}}, {{star_rating}} stars</h4>
 								{{/with}}
 								<p>
 									{{#with hotels_prices}}
 										{{#with agent_prices}}
 											<h4>{{price_total}}{{symbolCurrency}}</h4>
+											{{#with agent}}
+												<img border="0" height="60" width="120" hspace="0" class="img-rounded" src="{{image_url}}"/>
+											{{/with}}
 										{{/with}}
 									{{/with}}
 									{{#with hotels}}
@@ -301,46 +309,41 @@
 <template name="amenities">
 	{{#with getHotel hotel}}
 		<table>
-			{{#each amenities}}
-				{{hotel}}
-				<tr>{{getAmenities this hotel}}</tr>
+			{{#each newAmenities}}
+				<tr>{{name}}</tr>
 			{{/each}}
 		</table>
 	{{/with}}
 </template>
 
 <template name="carrouselPictures">
-	<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-	  <!-- Indicators -->
-	  <ol class="carousel-indicators">
-	  	{{#with hotels}}
-	  		{{#each images}}
+	{{#with getHotel hotelid}}
+		<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+		  <ol class="carousel-indicators">
+	  		{{#each newImages}}
 			    <li data-target="#carousel-example-generic" data-slide-to="{{this}}" class="active"></li>
 			{{/each}}
-	    {{/with}}
-	  </ol>
+		  </ol>
 
-	  <!-- Wrapper for slides -->
-	  <div class="carousel-inner" role="listbox">
-	  	{{#with hotels}}
-	  		{{#each images}}
+		  <div class="carousel-inner" role="listbox">
+	  		{{#each newImages}}
 			    <div class="item">
-			      <img src="{{getSource this}}">
+			      <img src="{{this}}">
 			    </div>
 	    	{{/each}}
-	    {{/with}}
-	  </div>
+		  </div>
 
-	  <!-- Controls -->
-	  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-	    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-	    <span class="sr-only">Previous</span>
-	  </a>
-	  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-	    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-	    <span class="sr-only">Next</span>
-	  </a>
-	</div>
+		  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+		    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+		    <span class="sr-only">Previous</span>
+		  </a>
+		  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+		    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		    <span class="sr-only">Next</span>
+		  </a>
+		</div>
+		-->
+	{{/with}}
 </template>
 
 <template name="options">

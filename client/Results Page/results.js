@@ -234,27 +234,23 @@ Template.amenities.helpers({
 		});
 
 		return res;
-	},
-	getAmenities:function(id, hid){
-		var res ="";
-		var slh = Session.get("selectedLiveHotels");
-
-		_.forEach(slh, function(lh){
-			if(lh.data.hotels.hotel_id=hid){
-				_.forEach(lh.data.amenities,function(am){
-					if(am.id==id){
-						var res = am.name;
-					}
-				});
-			}
-		});
-		return res;
-	},
+	}
 });
 
 Template.carrouselPictures.helpers({
-	getSource : function(id){
-		console.log(id);
+	getHotel : function(hotelId){
+		var res ={};
+		var slh = Session.get("selectedLiveHotels");
+
+		_.forEach(slh, function(lh){
+			_.forEach(lh.data.hotels, function(hot){
+				if(hot.hotel_id==hotelId){
+					res = hot;
+				}
+			})
+		});
+
+		return res;
 	}
 })
 
