@@ -65,17 +65,38 @@ formatHotelDetails = function(hd){
 		var pc ="";
 		var im = [];
 		var url = hd.data.image_host_url;
+		var res = "";
 		for(i=0; i<str.length; i++){
 			var c = str.charAt(i);
 			if(c=="/" && pc=="\""){
-				var res=str.substring(i, str.indexOf("/", i+1)+1);
-				im.push(url+res);
+				res=str.substring(i, str.indexOf("/", i+1)+1);
+				var newSub = str.substring(i, str.length);
+				var n = newSub.search("order");
+				var k = newSub.search("],\"mt.jpg\"");
+				var order = newSub.substring(n+8,k);
+				im.push({url : "http://"+url+res+"mc.jpg", order : order});
 			}
 			pc=c;
 		}
-		hot.newImages = im;
+		hot.newImages = orderImages(im);
 	});
 	
 
 	return hd;
 };
+
+orderImages = function(images){
+	images.sort(function(a,b){
+		if(a.order>b.order){
+			return 1;
+		}
+		if(a.order<b.order){
+			return -1;
+		}
+		else{
+			return 0;
+		}
+	});
+
+	return images
+}

@@ -218,6 +218,22 @@ Template.minHotel.helpers({
 		var cur2 = Currencies.findOne({Code : cur});
 		return cur2.Symbol;
 	},
+	getFirstImage : function(hotelId){
+		var res ={};
+		var slh = Session.get("selectedLiveHotels");
+
+		_.forEach(slh, function(lh){
+			_.forEach(lh.data.hotels, function(hot){
+				if(hot.hotel_id==hotelId){
+					res = hot.newImages[0].url;
+				}
+			})
+		});
+
+		console.log(res);
+
+		return res;
+	}
 });
 
 Template.amenities.helpers({
