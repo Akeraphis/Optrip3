@@ -230,6 +230,33 @@ Template.minHotel.helpers({
 			})
 		});
 		return res;
+	},
+	getStars : function(hotelId){
+		var res ="";
+		var slh = Session.get("selectedLiveHotels");
+
+		_.forEach(slh, function(lh){
+			_.forEach(lh.data.hotels, function(hot){
+				if(hot.hotel_id==hotelId){
+					if(hot.star_rating==1){
+						res=[{}];
+					}
+					else if(hot.star_rating==2){
+						res=[{},{}];
+					}
+					else if(hot.star_rating==3){
+						res=[{},{},{}];
+					}
+					else if(hot.star_rating==4){
+						res=[{},{},{},{}];
+					}
+					else if(hot.star_rating==5){
+						res=[{},{},{},{},{}];
+					}
+				}
+			})
+		});
+		return res;
 	}
 });
 

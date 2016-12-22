@@ -272,8 +272,10 @@
 									{{#with place}}
 										<h3>{{name}}</h3>
 									{{/with}}
-									<h4>{{name}}, {{star_rating}} stars</h4>
-									<img height="10" width="10" hspace="0" src="star_PNG1597.png"/>
+									<h4>{{name}}
+									{{#each getStars hotel_id}}	
+										<img height="15" width="15" hspace="0" src="/star_PNG1597.png"/>
+									{{/each}}</h4>
 								{{/with}}
 								<p>
 									{{#with hotels_prices}}
