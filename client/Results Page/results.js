@@ -229,9 +229,6 @@ Template.minHotel.helpers({
 				}
 			})
 		});
-
-		console.log(res);
-
 		return res;
 	}
 });
@@ -252,6 +249,23 @@ Template.amenities.helpers({
 		return res;
 	}
 });
+
+Template.allImages.helpers({
+	getHotel : function(hotelId){
+		var res ={};
+		var slh = Session.get("selectedLiveHotels");
+
+		_.forEach(slh, function(lh){
+			_.forEach(lh.data.hotels, function(hot){
+				if(hot.hotel_id==hotelId){
+					res = hot;
+				}
+			})
+		});
+
+		return res;
+	},
+})
 
 Template.carrouselPictures.helpers({
 	getHotel : function(hotelId){

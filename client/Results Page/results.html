@@ -264,6 +264,7 @@
 						<div class="thumbnail">
 							{{#with hotels}}
 								<img border="10" height="100%" width="100%" hspace="0" src="{{getFirstImage hotel_id}}"/>
+								{{>allImages hotel=hotel_id}}
 								<!--{{>carrouselPictures hotel=hotel_id}}-->
 							{{/with}}
 							<div class="caption">
@@ -305,6 +306,32 @@
 				{{/each}}
 			</div>
 		</div>
+</template>
+	
+<template name="allImages">
+	<button class="btn btn-info" type="button" name="otherImages" data-toggle="modal" data-target="#myModal3">More images</button>
+		<!-- Modal -->
+	{{#with getHotel hotel}}	
+		<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h4 class="modal-title" id="myModalLabel">Hotel Images</h4>
+		      </div>
+		      <div class="modal-body">
+		      	{{#each newImages}}
+		      		<div class="well">
+		      			<img border="10" height="100%" width="100%" hspace="0" src="{{url}}"/>
+		      		</div>
+		      	{{/each}}
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	{{/with}}
 </template>
 
 <template name="amenities">
