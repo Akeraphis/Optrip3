@@ -136,6 +136,7 @@ Meteor.methods({
 					minPrice = po.Price;
 					clfpItin = {InboundLegId : itin.InboundLegId, OutboundLegId : itin.OutboundLegId, PricingOptions : po};
 					minAgId = po.Agents[0];
+					console.log("itin", itin.InboundLegId, itin.OutboundLegId)
 				}
 			});
 		});
@@ -157,7 +158,7 @@ Meteor.methods({
 
 		_.forEach(lfp.flightFare.Segments, function(seg){
 			_.forEach(inboundleg.SegmentIds, function(segid){
-				if(segid==seg.Id && seg.Directionality=="Inbound"){
+				if(segid==seg.Id){
 					var segment = {};
 					var carrier = {};
 					var startPlace = {};
@@ -184,7 +185,7 @@ Meteor.methods({
 				}
 			});
 			_.forEach(outboundleg.SegmentIds, function(segid){
-				if(segid==seg.Id && seg.Directionality=="Outbound"){
+				if(segid==seg.Id){
 					var segment = {};
 					var carrier = {};
 					var startPlace = {};
