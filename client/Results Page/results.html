@@ -1,11 +1,13 @@
 <template name="results">
 	{{#if results}}
 	<div class="row">
-		<div class="col-md-2">{{> minPrice}}<br/>{{>options}}<br/>{{> relaunch}}</div>
+		<div class="col-md-2">{{> minPrice}}<br/>{{> relaunch}}<br/>{{>options}}</div>
 		<div class="col-md-10">
 				<div class="row">
 				<div class="col-md-6">
-					{{>tripDays}}
+					{{#if gotLiveFlight}}
+						{{>tripDays}}	
+					{{/if}}
 				</div>
 				<div class="col-md-3">
 					{{> minFlight}}
@@ -24,13 +26,13 @@
 
 <template name="relaunch">
 	<div>
-		<button type="submit" class="optimizeButton" name="refreshResults">Refresh</button>
+		<button type="submit" class="optimizeButton" name="refreshResults">Re-Optimize</button>
 	</div>
 </template>
 
 <template name="minPrice">
 	<div class="panel panel-primary">
-		<div class="panel-heading"><h3>Total Price : {{minTotalPrice}} {{symbolCurrency}}</h3></div>
+		<div class="panel-heading"><h1>{{minTotalPrice}} {{symbolCurrency}}</h1></div>
 		<div class="panel-body">
 			For {{nbPersons}} adults :
 			<h4>Flight: {{minFlightPrice}} {{symbolCurrency}}</h4>
@@ -72,13 +74,107 @@
 				</div>
 				<br/>
 			{{/with}}
+			{{>displayAllFlight}}
 		</div>
 	</div>
 </template>
 
+<template name="displayAllFlight">
+	<button class="btn btn-info" type="button" name="otherFlights" data-toggle="modal" data-target="#myModal">Other Flights</button>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title" id="myModalLabel">Flights</h4>
+	      </div>
+	      <div class="modal-body">
+	      	{{#each allItineraries}}
+	      		<div class="well">
+	      			<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="active"><a href="#{{OutboundLegId}}" aria-controls="home" role="tab" data-toggle="tab">Outbound</a></li>
+						<li role="presentation"><a href="#{{InboundLegId}}" aria-controls="home" role="tab" data-toggle="tab">Inbound</a></li>
+					</ul>
+					<br/>
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="{{OutboundLegId}}">
+							{{>displayLeg legId=this.OutboundLegId}}
+						</div>
+						<div role="tabpanel" class="tab-pane fade" id="{{InboundLegId}}">
+							{{>displayLeg legId=this.InboundLegId}}
+						</div>
+					</div>
+					<br/>
+					{{> priceOptions itineraries=this}}
+	      		</div>
+	      	{{/each}}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</template>
+
+<template name="displayLeg">
+	{{#with lfleg legId}}
+		{{#each SegmentIds}}
+			{{Directionality}}
+			{{>displaySegment segId=this}}
+			<br/>
+		{{/each}}
+		Total Duration : {{Duration}} minutes
+		<br/>
+	{{/with}}
+</template>
+
+<template name="displaySegment">
+	{{#with lfseg segId}}
+		Departure at {{getDepTime}} on {{getDepDate}} from 
+		{{#with getPlace OriginStation}}
+			<b>{{Name}} {{Type}}</b>
+		{{/with}}<br/>
+		{{#with getCar OperatingCarrier}}
+			<img border="0" height="45" width=90 hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
+		{{/with}}<br/>
+		<b>{{Duration}} minutes</b>
+		<br/>
+		Arrival at {{getArrTime}} on {{getArrDate}} to 
+		{{#with getPlace DestinationStation}}
+			<b>{{Name}} {{Type}}</b>
+		{{/with}}<br/>
+	{{/with}}
+</template>
+
+<template name="priceOptions">
+	{{#with itin itineraries}}
+		<table class="table table-striped">
+			<tr>
+				<th>Carrier</th>
+				<th>Carrier Type</th>
+				<th>Price</th>
+			</tr>
+			{{#each PricingOptions}}
+				<tr>
+				{{#with Agents}}
+					{{#with getAgent this}}
+						<td><img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/></td>
+						<td>{{Type}}</td>
+					{{/with}}
+				{{/with}}
+				<td><h4>{{Price}} {{symbolCurrency}}</h4></td>
+				<td><button class="btn btn-success pricingOption" type="button" >Select</button></td>
+				</tr>				
+			{{/each}}
+		</table>
+		<br/>
+	{{/with}}
+</template>
+
 <template name="leg">
 	{{#each Segments}}
-		{{#with Carrier}}
+		{{#with OperatingCarrier}}
 			<img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
 		{{/with}}
 		<br/>
@@ -101,18 +197,61 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">Car</div>
 		<div class="panel-body">
-			<img border="0" height="60" width="120" hspace="0" src="{{minWebsiteImage}}"/>
-			<h3>{{minCarPrice}} {{symbolCurrency}}</h3>
-			<h4>Vehicle : {{minVehicle}}</h4>
-			<br/><br/>
-			Car Class : {{minCarClass}}<br/>
-			{{minManual}} car with {{minDoors}} doors and {{minSeats}} seats
-			<br/>
-			Fuel policy : {{minFuel}}
-			<br/>
-			{{minUnlimitedMileage}}
+			{{#with minVehicle}}
+				<img border="0" height="60" width="120" hspace="0" src="{{getWebsiteImage website_id}}"/>
+				<h3>{{price_all_days}} {{symbolCurrency}}</h3>
+				<img border="0" height="120" width="240" hspace="0" src="{{getVehicleImage image_id}}"/>
+				<h4>{{vehicle}}</h4>
+				<br/>
+				Pick-Up : {{getDepartureDate}}
+				Drop Off : {{getReturnDate}}
+				<br/>
+				Car Class : {{getCarClass car_class_id}}<br/>
+				{{getManual manual}} car with {{doors}} doors and {{seats}} seats
+				<br/>
+				{{#with value_add}}
+					{{#with fuel}}
+						Fuel : {{type}}, {{policy}}
+					{{/with}}
+				{{/with}}
+				<br/>
+			{{/with}}
+			{{>displayAllCars}}
 		</div>
 	</div>	
+</template>
+
+<template name="displayAllCars">
+	<button class="btn btn-info" type="button" name="otherCars" data-toggle="modal" data-target="#myModal2">Other Cars</button>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title" id="myModalLabel">Cars</h4>
+	      </div>
+	      <div class="modal-body">
+	      	{{#each allCars}}
+	      		<div class="well">
+	      			<img border="0" height="60" width="120" hspace="0" src="{{getWebsiteImage website_id}}"/>
+	      			<h4>Price : {{price_all_days}} {{symbolCurrency}}</h4>
+	      			<br/>
+	      			<img border="0" height="60" width="120" hspace="0" src="{{getCarImage image_id}}"/>
+					{{vehicle}}<br/>
+	      			{{#with location}}
+	      				{{#with pick_up}}
+	      					address : {{address}}
+	      				{{/with}}
+	      			{{/with}}
+	      		</div>
+	      	{{/each}}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </template>
 		
 <template name="minHotel">
@@ -120,35 +259,45 @@
 		<div class="panel-heading">Hotels </div>
 			<div class="panel-body">
 				{{#each minHotels}}
+				{{#with data}}
 					<div class="col-sm-6 col-md-4">
 						<div class="thumbnail">
-							<img src="..." alt="...">
+							{{#with hotels}}
+								<img border="10" height="100%" width="100%" hspace="0" src="{{getFirstImage hotel_id}}"/>
+								{{>allImages hotel=hotel_id}}
+								<!--{{>carrouselPictures hotel=hotel_id}}-->
+							{{/with}}
 							<div class="caption">
-								<h3>{{city}}</h3>
-								{{#with hotel}}
-									<h4>{{name}}, {{star_rating}} stars</h4>
+								{{#with hotels}}
+									{{#with place}}
+										<h3>{{name}}</h3>
+									{{/with}}
+									<h4>{{name}}
+									{{#each getStars hotel_id}}	
+										<img height="15" width="15" hspace="0" src="/star_PNG1597.png"/>
+									{{/each}}</h4>
 								{{/with}}
 								<p>
-									{{#with agent}}
-										<img border="0" height="60" width="120" hspace="0" class="img-rounded" src="{{image_url}}"/>
+									{{#with hotels_prices}}
+										{{#with agent_prices}}
+											<h4>{{price_total}}{{symbolCurrency}}</h4>
+											{{#with agent}}
+												<img border="0" height="60" width="120" hspace="0" src="{{image_url}}"/>
+											{{/with}}
+										{{/with}}
 									{{/with}}
-									from {{checkin}} to {{checkout}}
-									{{#with minQuote}}
-										<h4>{{price_total}}{{symbolCurrency}}</h4>
-									{{/with}}<br/>
-									{{#with hotel}}
+									{{#with hotels}}
 										{{popularity_desc}} {{popularity}}%<br/>
-										<i>{{distance_from_search}}km from center </i><br/>
+										<i>{{address}} </i><br/>
 										<a class="btn btn-primary" role="button" data-toggle="collapse" href="#{{hotel_id}}" aria-expanded="false" aria-controls="{{hotel_id}}">
-											Amenities
+											Details
 										</a>
 										<div class="collapse" id="{{hotel_id}}">
 											<div class="well">
-												<table>
-													{{#each amenities}}
-														<tr>{{name}}</tr>
-													{{/each}}
-												</table>
+												<b>Description :</b>
+												{{description}}<br/>
+												<b>Amenities :</b>
+												{{>amenities hotel=hotel_id}}
 											</div>
 										</div>
 									{{/with}}
@@ -156,17 +305,156 @@
 							</div>
 						</div>
 					</div>
+				{{/with}}
 				{{/each}}
 			</div>
 		</div>
 </template>
+	
+<template name="allImages">
+	<button class="btn btn-info" type="button" name="otherImages" data-toggle="modal" data-target="#myModal3">More images</button>
+		<!-- Modal -->
+	{{#with getHotel hotel}}	
+		<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h4 class="modal-title" id="myModalLabel">Hotel Images</h4>
+		      </div>
+		      <div class="modal-body">
+		      	{{#each newImages}}
+		      		<div class="well">
+		      			<img border="10" height="100%" width="100%" hspace="0" src="{{url}}"/>
+		      		</div>
+		      	{{/each}}
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	{{/with}}
+</template>
+
+<template name="amenities">
+	{{#with getHotel hotel}}
+		<table>
+			{{#each newAmenities}}
+				<tr>{{name}}</tr>
+			{{/each}}
+		</table>
+	{{/with}}
+</template>
+
+<template name="carrouselPictures">
+	{{#with getHotel hotelid}}
+		<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+		  <ol class="carousel-indicators">
+	  		{{#each newImages}}
+			    <li data-target="#carousel-example-generic" data-slide-to="{{url}}" class="active"></li>
+			{{/each}}
+		  </ol>
+
+		  <div class="carousel-inner" role="listbox">
+	  		{{#each newImages}}
+			    <div class="item">
+			      <img img border="10" height="100%" width="100%" hspace="0" src="{{url}}">
+			    </div>
+	    	{{/each}}
+		  </div>
+		  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+		    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+		    <span class="sr-only">Previous</span>
+		  </a>
+		  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+		    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		    <span class="sr-only">Next</span>
+		  </a>
+		</div>
+	{{/with}}
+</template>
 
 <template name="options">
-	<div class="panel panel-default">
-		<div class="panel-heading">Trip Options</div>
+	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+	  <div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="headingOne">
+	      <h4 class="panel-title">
+	        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+		        Flight Options
+	        </a>
+	      </h4>
+	    </div>
+	    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+	      {{> nbStops}}
+	      {{> tripLength}}
+	      {{> depAirport}}
+	    </div>
+	  </div>
+	  <div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="headingTwo">
+	      <h4 class="panel-title">
+	        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+	        	Car Options
+	        </a>
+	      </h4>
+	    </div>
+	    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+	      <div class="panel-body">
+	      	{{> carAgents}}
+	      </div>
+	    </div>
+	  </div>
+	  <div class="panel panel-default">
+	    <div class="panel-heading" role="tab" id="headingThree">
+	      <h4 class="panel-title">
+	        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+	          Hotel Options
+	        </a>
+	      </h4>
+	    </div>
+	    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+	      <div class="panel-body">
+	        blabla 3
+	      </div>
+	    </div>
+	  </div>
 	</div>
 </template>
 
 <template name="tripDays">
 	{{> fullcalendar id="myCalendar"}}
+</template>
+
+<template name='nbStops'>
+	<div class="list-group">
+		<b>Number of Stops :</b><br/>
+		<input type="checkbox" class="flightLegOption" id="direct" checked>Direct flight<br/>
+		<input type="checkbox" class="flightLegOption" id="oneStop" checked>1 stop<br/>
+		<input type="checkbox" class="flightLegOption" id="twoStops" checked>2+ stops<br/>
+	</div><br/>
+</template>
+
+<template name='tripLength'>
+	<b>Duration Range :</b><br/>
+	<input type="rangeslide" id="durationFlight"/>
+	<br/>
+</template>
+
+<template name="depAirport">
+	<div class="airport-group">
+		<b>Departure Airports :</b><br/>
+		{{#each depAirports}}
+			<input type="checkbox" name="airportSelected" id="{{Code}}" checked>{{Code}} - {{Name}}<br/>
+		{{/each}}
+	</div><br/>
+</template>
+
+<template name="carAgents">
+	<b>Agents :</b><br/>
+	<div class='carAgentGroup'>
+		{{#each allAgents}}
+			<input type="checkbox" name="agentSelected" id="{{id}}" checked>{{name}}<br/>
+		{{/each}}
+	</div>
 </template>

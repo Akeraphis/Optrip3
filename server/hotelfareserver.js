@@ -89,9 +89,9 @@ getHotelFaresInCollection = function(departureDate, returnDate, ipa, currency,nb
 		var sessionKey = getHotelSessionKey(ipcode, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
 		var hf = getHotelFares(sessionKey);
 
-		_.forEach(hf.data.hotels_prices, function(hp){
+		/*_.forEach(hf.data.hotels_prices, function(hp){
 			getHotelsInCollection(sessionKey, hp.id);
-		});
+		});*/
 
 		var result = HotelFares.insert({ city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : hf.data.hotels_prices, agents : hf.data.agents});
 		hfs = { city : ipcity, checkin : departureDate, checkout : returnDate, dateUpdate : dateNow, hotelFare : hf.hotels_prices , agents : hf.data.agents};

@@ -17,11 +17,9 @@ Meteor.methods({
 
 		//Get total Days
 		var totalDays = Meteor.call('getTotalDays', ipDays);
-		console.log("total days", totalDays);
 
 		//Add Date to YYYY-MM-DD
 		var returnDate = Meteor.call('addToYYYYMMDD', departureDate, totalDays);
-		console.log("return", returnDate)
 
 		//Step 1. Get locations of departure	
 		var Dep = AutoSuggest.findOne({PlaceName: departureFrom});
@@ -58,16 +56,16 @@ Meteor.methods({
 		console.log("---- Step 9 completed : Live flight prices retrieved ----");
 
 		//console.log("---- Step 9 completed : Hotel Details retrieved ----");
-		clfp = Meteor.call("cheapestLfp", lfp);
+		//clfp = Meteor.call("cheapestLfp", lfp);
 
-		//Step 7. Replace cheapest price
-		var newFlightPrice = clfp.Itineraries.PricingOptions.Price;
+		//Step 7. Get the Hotels live prices
+		var lhp = Meteor.call("getHotelsLivePrices", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
 
 		//Step 10. Call car rental live prices for selected starting IP
 
 		//Step 11. Return : trip flights to starting IP selected, car rentals to starting IP selected, hotels list for each IP on each day selected
 
-		return [optimalTrip, clfp, newFlightPrice];
+		return [optimalTrip, lfp, lhp];
 	},
 
 	refreshTrip: function(departureFrom, depDate, ipDays, currency, nbPerson, nbChildren, nbInfants, locale, market){

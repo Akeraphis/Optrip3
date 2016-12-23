@@ -136,6 +136,7 @@ Meteor.methods({
 					minPrice = po.Price;
 					clfpItin = {InboundLegId : itin.InboundLegId, OutboundLegId : itin.OutboundLegId, PricingOptions : po};
 					minAgId = po.Agents[0];
+					console.log("itin", itin.InboundLegId, itin.OutboundLegId)
 				}
 			});
 		});
@@ -218,5 +219,6 @@ Meteor.methods({
 		clfp = {arrivalCode : lfp.arrivalCode, departureCode : lfp.departureCode, departureDate : lfp.departureDate, returnDate: lfp.returnDate, Currencies : lfp.flightFare.Currencies, Itineraries : clfpItin, InboundLeg : inboundleg, OutboundLeg : outboundleg}
 		return clfp;
 	},
+
 });
 
