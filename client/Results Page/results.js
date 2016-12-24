@@ -71,7 +71,9 @@ Template.minPrice.helpers({
 	},
 
 	minCarPrice : function(){
-		return Math.round(Session.get("SelectedCar").price_all_days);
+		if(Session.get("SelectedCar")){
+			return Math.round(Session.get("SelectedCar").price_all_days);
+		}
 	},
 
 	minFlightPrice : function(){
@@ -292,6 +294,10 @@ Template.allImages.helpers({
 
 		return res;
 	},
+	getHotelIdDiesed : function(hotelId){
+		console.log("#"+hotelId);
+		return "#"+hotelId
+	}
 })
 
 Template.carrouselPictures.helpers({

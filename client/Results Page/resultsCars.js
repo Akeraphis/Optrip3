@@ -39,8 +39,7 @@ Template.displayAllCars.events({
 		Session.set("SelectedCar", this);		
 		$('#myModal2').modal('hide');
 	}
-})
-
+});
 
 Template.carAgents.helpers({
 	allAgents : function(){
