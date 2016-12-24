@@ -302,12 +302,13 @@
 												</div>
 											</div>
 										{{/with}}
+										<br/>
+										{{>displayAllHotels param = this}}
 									</p>
 								</div>
 							</div>
 						</div>
 					{{/with}}
-					{{>displayAllHotels}}
 				{{/each}}
 			</div>
 		</div>
@@ -378,7 +379,32 @@
 </template>
 
 <template name="displayAllHotels">
-	
+
+	<button class="btn btn-info" type="button" name="otherHotels" data-toggle="modal" data-target="{{getIDDiased param}}">Other Hotels</button>
+	<!-- Modal -->
+	<div class="modal fade" id="{{getIdNotDiased param}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title" id="myModalLabel">Hotels</h4>
+	      </div>
+	      <div class="modal-body">
+	      	{{#each allHotels param}}
+	      		{{#each agent_prices}}
+	      			<h3>{{price_total}}{{symbolCurrency}}</h3>
+	      			ID : {{id}}
+	      		{{/each}}
+	      		<div class="well">
+	      			<button class="btn btn-success hotelSelection" type="button" >Select</button>
+	      		</div>
+	      	{{/each}}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </template>
 
 <template name="options">

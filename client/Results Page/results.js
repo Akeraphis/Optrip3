@@ -295,7 +295,6 @@ Template.allImages.helpers({
 		return res;
 	},
 	getHotelIdDiesed : function(hotelId){
-		console.log("#"+hotelId);
 		return "#"+hotelId
 	}
 })
