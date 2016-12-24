@@ -215,7 +215,7 @@
 					{{/with}}
 				{{/with}}
 				<br/>
-			{{/with}}
+			{{/with}}<br/>
 			{{>displayAllCars}}
 		</div>
 	</div>	
@@ -242,7 +242,8 @@
 	      				{{#with pick_up}}
 	      					address : {{address}}
 	      				{{/with}}
-	      			{{/with}}
+	      			{{/with}}<br/>
+	      			<button class="btn btn-success carSelection" type="button" >Select</button>
 	      		</div>
 	      	{{/each}}
 	      </div>
@@ -259,63 +260,64 @@
 		<div class="panel-heading">Hotels </div>
 			<div class="panel-body">
 				{{#each minHotels}}
-				{{#with data}}
-					<div class="col-sm-6 col-md-4">
-						<div class="thumbnail">
-							{{#with hotels}}
-								<img border="10" height="100%" width="100%" hspace="0" src="{{getFirstImage hotel_id}}"/>
-								{{>allImages hotel=hotel_id}}
-								<!--{{>carrouselPictures hotel=hotel_id}}-->
-							{{/with}}
-							<div class="caption">
+					{{#with data}}
+						<div class="col-sm-6 col-md-4">
+							<div class="thumbnail">
 								{{#with hotels}}
-									{{#with place}}
-										<h3>{{name}}</h3>
-									{{/with}}
-									<h4>{{name}}
-									{{#each getStars hotel_id}}	
-										<img height="15" width="15" hspace="0" src="/star_PNG1597.png"/>
-									{{/each}}</h4>
+									<img border="10" height="100%" width="100%" hspace="0" src="{{getFirstImage hotel_id}}"/>
+									{{>allImages hotel=hotel_id}}
+									<!--{{>carrouselPictures hotel=hotel_id}}-->
 								{{/with}}
-								<p>
-									{{#with hotels_prices}}
-										{{#with agent_prices}}
-											<h4>{{price_total}}{{symbolCurrency}}</h4>
-											{{#with agent}}
-												<img border="0" height="60" width="120" hspace="0" src="{{image_url}}"/>
+								<div class="caption">
+									{{#with hotels}}
+										{{#with place}}
+											<h3>{{name}}</h3>
+										{{/with}}
+										<h4>{{name}}
+										{{#each getStars hotel_id}}	
+											<img height="15" width="15" hspace="0" src="/star_PNG1597.png"/>
+										{{/each}}</h4>
+									{{/with}}
+									<p>
+										{{#with hotels_prices}}
+											{{#with agent_prices}}
+												<h4>{{price_total}}{{symbolCurrency}}</h4>
+												{{#with agent}}
+													<img border="0" height="60" width="120" hspace="0" src="{{image_url}}"/>
+												{{/with}}
 											{{/with}}
 										{{/with}}
-									{{/with}}
-									{{#with hotels}}
-										{{popularity_desc}} {{popularity}}%<br/>
-										<i>{{address}} </i><br/>
-										<a class="btn btn-primary" role="button" data-toggle="collapse" href="#{{hotel_id}}" aria-expanded="false" aria-controls="{{hotel_id}}">
-											Details
-										</a>
-										<div class="collapse" id="{{hotel_id}}">
-											<div class="well">
-												<b>Description :</b>
-												{{description}}<br/>
-												<b>Amenities :</b>
-												{{>amenities hotel=hotel_id}}
+										{{#with hotels}}
+											{{popularity_desc}} {{popularity}}%<br/>
+											<i>{{address}} </i><br/>
+											<a class="btn btn-primary" role="button" data-toggle="collapse" href="#{{hotel_id}}" aria-expanded="false" aria-controls="{{hotel_id}}">
+												Details
+											</a>
+											<div class="collapse" id="{{hotel_id}}">
+												<div class="well">
+													<b>Description :</b>
+													{{description}}<br/>
+													<b>Amenities :</b>
+													{{>amenities hotel=hotel_id}}
+												</div>
 											</div>
-										</div>
-									{{/with}}
-								</p>
+										{{/with}}
+									</p>
+								</div>
 							</div>
 						</div>
-					</div>
-				{{/with}}
+					{{/with}}
+					{{>displayAllHotels}}
 				{{/each}}
 			</div>
 		</div>
 </template>
 	
 <template name="allImages">
-	<button class="btn btn-info" type="button" name="otherImages" data-toggle="modal" data-target="#myModal3">More images</button>
+	<button class="btn btn-info" type="button" name="otherImages" data-toggle="modal" data-target="#{{hotel_id}}">More images</button>
 		<!-- Modal -->
 	{{#with getHotel hotel}}	
-		<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal fade" id="{{hotel_id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
@@ -373,6 +375,10 @@
 		  </a>
 		</div>
 	{{/with}}
+</template>
+
+<template name="displayAllHotels">
+	
 </template>
 
 <template name="options">

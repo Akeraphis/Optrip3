@@ -136,7 +136,6 @@ Meteor.methods({
 					minPrice = po.Price;
 					clfpItin = {InboundLegId : itin.InboundLegId, OutboundLegId : itin.OutboundLegId, PricingOptions : po};
 					minAgId = po.Agents[0];
-					console.log("itin", itin.InboundLegId, itin.OutboundLegId)
 				}
 			});
 		});

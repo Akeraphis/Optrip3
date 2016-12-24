@@ -34,6 +34,13 @@ Template.displayAllCars.helpers({
 	}
 });
 
+Template.displayAllCars.events({
+	'click .carSelection' : function(e){
+		Session.set("SelectedCar", this);		
+		$('#myModal2').modal('hide');
+	}
+})
+
 
 Template.carAgents.helpers({
 	allAgents : function(){
@@ -80,6 +87,7 @@ filterCars = function(){
 	slc.carFare.cars = res;
 
 	Session.set("selectedLiveCars", slc);
+	Session.set("SelectedCar", (Session.get("selectedLiveCars").carFare.cars)[0] );
 }
 
 getSelectedAgents = function(){
