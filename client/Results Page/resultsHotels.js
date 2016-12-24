@@ -14,7 +14,7 @@ Template.displayAllHotels.helpers({
 	},
 
 	getIDDiased: function(data){
-		return "#"+data..id;
+		return "#"+data.id;
 	},
 
 	getIdNotDiased : function(data){
