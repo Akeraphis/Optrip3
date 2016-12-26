@@ -302,7 +302,7 @@
 											</div>
 										{{/with}}
 										<br/>
-										{{>displayAllHotels param = this}}
+										<!--{{>displayAllHotels param = this}}-->
 									</p>
 								</div>
 							</div>
@@ -360,25 +360,25 @@
 	      </div>
 	      <div class="modal-body">
 	      	{{#with allHotels param}}
-	      	<div class="well">
-	      		{{#each hotels}}
-	      			<img border="10" height="100%" width="100%" hspace="0" src="{{getFirstImage this}}"/>
-	      			<h2>{{name}}</h2>
-	      		{{/each}}
-	      		{{#each hotels_prices}}
-			      	<table class="table table-striped">
-			      		<th>Agent</th>
-			      		<th>Price</th>
-				      		{{#each agent_prices}}
-				      			<tr>
-				      			<td><img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{getAgentImage id}}"/></td>
-				      			<td><b>{{price_total}}{{symbolCurrency}}</b></td>
-				      			</tr>
-				      		{{/each}}
-			      			<button class="btn btn-success hotelSelection" type="button" >Select</button>
-		      		</table>
-		      	{{/each}}
-		    </div>
+		      	<div class="well">
+		      		{{#each hotels}}
+		      			<img border="10" height="100%" width="100%" hspace="0" src="{{getFirstImage this}}"/>
+		      			<h2>{{name}}</h2>
+		      		{{/each}}
+		      		{{#each hotels_prices}}
+				      	<table class="table table-striped">
+				      		<th>Agent</th>
+				      		<th>Price</th>
+					      		{{#each agent_prices}}
+					      			<tr>
+					      			<td><img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{getAgentImage id}}"/></td>
+					      			<td><b>{{price_total}}{{symbolCurrency}}</b></td>
+					      			</tr>
+					      		{{/each}}
+				      			<button class="btn btn-success hotelSelection" type="button" >Select</button>
+			      		</table>
+			      	{{/each}}
+			    </div>
 	      	{{/with}}
 	      </div>
 	      <div class="modal-footer">
