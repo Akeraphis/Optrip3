@@ -266,7 +266,6 @@
 								{{#with hotels}}
 									<img border="10" height="100%" width="100%" hspace="0" src="{{getFirstImage hotel_id}}"/>
 									{{>allImages hotel=hotel_id}}
-									<!--{{>carrouselPictures hotel=hotel_id}}-->
 								{{/with}}
 								<div class="caption">
 									{{#with hotels}}
@@ -318,7 +317,7 @@
 	{{#with getHotel hotel}}	
 		<button class="btn btn-info" type="button" name="otherImages" data-toggle="modal" data-target="{{getHotelIdDiesed hotel_id}}">More images</button>
 		<!-- Modal -->
-		<div class="modal fade" id="{{hotel_id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal fade" id="{{getHotelIdNotDiesed hotel_id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
@@ -350,36 +349,7 @@
 	{{/with}}
 </template>
 
-<template name="carrouselPictures">
-	{{#with getHotel hotelid}}
-		<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-		  <ol class="carousel-indicators">
-	  		{{#each newImages}}
-			    <li data-target="#carousel-example-generic" data-slide-to="{{url}}" class="active"></li>
-			{{/each}}
-		  </ol>
-
-		  <div class="carousel-inner" role="listbox">
-	  		{{#each newImages}}
-			    <div class="item">
-			      <img img border="10" height="100%" width="100%" hspace="0" src="{{url}}">
-			    </div>
-	    	{{/each}}
-		  </div>
-		  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-		    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-		    <span class="sr-only">Previous</span>
-		  </a>
-		  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-		    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-		    <span class="sr-only">Next</span>
-		  </a>
-		</div>
-	{{/with}}
-</template>
-
 <template name="displayAllHotels">
-
 	<button class="btn btn-info" type="button" name="otherHotels" data-toggle="modal" data-target="{{getIDDiased param}}">Other Hotels</button>
 	<!-- Modal -->
 	<div class="modal fade" id="{{getIdNotDiased param}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -389,15 +359,27 @@
 	        <h4 class="modal-title" id="myModalLabel">Hotels</h4>
 	      </div>
 	      <div class="modal-body">
-	      	{{#each allHotels param}}
-	      		{{#each agent_prices}}
-	      			<h3>{{price_total}}{{symbolCurrency}}</h3>
-	      			ID : {{id}}
+	      	{{#with allHotels param}}
+	      		{{#each hotels}}
+	      			<img border="10" height="100%" width="100%" hspace="0" src="{{getFirstImage this}}"/>
+	      			<h2>{{name}}</h2>
 	      		{{/each}}
-	      		<div class="well">
-	      			<button class="btn btn-success hotelSelection" type="button" >Select</button>
-	      		</div>
-	      	{{/each}}
+	      		{{#each hotels_prices}}
+			      	<table class="table table-striped">
+			      		<th>Agent</th>
+			      		<th>Price</th>
+			      		<tr>
+				      		{{#each agent_prices}}
+				      			<td><img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{getAgentImage id}}"/></td>
+				      			<td><b>{{price_total}}{{symbolCurrency}}</b></td>
+				      		{{/each}}
+			      		</tr>
+			      		<div class="well">
+			      			<button class="btn btn-success hotelSelection" type="button" >Select</button>
+			      		</div>
+		      		</table>
+		      	{{/each}}
+	      	{{/with}}
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

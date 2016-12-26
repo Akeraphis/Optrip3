@@ -295,26 +295,12 @@ Template.allImages.helpers({
 		return res;
 	},
 	getHotelIdDiesed : function(hotelId){
-		return "#"+hotelId
+		return "#"+hotelId+"hotelImage";
+	},
+	getHotelIdNotDiesed : function(hotelId){
+		return hotelId+"hotelImage";
 	}
-})
-
-Template.carrouselPictures.helpers({
-	getHotel : function(hotelId){
-		var res ={};
-		var slh = Session.get("selectedLiveHotels");
-
-		_.forEach(slh, function(lh){
-			_.forEach(lh.data.hotels, function(hot){
-				if(hot.hotel_id==hotelId){
-					res = hot;
-				}
-			})
-		});
-
-		return res;
-	}
-})
+});
 
 Template.tripDays.onRendered(function(){
 
