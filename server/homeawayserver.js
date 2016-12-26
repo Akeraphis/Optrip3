@@ -6,17 +6,44 @@ var clientSecret = "178cdea5-ea2d-46db-8555-98882d8b035e";
 Meteor.methods({
 	'getToken' : function(){
 		var url = "https://ws.homeaway.com/oauth/token";
-		var token ={};
 
-		HTTP.call('POST', url, { auth : clientId+":"+clientSecret}, function(err, res){
-			if(err){
-				console.log(err);
-			}
-			else{
-				token = res
+		var token = HTTP.call('POST', url, { auth : clientId+":"+clientSecret});
+		return token.data.access_token
+	},
+	'searchHomeAway' : function(city, arrivalDate, leaveDate, currency, nbPerson, nbChildren, nbInfants, locale, market){
+		var url = "https://ws.homeaway.com/public/search";
+		var que = "Sienna";
+		var token = Meteor.call('getToken');
+		var search = HTTP.call('GET', url, {
+			headers : {
+				Authorization : "Bearer " + token
+			},
+			query : {
+				q: que,
+				//minSleeps : nbPerson,
+				//availabilityStart : "2017-05-16",
+				//availabilityEnd : "2017-05-19",
+				//sort : "prices"
 			}
 		});
-
-		return token
-	}
+		return search
+	},
+	/*'getListingDetails' : function(optimalTrip, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market){
+		var url = "https://ws.homeaway.com/public/listing";
+		var token = Meteor.call('getToken');
+		var quote = HTTP.call('GET', url, {
+			headers : {
+				Authorization : "Bearer " + token
+			},
+			query : {
+				adultsCounts: nbPerson,
+				unitId :,
+				departureDate : departureDate,
+				listingId : ,
+				currencyCode : currency,
+				arrivalDate :, 
+				childrenCount : nbChildren
+			}
+		});
+	},*/
 })
