@@ -2,14 +2,13 @@ Template.displayAllHotels.helpers({
 	allHotels : function(dat){
 		var res = Session.get("selectedLiveHotels");
 		var ret = {};
-		_.forEach(res, function(selectedLiveHotels){	
+		_.forEach(res, function(lh){	
 			_.forEach(lh.data.hotels_prices, function(hp){
 				if(hp.id==dat.hotels_prices.id){
 					ret = lh.data;
 				}
 			});
 		});
-		console.log(ret);
 		return ret;
 	},
 
@@ -29,11 +28,13 @@ Template.displayAllHotels.helpers({
 	getAgentImage: function(Agid){
 		var res = Session.get("selectedLiveHotels");
 		var imUrl="";
+		console.log(res);
 		_.forEach(res[0].agents, function(ag){
 			if(ag.id==Agid){
 				imUrl = ag.image_url;
 			}
 		});
+		console.log(imUrl)
 		return imUrl
 	},
 	getFirstImage : function(hotel){

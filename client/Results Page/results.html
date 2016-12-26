@@ -360,6 +360,7 @@
 	      </div>
 	      <div class="modal-body">
 	      	{{#with allHotels param}}
+	      	<div class="well">
 	      		{{#each hotels}}
 	      			<img border="10" height="100%" width="100%" hspace="0" src="{{getFirstImage this}}"/>
 	      			<h2>{{name}}</h2>
@@ -368,17 +369,16 @@
 			      	<table class="table table-striped">
 			      		<th>Agent</th>
 			      		<th>Price</th>
-			      		<tr>
 				      		{{#each agent_prices}}
+				      			<tr>
 				      			<td><img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{getAgentImage id}}"/></td>
 				      			<td><b>{{price_total}}{{symbolCurrency}}</b></td>
+				      			</tr>
 				      		{{/each}}
-			      		</tr>
-			      		<div class="well">
 			      			<button class="btn btn-success hotelSelection" type="button" >Select</button>
-			      		</div>
 		      		</table>
 		      	{{/each}}
+		    </div>
 	      	{{/with}}
 	      </div>
 	      <div class="modal-footer">
