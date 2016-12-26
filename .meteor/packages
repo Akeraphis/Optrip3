@@ -31,3 +31,5 @@ rzymek:fullcalendar
 momentjs:moment
 postrednik:meteor-rangeslider
 meteorhacks:kadira
+accounts-password
+accounts-ui
