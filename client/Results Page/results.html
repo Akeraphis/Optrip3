@@ -156,10 +156,8 @@
 			{{#each PricingOptions}}
 				<tr>
 				{{#with Agents}}
-					{{#with getAgent this}}
-						<td><img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/></td>
-						<td>{{Type}}</td>
-					{{/with}}
+					<td><img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/></td>
+					<td>{{Type}}</td>
 				{{/with}}
 				<td><h4>{{Price}} {{symbolCurrency}}</h4></td>
 				<td><button class="btn btn-success pricingOption" type="button" >Select</button></td>

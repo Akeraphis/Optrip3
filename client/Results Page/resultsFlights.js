@@ -137,7 +137,7 @@ Template.depAirport.helpers({
 
 		_.forEach(ff, function(itin){
 			if(itin.OutboundLeg.Directionality == "Outbound"){
-				if(!containsId(itin.OutboundLeg.OriginStation.Id, depId)){
+				if(!containsId(itin.OutboundLeg.OriginStation.Id, res)){
 					res.push(itin.OutboundLeg.OriginStation);
 				}
 			}
@@ -389,10 +389,10 @@ getMinMaxDuration = function(){
 
 	_.forEach(res,  function(itin){
 		if(itin.InboundLeg.Duration<min){
-			min = leg.Duration;
+			min = itin.InboundLeg.Duration;
 		}
 		else if(itin.InboundLeg.Duration>max){
-			max = leg.Duration;
+			max = itin.InboundLeg.Duration;
 		}
 	});
 
