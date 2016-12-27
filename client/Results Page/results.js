@@ -103,7 +103,6 @@ Template.minPrice.helpers({
 });
 
 Template.minFlight.helpers({
-
 	minLiveFlight : function(){
 		var res = Session.get("minLFP");
 		return res;

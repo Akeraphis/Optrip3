@@ -55,8 +55,9 @@ Meteor.methods({
 		lfp = Meteor.call("getLiveFlightFaresInCollection", codeDep, optimalTrip[1][0][1].code, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
 		console.log("---- Step 9 completed : Live flight prices retrieved ----");
 
-		//console.log("---- Step 9 completed : Hotel Details retrieved ----");
-		//clfp = Meteor.call("cheapestLfp", lfp);
+		//Step 7. Restructure lfp
+		clfp = Meteor.call("restructureLfp", lfp);
+		console.log("---- Step 10 completed : Live flight hotels restructured ----");
 
 		//Step 7. Get the Hotels live prices
 		var lhp = Meteor.call("getHotelsLivePrices", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
@@ -65,7 +66,7 @@ Meteor.methods({
 		var HA = Meteor.call("searchHomeAway", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market, function(err,res){if(err){console.log(err)}});
 		//Step 11. Return : trip flights to starting IP selected, car rentals to starting IP selected, hotels list for each IP on each day selected
 
-		return [optimalTrip, lfp, lhp, HA];
+		return [optimalTrip, lfp, lhp, HA, clfp];
 	},
 
 	refreshTrip: function(departureFrom, depDate, ipDays, currency, nbPerson, nbChildren, nbInfants, locale, market){

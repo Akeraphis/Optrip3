@@ -294,8 +294,12 @@ cheapestLfp = function(lfp){
 	var minInboundCarriers = [];
 	var minOutboundCarriers = [];
 
+	minPrice = lfp.flightFare.Itineraries[0].PricingOptions[0].Price;
+	clfpItin = {InboundLegId : lfp.flightFare.Itineraries[0].InboundLegId, OutboundLegId : lfp.flightFare.Itineraries[0].OutboundLegId, PricingOptions : lfp.flightFare.Itineraries[0].PricingOptions[0]};
+	minAgId = lfp.flightFare.Itineraries[0].PricingOptions[0].Agents[0];
 
-	_.forEach(lfp.flightFare.Itineraries, function(itin){
+
+	/*_.forEach(lfp.flightFare.Itineraries, function(itin){
 		_.forEach(itin.PricingOptions, function(po){
 			if(po.Price<minPrice){
 				minPrice = po.Price;
@@ -303,7 +307,7 @@ cheapestLfp = function(lfp){
 				minAgId = po.Agents[0];
 			}
 		});
-	});
+	});*/
 
 	_.forEach(lfp.flightFare.Legs, function(leg){
 		if(leg.Id==clfpItin.InboundLegId){
@@ -406,6 +410,7 @@ getMinMaxDuration = function(){
 
 filterFlights = function(direct, oneStop, twoStops, minDuration, maxDuration, airports){
 	var ff = Session.get("liveFlights");
+	var maxNumber = 30;
 	var resItin = [];
 
 	_.forEach(ff.flightFare.Itineraries, function(itin){
@@ -417,6 +422,7 @@ filterFlights = function(direct, oneStop, twoStops, minDuration, maxDuration, ai
 		var durationLegOut = outboundleg.Duration;
 		var depOutbound = getAirportFromLeg(outboundleg.OriginStation);
 		var arrInbound = getAirportFromLeg(inboundleg.DestinationStation);
+		var maxFlightPrice = Infinity;
 
 		//filtered out if not direct
 		if(!direct && (countSegIn==1 || countSegOut==1)){}
@@ -433,12 +439,29 @@ filterFlights = function(direct, oneStop, twoStops, minDuration, maxDuration, ai
 		//if not skimmed out by filters then add to the selection list
 		else{
 			resItin.push(itin);
+			resItin.sort(function(a,b){
+				if(a.PricingOptions[0].Price>b.PricingOptions[0].Price){
+					return 1;
+				}
+				if(a.PricingOptions[0].Price<b.PricingOptions[0].Price){
+					return -1;
+				}
+				else{
+					return 0;
+				}
+			});
+
+			if(resItin.length>maxNumber){
+				resItin.splice(maxNumber, 1);
+			}
+			maxFlightPrice = resItin[resItin.length-1].PricingOptions[0].Price;
 		}
 	});
 
 	ff.flightFare.Itineraries = resItin;
 
 	Session.set("selectedLiveFlights", ff);
+	console.log("results :", Session.get("selectedLiveFlights"));
 };
 
 sanitycheckAirport = function(airports, depOutbound, arrInbound){
