@@ -1,0 +1,8 @@
+{
+  "galaxy.meteor.com": { 
+     "env": {
+     	"ROOT_URL": "optrip.eu.meteorapp.com",
+       "MONGO_URL": "mongodb://JBClouard:QuWeXAQ7@ds145148.mlab.com:45148/optripdb" 
+     } 
+   }
+}
