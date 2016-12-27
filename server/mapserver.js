@@ -66,7 +66,8 @@ Meteor.methods({
 		var HA = Meteor.call("searchHomeAway", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market, function(err,res){if(err){console.log(err)}});
 		//Step 11. Return : trip flights to starting IP selected, car rentals to starting IP selected, hotels list for each IP on each day selected
 
-		return [optimalTrip, lfp, lhp, HA, clfp];
+		//return [optimalTrip, lfp, lhp, HA, clfp];
+		return [optimalTrip, clfp, lhp, HA]
 	},
 
 	refreshTrip: function(departureFrom, depDate, ipDays, currency, nbPerson, nbChildren, nbInfants, locale, market){

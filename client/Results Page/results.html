@@ -46,15 +46,13 @@
 		<div class="panel-heading">Flight</div>
 		<div class="panel-body">
 			{{#with minLiveFlight}}
-				{{#with Itineraries}}
-					{{#with Agents}}
-						<img border="0" height="60" width="120" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
-					{{/with}}
-					{{#with PricingOptions}}
-						<h3>{{Price}} {{symbolCurrency}}</h3>
-					{{/with}}
-					<br/>
+				{{#with Agents}}
+					<img border="0" height="60" width="120" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
 				{{/with}}
+				{{#with PricingOptions}}
+					<h3>{{Price}} {{symbolCurrency}}</h3>
+				{{/with}}
+				<br/>
 				<ul class="nav nav-tabs" role="tablist">
 					<li role="presentation" class="active"><a href="#outbound" aria-controls="home" role="tab" data-toggle="tab">Outbound</a></li>
 					<li role="presentation"><a href="#inbound" aria-controls="home" role="tab" data-toggle="tab">Inbound</a></li>
@@ -98,10 +96,10 @@
 					<br/>
 					<div class="tab-content">
 						<div role="tabpanel" class="tab-pane fade in active" id="{{OutboundLegId}}">
-							{{>displayLeg legId=this.OutboundLegId}}
+							{{>displayLeg leg=this.OutboundLeg}}
 						</div>
 						<div role="tabpanel" class="tab-pane fade" id="{{InboundLegId}}">
-							{{>displayLeg legId=this.InboundLegId}}
+							{{>displayLeg leg=this.InboundLeg}}
 						</div>
 					</div>
 					<br/>
@@ -118,10 +116,10 @@
 </template>
 
 <template name="displayLeg">
-	{{#with lfleg legId}}
+	{{#with leg}}
 		{{#each SegmentIds}}
 			{{Directionality}}
-			{{>displaySegment segId=this}}
+			{{>displaySegment seg=this.newSegments}}
 			<br/>
 		{{/each}}
 		Total Duration : {{Duration}} minutes
@@ -130,21 +128,21 @@
 </template>
 
 <template name="displaySegment">
-	{{#with lfseg segId}}
+	{{#each seg}}
 		Departure at {{getDepTime}} on {{getDepDate}} from 
-		{{#with getPlace OriginStation}}
+		{{#with OriginStation}}
 			<b>{{Name}} {{Type}}</b>
 		{{/with}}<br/>
-		{{#with getCar OperatingCarrier}}
+		{{#with OperatingCarrier}}
 			<img border="0" height="45" width=90 hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
 		{{/with}}<br/>
 		<b>{{Duration}} minutes</b>
 		<br/>
 		Arrival at {{getArrTime}} on {{getArrDate}} to 
-		{{#with getPlace DestinationStation}}
+		{{#with DestinationStation}}
 			<b>{{Name}} {{Type}}</b>
 		{{/with}}<br/>
-	{{/with}}
+	{{/each}}
 </template>
 
 <template name="priceOptions">
@@ -174,9 +172,9 @@
 
 <template name="leg">
 	{{#each Segments}}
-		{{#with OperatingCarrier}}
+		{{#each OperatingCarrier}}
 			<img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
-		{{/with}}
+		{{/each}}
 		<br/>
 		Flight Number : {{FlightNumber}}
 		<br/><br/>

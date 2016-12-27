@@ -2,7 +2,8 @@ Template.displayAllFlight.events({
 	'click .pricingOption': function(e){
 		var link = this.DeepLinkUrl;
 		var price = this.Price;
-		var It = Session.get("selectedLiveFlights").flightFare.Itineraries;
+		//var It = Session.get("selectedLiveFlights").flightFare.Itineraries;
+		var It = Session.get("selectedLiveFlights")
 		var res = {};
 
 		_.forEach(It, function(itin){
@@ -13,7 +14,8 @@ Template.displayAllFlight.events({
 			})
 		});
 
-		var res2 = getLfp(res, this, Session.get("selectedLiveFlights"));
+		//var res2 = getLfp(res, this, Session.get("selectedLiveFlights"));
+		var res2 = Session.get("selectedLiveFlights")[0];
 		Session.set("minLFP", res2);
 		$('#myModal').modal('hide');
 	}
@@ -21,7 +23,8 @@ Template.displayAllFlight.events({
 
 Template.displayAllFlight.helpers({
 	allItineraries : function(){
-		return Session.get("selectedLiveFlights").flightFare.Itineraries;
+		//return Session.get("selectedLiveFlights").flightFare.Itineraries;
+		return Session.get("selectedLiveFlights")
 	},
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
@@ -130,23 +133,14 @@ Template.tripLength.onRendered(function(){
 Template.depAirport.helpers({
 	'depAirports': function(){
 		var ff = Session.get("liveFlights");
-		var depId = [];
 		var res = [];
 
-		_.forEach(ff.flightFare.Legs, function(leg){
-			if(leg.Directionality == "Outbound"){
-				if(!containsId(leg.OriginStation, depId)){
-					depId.push(leg.OriginStation);
+		_.forEach(ff, function(itin){
+			if(itin.OutboundLeg.Directionality == "Outbound"){
+				if(!containsId(itin.OutboundLeg.OriginStation.Id, depId)){
+					res.push(itin.OutboundLeg.OriginStation);
 				}
 			}
-		});
-
-		_.forEach(ff.flightFare.Places, function(pl){
-			_.forEach(depId, function(did){
-				if(did==pl.Id){
-					res.push(pl);
-				}
-			});
 		});
 
 		return res;
@@ -393,11 +387,11 @@ getMinMaxDuration = function(){
 	var min = Infinity;
 	var max = 0;
 
-	_.forEach(res.flightFare.Legs,  function(leg){
-		if(leg.Duration<min){
+	_.forEach(res,  function(itin){
+		if(itin.InboundLeg.Duration<min){
 			min = leg.Duration;
 		}
-		else if(leg.Duration>max){
+		else if(itin.InboundLeg.Duration>max){
 			max = leg.Duration;
 		}
 	});

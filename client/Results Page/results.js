@@ -116,13 +116,16 @@ Template.minFlight.helpers({
 
 Template.minPrice.onRendered(function(){
 
-	Meteor.call("cheapestLfp", Session.get("selectedLiveFlights"), function(err, res){
+	var res = Session.get("selectedLiveFlights")[0];
+	Session.set("minLFP", res)
+
+	/*Meteor.call("cheapestLfp", Session.get("selectedLiveFlights"), function(err, res){
 		if (!err){
 			if(res.Currencies.length >=1){
 				Session.set("minLFP", res)
 			}
 		}
-	});
+	});*/
 })
 
 Template.leg.helpers({
