@@ -46,10 +46,10 @@
 		<div class="panel-heading">Flight</div>
 		<div class="panel-body">
 			{{#with minLiveFlight}}
-				{{#with Agents}}
-					<img border="0" height="60" width="120" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
-				{{/with}}
 				{{#with PricingOptions}}
+					{{#with Agents}}
+						<img border="0" height="60" width="120" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
+					{{/with}}
 					<h3>{{Price}} {{symbolCurrency}}</h3>
 				{{/with}}
 				<br/>
@@ -61,12 +61,12 @@
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane fade in active" id="outbound">
 						{{#with OutboundLeg}}
-							{{>leg}}
+							{{>leg leg=this}}
 						{{/with}}
 					</div>
 					<div role="tabpanel" class="tab-pane fade" id="inbound">
 						{{#with InboundLeg}}
-							{{>leg}}
+							{{>leg leg=this}}
 						{{/with}}
 					</div>
 				</div>
@@ -117,9 +117,9 @@
 
 <template name="displayLeg">
 	{{#with leg}}
-		{{#each SegmentIds}}
+		{{#each newSegments}}
 			{{Directionality}}
-			{{>displaySegment seg=this.newSegments}}
+			{{>displaySegment seg=this}}
 			<br/>
 		{{/each}}
 		Total Duration : {{Duration}} minutes
@@ -128,12 +128,12 @@
 </template>
 
 <template name="displaySegment">
-	{{#each seg}}
+	{{#with seg}}
 		Departure at {{getDepTime}} on {{getDepDate}} from 
 		{{#with OriginStation}}
 			<b>{{Name}} {{Type}}</b>
 		{{/with}}<br/>
-		{{#with OperatingCarrier}}
+		{{#with newOperatingCarrier}}
 			<img border="0" height="45" width=90 hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
 		{{/with}}<br/>
 		<b>{{Duration}} minutes</b>
@@ -142,7 +142,7 @@
 		{{#with DestinationStation}}
 			<b>{{Name}} {{Type}}</b>
 		{{/with}}<br/>
-	{{/each}}
+	{{/with}}
 </template>
 
 <template name="priceOptions">
@@ -155,10 +155,10 @@
 			</tr>
 			{{#each PricingOptions}}
 				<tr>
-				{{#with Agents}}
+				{{#each newAgents}}
 					<td><img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/></td>
 					<td>{{Type}}</td>
-				{{/with}}
+				{{/each}}
 				<td><h4>{{Price}} {{symbolCurrency}}</h4></td>
 				<td><button class="btn btn-success pricingOption" type="button" >Select</button></td>
 				</tr>				
@@ -169,24 +169,26 @@
 </template>
 
 <template name="leg">
-	{{#each Segments}}
-		{{#each OperatingCarrier}}
-			<img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
+	{{#with getLeg leg}}
+		{{#each newSegments}}
+			{{#with newOperatingCarrier}}
+				<img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
+			{{/with}}
+			<br/>
+			Flight Number : {{FlightNumber}}
+			<br/><br/>
+			{{getDepDate}} leaving at {{getDepTime}}<br/>
+			{{#with OriginStation}}
+				<b>{{Name}}  {{Type}}</b>
+			{{/with}}
+			<br/>in {{Duration}} minutes to<br/><br/>
+			{{getArrDate}} landing at {{getArrTime}}<br/>
+			{{#with DestinationStation}}
+				<b>{{Name}}  {{Type}}</b>
+			{{/with}}
+			<br/>
 		{{/each}}
-		<br/>
-		Flight Number : {{FlightNumber}}
-		<br/><br/>
-		{{getDepDate}} leaving at {{getDepTime}}<br/>
-		{{#with OriginStation}}
-			<b>{{Name}}  {{Type}}</b>
-		{{/with}}
-		<br/>in {{Duration}} minutes to<br/><br/>
-		{{getArrDate}} landing at {{getArrTime}}<br/>
-		{{#with DestinationStation}}
-			<b>{{Name}}  {{Type}}</b>
-		{{/with}}
-		<br/>
-	{{/each}}
+	{{/with}}
 </template>
 	
 <template name="minCar">

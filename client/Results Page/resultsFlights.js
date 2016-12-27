@@ -14,9 +14,11 @@ Template.displayAllFlight.events({
 			})
 		});
 
-		//var res2 = getLfp(res, this, Session.get("selectedLiveFlights"));
-		var res2 = Session.get("selectedLiveFlights")[0];
-		Session.set("minLFP", res2);
+		var po = res.PricingOptions[0];
+		var ag = res.PricingOptions[0].newAgents[0];
+		po.Agents = ag;
+		res.PricingOptions = po;
+		Session.set("minLFP", res);
 		$('#myModal').modal('hide');
 	}
 });
@@ -103,7 +105,12 @@ Template.nbStops.events({
 	'click .list-group' : function(e){
 		var airports = getSelectedAirports();
 		filterFlights(document.getElementById("direct").checked, document.getElementById("oneStop").checked, document.getElementById("twoStops").checked, $("#durationFlight").data("ionRangeSlider").result.from, $("#durationFlight").data("ionRangeSlider").result.to, airports);
-		Session.set("minLFP", cheapestLfp(Session.get("selectedLiveFlights")));
+		var res = Session.get("selectedLiveFlights")
+		var po = res.PricingOptions[0];
+		var ag = res.PricingOptions[0].newAgents[0];
+		po.Agents = ag;
+		res.PricingOptions = po;
+		Session.set("minLFP", res);
 	},
 });
 
@@ -125,7 +132,12 @@ Template.tripLength.onRendered(function(){
 	    onFinish: function (data) {
 	    	var airports = getSelectedAirports();
 			filterFlights(document.getElementById("direct").checked, document.getElementById("oneStop").checked, document.getElementById("twoStops").checked, data.from, data.to, airports);
-			Session.set("minLFP", cheapestLfp(Session.get("selectedLiveFlights")));
+			var res = Session.get("selectedLiveFlights")
+			var po = res.PricingOptions[0];
+			var ag = res.PricingOptions[0].newAgents[0];
+			po.Agents = ag;
+			res.PricingOptions = po;
+			Session.set("minLFP", res);
 		},
 	});
 });
@@ -143,6 +155,7 @@ Template.depAirport.helpers({
 			}
 		});
 
+		console.log(res);
 		return res;
 	},
 });
@@ -151,7 +164,12 @@ Template.depAirport.events({
 	'click .airport-group' : function(e){
 		var airports = getSelectedAirports();
 		filterFlights(document.getElementById("direct").checked, document.getElementById("oneStop").checked, document.getElementById("twoStops").checked, $("#durationFlight").data("ionRangeSlider").result.from, $("#durationFlight").data("ionRangeSlider").result.to, airports);
-		Session.set("minLFP", cheapestLfp(Session.get("selectedLiveFlights")));
+		var res = Session.get("selectedLiveFlights")
+		var po = res.PricingOptions[0];
+		var ag = res.PricingOptions[0].newAgents[0];
+		po.Agents = ag;
+		res.PricingOptions = po;
+		Session.set("minLFP", res);
 	},
 });
 

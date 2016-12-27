@@ -224,13 +224,13 @@ Meteor.methods({
 			_.forEach(lfp.flightFare.Legs, function(leg){
 				if(leg.Id==itin.InboundLegId){
 					replaceSegments(leg, lfp.flightFare.Segments);
-					replaceCarriers(leg, lfp.flightFare.Carriers);
+					leg = replaceCarriers(leg, lfp.flightFare.Carriers);
 					replacePlaces(leg, lfp.flightFare.Places);
 					itin.InboundLeg = leg;
 				}
 				else if(leg.Id==itin.OutboundLegId){
 					replaceSegments(leg, lfp.flightFare.Segments);
-					replaceCarriers(leg, lfp.flightFare.Carriers);
+					leg = replaceCarriers(leg, lfp.flightFare.Carriers);
 					replacePlaces(leg, lfp.flightFare.Places);
 					itin.OutboundLeg = leg;
 				}
@@ -269,14 +269,15 @@ replaceCarriers = function(leg, carriers){
 			}
 		});
 		_.forEach(leg.newSegments, function(seg){
-			if(seg.Carrier==car.Id){
-				seg.Carrier=car;
-			}
 			if(seg.OperatingCarrier==car.Id){
-				seg.OperatingCarrier=car;
+				seg.newOperatingCarrier = car;
 			}
+			if(seg.Carrier==car.Id){
+				seg.newCarrier = car;
+			}		
 		});
 	});
+	return leg;
 };
 
 replacePlaces = function(leg, places){

@@ -44,7 +44,6 @@ Template.minFlight.events({
 Template.results.helpers({
 	results : function(){
 		if (Session.get("minTotalPrice")<Infinity){
-		//if (Session.get("minLFP").Itineraries){
 			return true;
 		}
 		else{
@@ -66,7 +65,7 @@ Template.minPrice.helpers({
 	minTotalPrice : function(){
 		var res = Session.get("results");
 		if(res.length >1 && Session.get("minLFP").Itineraries){
-			return Math.round(Session.get("SelectedCar").price_all_days+(Session.get("minLFP")).Itineraries.PricingOptions.Price+(res[2])[0]);
+			return Math.round(Session.get("SelectedCar").price_all_days+(Session.get("minLFP")).PricingOptions.Price+(res[2])[0]);
 		}
 	},
 
@@ -79,7 +78,7 @@ Template.minPrice.helpers({
 	minFlightPrice : function(){
 		var res = (Session.get("minLFP"));
 		if(res.Itineraries){
-			return Math.round(res.Itineraries.PricingOptions.Price*Session.get('nbPersons'));
+			return Math.round(res.PricingOptions.Price*Session.get('nbPersons'));
 		}
 	},
 
@@ -117,15 +116,11 @@ Template.minFlight.helpers({
 Template.minPrice.onRendered(function(){
 
 	var res = Session.get("selectedLiveFlights")[0];
+	var po = Session.get("selectedLiveFlights")[0].PricingOptions[0];
+	var ag = Session.get("selectedLiveFlights")[0].PricingOptions[0].newAgents[0];
+	po.Agents = ag;
+	res.PricingOptions = po;
 	Session.set("minLFP", res)
-
-	/*Meteor.call("cheapestLfp", Session.get("selectedLiveFlights"), function(err, res){
-		if (!err){
-			if(res.Currencies.length >=1){
-				Session.set("minLFP", res)
-			}
-		}
-	});*/
 })
 
 Template.leg.helpers({
@@ -144,6 +139,9 @@ Template.leg.helpers({
 	getArrTime: function(){
 		var depDateTime = this.ArrivalDateTime;
 		return depDateTime.substring(depDateTime.indexOf("T")+1);
+	},
+	getLeg : function(leg){
+		return leg
 	}
 });
 
