@@ -46,15 +46,13 @@
 		<div class="panel-heading">Flight</div>
 		<div class="panel-body">
 			{{#with minLiveFlight}}
-				{{#with Itineraries}}
+				{{#with PricingOptions}}
 					{{#with Agents}}
 						<img border="0" height="60" width="120" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
 					{{/with}}
-					{{#with PricingOptions}}
-						<h3>{{Price}} {{symbolCurrency}}</h3>
-					{{/with}}
-					<br/>
+					<h3>{{Price}} {{symbolCurrency}}</h3>
 				{{/with}}
+				<br/>
 				<ul class="nav nav-tabs" role="tablist">
 					<li role="presentation" class="active"><a href="#outbound" aria-controls="home" role="tab" data-toggle="tab">Outbound</a></li>
 					<li role="presentation"><a href="#inbound" aria-controls="home" role="tab" data-toggle="tab">Inbound</a></li>
@@ -63,12 +61,12 @@
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane fade in active" id="outbound">
 						{{#with OutboundLeg}}
-							{{>leg}}
+							{{>leg leg=this}}
 						{{/with}}
 					</div>
 					<div role="tabpanel" class="tab-pane fade" id="inbound">
 						{{#with InboundLeg}}
-							{{>leg}}
+							{{>leg leg=this}}
 						{{/with}}
 					</div>
 				</div>
@@ -98,10 +96,10 @@
 					<br/>
 					<div class="tab-content">
 						<div role="tabpanel" class="tab-pane fade in active" id="{{OutboundLegId}}">
-							{{>displayLeg legId=this.OutboundLegId}}
+							{{>displayLeg leg=this.OutboundLeg}}
 						</div>
 						<div role="tabpanel" class="tab-pane fade" id="{{InboundLegId}}">
-							{{>displayLeg legId=this.InboundLegId}}
+							{{>displayLeg leg=this.InboundLeg}}
 						</div>
 					</div>
 					<br/>
@@ -118,10 +116,10 @@
 </template>
 
 <template name="displayLeg">
-	{{#with lfleg legId}}
-		{{#each SegmentIds}}
+	{{#with leg}}
+		{{#each newSegments}}
 			{{Directionality}}
-			{{>displaySegment segId=this}}
+			{{>displaySegment seg=this}}
 			<br/>
 		{{/each}}
 		Total Duration : {{Duration}} minutes
@@ -130,18 +128,18 @@
 </template>
 
 <template name="displaySegment">
-	{{#with lfseg segId}}
+	{{#with seg}}
 		Departure at {{getDepTime}} on {{getDepDate}} from 
-		{{#with getPlace OriginStation}}
+		{{#with OriginStation}}
 			<b>{{Name}} {{Type}}</b>
 		{{/with}}<br/>
-		{{#with getCar OperatingCarrier}}
+		{{#with newOperatingCarrier}}
 			<img border="0" height="45" width=90 hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
 		{{/with}}<br/>
 		<b>{{Duration}} minutes</b>
 		<br/>
 		Arrival at {{getArrTime}} on {{getArrDate}} to 
-		{{#with getPlace DestinationStation}}
+		{{#with DestinationStation}}
 			<b>{{Name}} {{Type}}</b>
 		{{/with}}<br/>
 	{{/with}}
@@ -157,12 +155,10 @@
 			</tr>
 			{{#each PricingOptions}}
 				<tr>
-				{{#with Agents}}
-					{{#with getAgent this}}
-						<td><img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/></td>
-						<td>{{Type}}</td>
-					{{/with}}
-				{{/with}}
+				{{#each newAgents}}
+					<td><img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/></td>
+					<td>{{Type}}</td>
+				{{/each}}
 				<td><h4>{{Price}} {{symbolCurrency}}</h4></td>
 				<td><button class="btn btn-success pricingOption" type="button" >Select</button></td>
 				</tr>				
@@ -173,24 +169,26 @@
 </template>
 
 <template name="leg">
-	{{#each Segments}}
-		{{#with OperatingCarrier}}
-			<img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
-		{{/with}}
-		<br/>
-		Flight Number : {{FlightNumber}}
-		<br/><br/>
-		{{getDepDate}} leaving at {{getDepTime}}<br/>
-		{{#with OriginStation}}
-			<b>{{Name}}  {{Type}}</b>
-		{{/with}}
-		<br/>in {{Duration}} minutes to<br/><br/>
-		{{getArrDate}} landing at {{getArrTime}}<br/>
-		{{#with DestinationStation}}
-			<b>{{Name}}  {{Type}}</b>
-		{{/with}}
-		<br/>
-	{{/each}}
+	{{#with getLeg leg}}
+		{{#each newSegments}}
+			{{#with newOperatingCarrier}}
+				<img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
+			{{/with}}
+			<br/>
+			Flight Number : {{FlightNumber}}
+			<br/><br/>
+			{{getDepDate}} leaving at {{getDepTime}}<br/>
+			{{#with OriginStation}}
+				<b>{{Name}}  {{Type}}</b>
+			{{/with}}
+			<br/>in {{Duration}} minutes to<br/><br/>
+			{{getArrDate}} landing at {{getArrTime}}<br/>
+			{{#with DestinationStation}}
+				<b>{{Name}}  {{Type}}</b>
+			{{/with}}
+			<br/>
+		{{/each}}
+	{{/with}}
 </template>
 	
 <template name="minCar">
@@ -266,7 +264,6 @@
 								{{#with hotels}}
 									<img border="10" height="100%" width="100%" hspace="0" src="{{getFirstImage hotel_id}}"/>
 									{{>allImages hotel=hotel_id}}
-									<!--{{>carrouselPictures hotel=hotel_id}}-->
 								{{/with}}
 								<div class="caption">
 									{{#with hotels}}
@@ -302,22 +299,23 @@
 												</div>
 											</div>
 										{{/with}}
+										<br/>
+										<!--{{>displayAllHotels param = this}}-->
 									</p>
 								</div>
 							</div>
 						</div>
 					{{/with}}
-					{{>displayAllHotels}}
 				{{/each}}
 			</div>
 		</div>
 </template>
 	
 <template name="allImages">
-	<button class="btn btn-info" type="button" name="otherImages" data-toggle="modal" data-target="#{{hotel_id}}">More images</button>
-		<!-- Modal -->
 	{{#with getHotel hotel}}	
-		<div class="modal fade" id="{{hotel_id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<button class="btn btn-info" type="button" name="otherImages" data-toggle="modal" data-target="{{getHotelIdDiesed hotel_id}}">More images</button>
+		<!-- Modal -->
+		<div class="modal fade" id="{{getHotelIdNotDiesed hotel_id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
@@ -349,36 +347,44 @@
 	{{/with}}
 </template>
 
-<template name="carrouselPictures">
-	{{#with getHotel hotelid}}
-		<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-		  <ol class="carousel-indicators">
-	  		{{#each newImages}}
-			    <li data-target="#carousel-example-generic" data-slide-to="{{url}}" class="active"></li>
-			{{/each}}
-		  </ol>
-
-		  <div class="carousel-inner" role="listbox">
-	  		{{#each newImages}}
-			    <div class="item">
-			      <img img border="10" height="100%" width="100%" hspace="0" src="{{url}}">
-			    </div>
-	    	{{/each}}
-		  </div>
-		  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-		    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-		    <span class="sr-only">Previous</span>
-		  </a>
-		  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-		    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-		    <span class="sr-only">Next</span>
-		  </a>
-		</div>
-	{{/with}}
-</template>
-
 <template name="displayAllHotels">
-	
+	<button class="btn btn-info" type="button" name="otherHotels" data-toggle="modal" data-target="{{getIDDiased param}}">Other Hotels</button>
+	<!-- Modal -->
+	<div class="modal fade" id="{{getIdNotDiased param}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title" id="myModalLabel">Hotels</h4>
+	      </div>
+	      <div class="modal-body">
+	      	{{#with allHotels param}}
+		      	<div class="well">
+		      		{{#each hotels}}
+		      			<img border="10" height="100%" width="100%" hspace="0" src="{{getFirstImage this}}"/>
+		      			<h2>{{name}}</h2>
+		      		{{/each}}
+		      		{{#each hotels_prices}}
+				      	<table class="table table-striped">
+				      		<th>Agent</th>
+				      		<th>Price</th>
+					      		{{#each agent_prices}}
+					      			<tr>
+					      			<td><img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{getAgentImage id}}"/></td>
+					      			<td><b>{{price_total}}{{symbolCurrency}}</b></td>
+					      			</tr>
+					      		{{/each}}
+				      			<button class="btn btn-success hotelSelection" type="button" >Select</button>
+			      		</table>
+			      	{{/each}}
+			    </div>
+	      	{{/with}}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </template>
 
 <template name="options">

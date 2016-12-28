@@ -1,0 +1,7 @@
+{
+  "galaxy.meteor.com": { 
+     "env": {
+		"MONGO_URL": "mongodb://jbc:QuWeXAQ7@ds145148.mlab.com:45148/optripdb" 
+     } 
+   }
+}

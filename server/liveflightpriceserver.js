@@ -219,5 +219,93 @@ Meteor.methods({
 		return clfp;
 	},
 
+	restructureLfp : function(lfp){
+		_.forEach(lfp.flightFare.Itineraries, function(itin){
+			_.forEach(lfp.flightFare.Legs, function(leg){
+				if(leg.Id==itin.InboundLegId){
+					replaceSegments(leg, lfp.flightFare.Segments);
+					leg = replaceCarriers(leg, lfp.flightFare.Carriers);
+					replacePlaces(leg, lfp.flightFare.Places);
+					itin.InboundLeg = leg;
+				}
+				else if(leg.Id==itin.OutboundLegId){
+					replaceSegments(leg, lfp.flightFare.Segments);
+					leg = replaceCarriers(leg, lfp.flightFare.Carriers);
+					replacePlaces(leg, lfp.flightFare.Places);
+					itin.OutboundLeg = leg;
+				}
+			});
+
+			_.forEach(itin.PricingOptions, function(po){
+				replaceAgent(po, lfp.flightFare.Agents);
+			});
+		});
+
+		return lfp.flightFare.Itineraries;	
+	}
 });
 
+replaceSegments = function(leg, segments){
+	leg.newSegments = [];
+	_.forEach(segments, function(seg){
+		_.forEach(leg.SegmentIds, function(segId){
+			if(segId==seg.Id){
+				leg.newSegments.push(seg);
+			}
+		});
+	});
+};
+
+replaceCarriers = function(leg, carriers){
+	_.forEach(carriers, function(car){
+		_.forEach(leg.OperatingCarriers, function(carri){
+			if(car.Id==carri){
+				carri.Details = car;
+			}
+		});
+		_.forEach(leg.Carriers, function(carri){
+			if(car.Id==carri){
+				carri.Details = car;
+			}
+		});
+		_.forEach(leg.newSegments, function(seg){
+			if(seg.OperatingCarrier==car.Id){
+				seg.newOperatingCarrier = car;
+			}
+			if(seg.Carrier==car.Id){
+				seg.newCarrier = car;
+			}		
+		});
+	});
+	return leg;
+};
+
+replacePlaces = function(leg, places){
+	_.forEach(places, function(pl){
+		if(leg.OriginStation==pl.Id){
+			leg.OriginStation=pl;
+		}
+		if(leg.DestinationStation==pl.Id){
+			leg.DestinationStation=pl;
+		}
+		_.forEach(leg.newSegments, function(seg){
+			if(seg.OriginStation==pl.Id){
+				seg.OriginStation=pl;
+			}
+			if(seg.DestinationStation==pl.Id){
+				seg.DestinationStation=pl;
+			}
+		});
+	});
+};
+
+replaceAgent = function(po, agents){
+	po.newAgents = [];
+	_.forEach(po.Agents, function(ag){
+		_.forEach(agents, function(agent){
+			if(ag==agent.Id){
+				po.newAgents.push(agent);
+			}
+		});
+	});
+};
