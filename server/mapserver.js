@@ -57,10 +57,11 @@ Meteor.methods({
 
 		//Step 7. Restructure lfp
 		clfp = Meteor.call("restructureLfp", lfp);
-		console.log("---- Step 10 completed : Live flight hotels restructured ----");
+		console.log("---- Step 10 completed : Live flight restructured ----");
 
 		//Step 7. Get the Hotels live prices
 		var lhp = Meteor.call("getHotelsLivePrices", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
+		console.log("---- Step 11 completed : Live hotels retrieved ----");
 
 		//Step 10. Call car rental live prices for selected starting IP
 		var HA = Meteor.call("searchHomeAway", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market, function(err,res){if(err){console.log(err)}});

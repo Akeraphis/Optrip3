@@ -51,7 +51,7 @@ Template.results.helpers({
 		}
 	},
 	gotLiveFlight : function(){
-		if (Session.get("minLFP").Itineraries){
+		if (Session.get("minLFP")){
 			return true;
 		}
 		else{
@@ -64,8 +64,8 @@ Template.minPrice.helpers({
 
 	minTotalPrice : function(){
 		var res = Session.get("results");
-		if(res.length >1 && Session.get("minLFP").Itineraries){
-			return Math.round(Session.get("SelectedCar").price_all_days+(Session.get("minLFP")).PricingOptions.Price+(res[2])[0]);
+		if(res.length >1 && Session.get("minLFP").OutboundLegId){
+			return Math.round(Session.get("SelectedCar").price_all_days+(Session.get("minLFP").PricingOptions.Price)*Session.get('nbPersons')+(res[2])[0]);
 		}
 	},
 
@@ -77,7 +77,7 @@ Template.minPrice.helpers({
 
 	minFlightPrice : function(){
 		var res = (Session.get("minLFP"));
-		if(res.Itineraries){
+		if(res.OutboundLegId){
 			return Math.round(res.PricingOptions.Price*Session.get('nbPersons'));
 		}
 	},
@@ -317,7 +317,7 @@ Template.tripDays.onRendered(function(){
 		countDays= countDays+ipDays.nbDays;
 	});
 
-	if(Session.get("minLFP").Itineraries){
+	if(Session.get("minLFP")){
 		var event2 = {title : "trip", start : moment(Session.get("minLFP").OutboundLeg.Departure), end: moment(Session.get("minLFP").InboundLeg.Arrival), editable : 'true' };
 
 		$('#myCalendar').fullCalendar( 'renderEvent', event2, true);
