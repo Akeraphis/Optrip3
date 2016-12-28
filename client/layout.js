@@ -12,13 +12,13 @@ Template.mainLayout.events({
         	$('.dropdown').removeClass('open');
     	}
 	}
-})
+});
 
 Template.dropDownCurrency.helpers({
 	Currencies: function(){
     	return Currencies.find().fetch();
 	}
-})
+});
 
 Template.dropDownCurrency.events({
 	"click .cur": function(e){
@@ -27,13 +27,13 @@ Template.dropDownCurrency.events({
         console.log("currency : " + Session.get('selectedCurrency'));
         document.getElementById("curr").innerHTML=$(e.currentTarget)[0].text;
 	}
-})
+});
 
 Template.dropDownLocale.helpers({
 	Locales: function(){
     	return Locales.find().fetch();
 	}
-})
+});
 
 Template.dropDownLocale.events({
 	"click .loc": function(e){
@@ -42,13 +42,13 @@ Template.dropDownLocale.events({
         console.log("locale : " + Session.get('selectedLocal'));
         document.getElementById("loca").innerHTML=($(e.currentTarget)[0].text).substring(8);
 	}
-})
+});
 
 Template.dropDownMarket.helpers({
 	Markets: function(){
     	return Markets.find().fetch();
 	}
-})
+});
 
 Template.dropDownMarket.events({
 	"click .mar": function(e){
@@ -57,4 +57,4 @@ Template.dropDownMarket.events({
         console.log("market : " + Session.get('selectedMarket'));
         document.getElementById("mark").innerHTML=($(e.currentTarget)[0].text).substring(5);
 	}
-})
+});
