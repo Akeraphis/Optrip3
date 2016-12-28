@@ -84,7 +84,7 @@ Meteor.methods({
 			var lhp = Meteor.call("getHotelsLivePrices", ip, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
 			console.log("---- Step 11 completed : Live hotels retrieved ----");
 
-			optimalTrip = [100, [flightTable, [0,,,,] , lhp], codeArr, codeArr];
+			optimalTrip = [100, [flightTable, [0,,,,] , [lhp[0].data.hotels_prices[0].agent_prices[0].price_total, lhp[0]]], codeArr, codeArr];
 		}
 
 		//Step 10. Call car rental live prices for selected starting IP
