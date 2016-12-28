@@ -59,7 +59,7 @@ Template.results.helpers({
 		}
 	},
 	hasCar : function(){
-		if(Session.get("results")){
+		if(Session.get("results")[1][1]){
 			if(Session.get("results")[1][1][1]){
 				return true
 			}
@@ -115,7 +115,7 @@ Template.minPrice.helpers({
 		return Session.get('nbPersons');
 	},
 	hasCar : function(){
-		if(Session.get("results")){
+		if(Session.get("results")[1][1]){
 			if(Session.get("results")[1][1][1]){
 				return true
 			}
@@ -421,7 +421,7 @@ getMinHotels = function(hf){
 
 Template.options.helpers({
 	hasCar : function(){
-		if(Session.get("results")){
+		if(Session.get("results")[1][1]){
 			if(Session.get("results")[1][1][1]){
 				return true
 			}
