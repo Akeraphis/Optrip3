@@ -63,17 +63,20 @@
 #departurePoint{
     margin-left : 20px;
     margin-right: 20px;
-    width:500px;
+    width: 90%;
+    /*width:500px;*/
 }
 
 #departureDate{
- 
     margin-right: 20px;
-    width:500px;
+    margin-left: 5px;
+    /*width: 100%;*/
+    width: 300px;
 }
-
+ 
 #NbDays{
-    width:440px;
+    /*width: 100%;*/
+    width:150px;
 }
 
 #basic-addon2{
@@ -86,9 +89,13 @@
 }
 
 #dropdownMenu1{
-    width: 500px;
+    margin-right: 20px;
+    margin-left: 20px;
+    width: 300px;
 }
 
 #dropdownMenu2{
-    width: 500px;
+    margin-right: 20px;
+    margin-left: 20px;
+    width: 300px;
 }

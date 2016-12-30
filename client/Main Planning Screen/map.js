@@ -18,6 +18,11 @@ Session.set("selectedMarket", "FR");
 Session.set("liveFlights", []);
 
 
+Template.home.rendered = function() {
+  $('[data-toggle="tooltip"]').tooltip({placement: 'right'});
+}; 
+
+
 //Open Google maps on startup; fill in the key
 Meteor.startup(function() {
 	GoogleMaps.load({key : googleKey});
@@ -389,8 +394,15 @@ Template.home.events({
 
 			});	
 		}
-
 	},
+
+	'mouseenter .infoBul' : function(e){
+		
+	},
+	'mouseleave .infoBul' : function(e){
+		console.log("this is it");
+	},
+
 
 	//-------------------------------------------------------------------------------------------------
 	//-------------------------------------------------------------------------------------------------

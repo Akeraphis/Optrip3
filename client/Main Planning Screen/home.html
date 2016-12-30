@@ -5,7 +5,9 @@
 				<div class="panel-heading">
 		    		<h3 class="panel-title">Where do you want to go ?</h3>
 		  		</div><br/>
-				{{> inputAutocomplete settings=settings id="departurePoint" class="form-control" name="departurePoint" placeholder="Departure from" }}<br />
+		  		<img src="question-mark-icon.png" height="30px" width="30px" data-toggle="tooltip" title="Optrip is an application that will help you build your holidays (flight+car+hotels) in an optimal way. Just seelect a number of cities you want to visit on the map and fill the fields below. Our powerful optimization engine will then find you the cheapest trip for your selection. (The computation time (empty page for now) can take up to several minutes)."><br/><br/>
+				{{> inputAutocomplete settings=settings id="departurePoint" class="form-control" name="departurePoint" placeholder="Departure from" }}
+				<br />
 				{{> inputPanel}}
 			</div>
 		</div>
@@ -33,8 +35,8 @@
 
 <template name="departureDate">
 	<div class="depDate">
-		<label>Departure Date : </label>
-		<input type="date" id="departureDate" class="form-control" value="2017-05-25"/>
+		<label>Departure Date : </label><br/>
+		<div class="col-md-10"><input type="date" id="departureDate" class="form-control" value="2017-05-25"/> </div>
 	</div><br/>
 </template>
 
@@ -46,7 +48,7 @@
 <template name='inputPanel'>
 	<div class='startingPanel'>
 		<form>
-			{{> departureDate}}
+			{{> departureDate}}<br/><br/>
 			{{> nbTravelers}}
 			{{> selectedIPs}}<br/>
 			{{> optimizeButton}}
