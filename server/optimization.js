@@ -23,13 +23,13 @@ Meteor.methods({
 				//2. For staying from 1 to n-1 days in ip1
 				var ac = res[1];
 				var nbDays1 = ac.nbDays;
+
 				var CodeArrOrderedLeft = Meteor.call("getCodeArrOrderLeft", ac, optimalCircuit);
 				var CodeArrOrderedRight = Meteor.call("getCodeArrOrderReverse", ac, CodeArrOrderedLeft);
 
 				for (var i=1; i<nbDays1; i++){
 
 					//3. Retrieve the min Car price
-					
 					var pickUpDate = makeDate(departureDate);
 					pickUpDate.setDate(makeDate(departureDate).getDate() + i);
 					var dropOffDate = makeDate(returnDate);
@@ -388,7 +388,7 @@ Meteor.methods({
 		newIpDays.push({ip : circuit[0].ip, nbDays : circuit[0].nbDays-i, step : "end"});
 
 		return newIpDays;
-	}
+	},
 
 });
 

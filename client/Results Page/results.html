@@ -12,9 +12,11 @@
 				<div class="col-md-3">
 					{{> minFlight}}
 				</div>
-				<div class="col-md-3">
-					{{> minCar}}
-				</div>
+				{{#if hasCar}}
+					<div class="col-md-3">
+						{{> minCar}}
+					</div>
+				{{/if}}
 			</div>
 			<div class="row">
 				{{> minHotel}}
@@ -36,7 +38,9 @@
 		<div class="panel-body">
 			For {{nbPersons}} adults :
 			<h4>Flight: {{minFlightPrice}} {{symbolCurrency}}</h4>
-			<h4>Car Rental : {{minCarPrice}} {{symbolCurrency}}</h4>
+			{{#if hasCar}}
+				<h4>Car Rental : {{minCarPrice}} {{symbolCurrency}}</h4>
+			{{/if}}
 			<h4>Hotel Total : {{minHotelPrices}} {{symbolCurrency}}</h4></div>
 		</div>
 </template>
@@ -403,20 +407,22 @@
 	      {{> depAirport}}
 	    </div>
 	  </div>
-	  <div class="panel panel-default">
-	    <div class="panel-heading" role="tab" id="headingTwo">
-	      <h4 class="panel-title">
-	        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-	        	Car Options
-	        </a>
-	      </h4>
-	    </div>
-	    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-	      <div class="panel-body">
-	      	{{> carAgents}}
-	      </div>
-	    </div>
-	  </div>
+	  {{#if hasCar}}
+		  <div class="panel panel-default">
+		    <div class="panel-heading" role="tab" id="headingTwo">
+		      <h4 class="panel-title">
+		        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+		        	Car Options
+		        </a>
+		      </h4>
+		    </div>
+		    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+		      <div class="panel-body">
+		      	{{> carAgents}}
+		      </div>
+		    </div>
+		  </div>
+	  {{/if}}
 	  <div class="panel panel-default">
 	    <div class="panel-heading" role="tab" id="headingThree">
 	      <h4 class="panel-title">

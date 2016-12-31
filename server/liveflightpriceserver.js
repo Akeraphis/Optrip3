@@ -84,7 +84,6 @@ Meteor.methods({
 	},
 
 	getLiveFlightFaresInCollection : function(codeDep, ca, departureDate, returnDate, currency, nbAdults, nbChildren, nbInfants, locale, market){
-		console.log("get in collection");
 		var dateNow = new Date();
 		var dateThreshold = new Date();
 		dateThreshold.setDate(dateNow.getDate()-dateFlightRefresh);

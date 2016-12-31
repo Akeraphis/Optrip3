@@ -34,41 +34,64 @@ Meteor.methods({
 		var flightTable = getFlightFaresInCollection(codeDep, codeArr, departureDate, returnDate, currency, locale, market);
 		console.log("---- Step 3 completed : Flights Fares retrieved ----");
 
-		//Step 4. Get the circuit
-		var optimalCircuit = Meteor.call("orderIps", ipDays);
-		console.log("---- Step 4 completed : Optimal circuit computed ----");
+		//If it is at least a 2-stop trip
+		if(codeArr.length>=2){
+			//Step 4. Get the circuit
+			var optimalCircuit = Meteor.call("orderIps", ipDays);
+			console.log("---- Step 4 completed : Optimal circuit computed ----");
 
-		//Step 5. Get all the possible hotel and car rates for the trip
-		var refreshRates = Meteor.call("updateFares", codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson, nbChildren, nbInfants, locale, market, function(err, res){
-			if(!err){
-				console.log("---- Step 7 completed : Fares computed computed ----");
-				//Step 6. Compute all trip possibilities and results and return the cheapest option
-				optimalTrip = Meteor.call("findOptimalTrip", codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson, nbChildren, nbInfants, locale, market);
-				console.log("---- Step 8 completed : Optimal trip computed ----");
-			}
-			else{
-				console.log(err);
-			}
-		});
+			//Step 5. Get all the possible hotel and car rates for the trip
+			var refreshRates = Meteor.call("updateFares", codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson, nbChildren, nbInfants, locale, market, function(err, res){
+				if(!err){
+					console.log("---- Step 7 completed : Fares computed computed ----");
+					//Step 6. Compute all trip possibilities and results and return the cheapest option
+					optimalTrip = Meteor.call("findOptimalTrip", codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson, nbChildren, nbInfants, locale, market);
+					console.log("---- Step 8 completed : Optimal trip computed ----");
+				}
+				else{
+					console.log(err);
+				}
+			});
 
-		//Step 6. Get the live flight prices
-		lfp = Meteor.call("getLiveFlightFaresInCollection", codeDep, optimalTrip[1][0][1].code, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
-		console.log("---- Step 9 completed : Live flight prices retrieved ----");
+			//Step 6. Get the live flight prices
+			lfp = Meteor.call("getLiveFlightFaresInCollection", codeDep, optimalTrip[1][0][1].code, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
+			console.log("---- Step 9 completed : Live flight prices retrieved ----");
 
-		//Step 7. Restructure lfp
-		clfp = Meteor.call("restructureLfp", lfp);
-		console.log("---- Step 10 completed : Live flight restructured ----");
+			//Step 7. Restructure lfp
+			clfp = Meteor.call("restructureLfp", lfp);
+			console.log("---- Step 10 completed : Live flight restructured ----");
 
-		//Step 7. Get the Hotels live prices
-		var lhp = Meteor.call("getHotelsLivePrices", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
-		console.log("---- Step 11 completed : Live hotels retrieved ----");
+			//Step 7. Get the Hotels live prices
+			var lhp = Meteor.call("getHotelsLivePrices", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
+			console.log("---- Step 11 completed : Live hotels retrieved ----");
+		}				
+		
+		//if it a one stop trip
+		else if(codeArr.length==1){
+
+			//Step 6. Get the live flight prices
+			lfp = Meteor.call("getLiveFlightFaresInCollection", codeDep, codeArr[0].code, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
+			console.log("---- Step 9 completed : Live flight prices retrieved ----");
+
+			//Step 7. Restructure lfp
+			clfp = Meteor.call("restructureLfp", lfp);
+			console.log("---- Step 10 completed : Live flight restructured ----");
+
+			//Step 7. Get the Hotels live prices
+			var ip = [codeArr[0].ip]
+			ip[0].checkin = departureDate;
+			ip[0].checkout = returnDate;
+			var lhp = Meteor.call("getHotelsLivePrices", ip, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
+			console.log("---- Step 11 completed : Live hotels retrieved ----");
+
+			optimalTrip = [100, [flightTable, [0,,,,] , [lhp[0].data.hotels_prices[0].agent_prices[0].price_total, lhp[0]]], codeArr, codeArr];
+		}
 
 		//Step 10. Call car rental live prices for selected starting IP
-		var HA = Meteor.call("searchHomeAway", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market, function(err,res){if(err){console.log(err)}});
+		//var HA = Meteor.call("searchHomeAway", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market, function(err,res){if(err){console.log(err)}});
 		//Step 11. Return : trip flights to starting IP selected, car rentals to starting IP selected, hotels list for each IP on each day selected
 
-		//return [optimalTrip, lfp, lhp, HA, clfp];
-		return [optimalTrip, clfp, lhp, HA]
+		return [optimalTrip, clfp, lhp]
 	},
 
 	refreshTrip: function(departureFrom, depDate, ipDays, currency, nbPerson, nbChildren, nbInfants, locale, market){

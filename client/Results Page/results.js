@@ -57,6 +57,16 @@ Template.results.helpers({
 		else{
 			return false;
 		}
+	},
+	hasCar : function(){
+		if(Session.get("results")[1][1]){
+			if(Session.get("results")[1][1][1]){
+				return true
+			}
+			else{
+				return false
+			}
+		}
 	}
 });
 
@@ -65,7 +75,12 @@ Template.minPrice.helpers({
 	minTotalPrice : function(){
 		var res = Session.get("results");
 		if(res.length >1 && Session.get("minLFP").OutboundLegId){
-			return Math.round(Session.get("SelectedCar").price_all_days+(Session.get("minLFP").PricingOptions.Price)*Session.get('nbPersons')+(res[2])[0]);
+			if(Session.get("SelectedCar")){
+				return Math.round(Session.get("SelectedCar").price_all_days+(Session.get("minLFP").PricingOptions.Price)*Session.get('nbPersons')+(res[2])[0]);
+			}
+			else{
+				return Math.round((Session.get("minLFP").PricingOptions.Price)*Session.get('nbPersons')+(res[2])[0]);
+			}
 		}
 	},
 
@@ -99,6 +114,16 @@ Template.minPrice.helpers({
 	nbPersons : function(){
 		return Session.get('nbPersons');
 	},
+	hasCar : function(){
+		if(Session.get("results")[1][1]){
+			if(Session.get("results")[1][1][1]){
+				return true
+			}
+			else{
+				return false
+			}
+		}
+	}
 });
 
 Template.minFlight.helpers({
@@ -393,3 +418,16 @@ getMinHotels = function(hf){
 
 	return minHotels
 }
+
+Template.options.helpers({
+	hasCar : function(){
+		if(Session.get("results")[1][1]){
+			if(Session.get("results")[1][1][1]){
+				return true
+			}
+			else{
+				return false
+			}
+		}
+	},
+})
