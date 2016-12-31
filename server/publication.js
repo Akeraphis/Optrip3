@@ -63,3 +63,9 @@ Meteor.publish("allMarkets", function(){
 		fields: {content :0}
 	});
 });
+
+Meteor.publish("allProgressionUsers", function(){
+	return ProgressionUsers.find({}, {
+		fields:{content :0}
+	});
+});
