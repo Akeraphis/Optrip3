@@ -337,7 +337,7 @@ Template.home.events({
 		Session.set('nbDays', nbDays);
 		var totalDays = 0;
 
-		Router.go('/optimization/results');
+		Router.go('/progression');
 
 		console.log(Session.get('selectedIp'), Session.get('nbDays'));
 
@@ -355,6 +355,7 @@ Template.home.events({
 						alert("This is an error while updating the fares!");
 					}
 					else{
+						Router.go('/optimization/results');
 						Session.set("results", res[0][1]);
 						Session.set("minTotalPrice", res[0][0]);
 						Session.set("optimalCircuit", res[0][2]);
