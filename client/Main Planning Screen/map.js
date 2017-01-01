@@ -341,7 +341,7 @@ Template.home.events({
 			if(!err){
 				Router.go('/progression');
 				Session.set("clientIp", res);
-				Meteor.call('insertProgressionUser', {user : Session.get("clientIp"), progress : 0});
+				Meteor.call('insertProgressionUser', {user : Session.get("clientIp"), progress : 0, operation : "Initializing"});
 			}
 		});
 		
