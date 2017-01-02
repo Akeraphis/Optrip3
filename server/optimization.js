@@ -8,12 +8,16 @@ Meteor.methods({
 		var cheapestQuote = [];
 		var minCar = [];
 		var newIpDays = [];
+		var startingCount = 50;
+		var endingCount = 80;
+		var countFT = flightTable.length;
+		var k=0;
 
 		// 1. Retrieve possible flight arrival places
 		_.forEach(flightTable, function(ft){
 
 			var res = {};
-
+			
 			var res = Meteor.call("getCheapestFlight", ft);
 
 			console.log("1 -----> For the city of " + res[1].ip.city + ", for "+ nbPerson +" persons, the flight price is :" + res[0]*nbPerson);
@@ -52,14 +56,14 @@ Meteor.methods({
 					});
 
 					minCar = [minQuoteCar, result.carFare.websites, result.carFare.car_classes, result.carTypes, result];
-
+					Meteor.call("updateProgress", startingCount + Math.round((k/countFT + (2*i-1)/(2*nbDays1*countFT))*(endingCount-startingCount)), "Computing the minimum price for cars leaving from the city of " + res[1].ip.city + ", after " + i + " days");
 					console.log("2 -----> For the city of " + res[1].ip.city + ", leaving after " + i + " days, the car location price is :" + minPriceCar);
 					
 					if(minPriceCar<Infinity){
 
 						var res3 = Meteor.call("getCheapestHotel", ac, pickUp, CodeArrOrderedLeft, CodeArrOrderedRight, departureDate, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale, market);
-
 						console.log("3 -----> Leaving after " + i + " days, the hotel best possible combination price is :" + res3[0]);
+						Meteor.call("updateProgress", startingCount + Math.round((k/countFT + i/(nbDays1*countFT))*(endingCount-startingCount)), "Computing the fares for Hotels after leaving from the city of " + res[1].ip.city + ", after " + i + " days");
 
 						if(res[0]*nbPerson+minPriceCar+res3[0] < cheapestFlightHotelAndCarPrice){
 							cheapestFlightHotelAndCarPrice = res[0]*nbPerson+minPriceCar+res3[0];
@@ -72,6 +76,7 @@ Meteor.methods({
 					}
 				}
 			}
+			k++;
 		});
 
 		console.log("----------------   OPTIMIZED PRICE : " + cheapestFlightHotelAndCarPrice + "---------------------");
@@ -80,6 +85,11 @@ Meteor.methods({
 
 	updateFares : function(codeArr, optimalCircuit, departureDate, returnDate, flightTable, currency, nbPerson, nbChildren, nbInfants, locale, market){
 
+		var startingCount = 35;
+		var endingCount = 50;
+		var countFT = flightTable.length;
+		var k=0;
+		
 		// 1. Retrieve possible flight arrival places
 		_.forEach(flightTable, function(ft){
 
@@ -88,6 +98,8 @@ Meteor.methods({
 			var nbDays1 = ac.nbDays;
 			var CodeArrOrderedLeft = Meteor.call("getCodeArrOrderLeft", ac, optimalCircuit);
 			var CodeArrOrderedRight = Meteor.call("getCodeArrOrderReverse", ac, CodeArrOrderedLeft);
+			
+
 
 			for (var i=1; i<nbDays1; i++){
 
@@ -106,22 +118,26 @@ Meteor.methods({
 
 				Meteor.call("getCarFaresInCollection", carCode, pickUp, dropOff, currency, locale, market, function(err,result){
 					if(!err){
-						console.log("---- Step 5 completed : Hotel Fares retrieved ----");
+						console.log("---- Step 5 completed : Hotel Fares retrieved ----", );
+						Meteor.call("updateProgress", Math.round(startingCount + (k/countFT + (2*i-1)/(2*nbDays1*countFT))*(endingCount-startingCount)), "Updating the fares for Cars");
 					}
 					else{
 						console.log(err);
+					
 					}
 				});
 
 				Meteor.call("getCheapestHotel", ac, pickUp, CodeArrOrderedLeft, CodeArrOrderedRight, departureDate, returnDate, dropOff, currency, nbPerson, nbChildren, nbInfants, locale, market, function(err, result){
 					if(!err){
 						console.log("---- Step 6 completed : Car Fares retrieved ----");
+						Meteor.call("updateProgress", Math.round(startingCount + (k/countFT + i/(nbDays1*countFT))*(endingCount-startingCount)), "Updating the fares for Hotels");
 					}
 					else{
 						console.log(err);
 					}
 				});
 			}
+			k++;
 		});
 	},
 
