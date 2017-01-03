@@ -15,6 +15,7 @@
 			<center>{{> map}}</center>
 		</div>
 	</div>
+	{{>sanityCheck}}
 </template>
 
 <template name="selectedIPs">
@@ -70,4 +71,13 @@
 	    <li><input type="number" class="form-control" id="NbInfants" min="0" max="99" value="0"/></li>
 	  </ul>
 	</div><br/>
+</template>
+
+<template name="sanityCheck">
+	<!-- Modal -->
+	<div class="modal fade" id="mySCModal" tabindex="-1" role="dialog" aria-labelledby="mySCModalLabel">
+	  <div class="modal-dialog" role="document">
+	  	<div class="alert alert-danger" role="alert" id="myalert">Test !</div>
+	  </div>
+	</div>
 </template>

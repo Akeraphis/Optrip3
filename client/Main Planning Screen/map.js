@@ -321,64 +321,74 @@ Template.home.events({
 		var nbInfants = document.getElementById("NbInfants");
 		var nbDays = [];
 
-		Session.set("nbPersons", nbPersons.value);
-		Session.set("nbChildren", nbChildren.value);
-		Session.set("nbInfants", nbInfants.value);
-		Session.set("departureDate", departureDate.value);
-		Session.set("departureFrom", departureFrom.value);
+		var sc = sanityCheck(departureFrom);
+		var passedSanityCheck = sc[0];
+		var messageSC = sc[1];
 
-
-
-		for (var i=0; i<nbDaysElements.length; i++){
-			nbDays.push(nbDaysElements[i].value);
+		if(!passedSanityCheck){
+			document.getElementById('myalert').innerHTML = messageSC;
+			$("#mySCModal").modal('show');
 		}
+		else{
+			Session.set("nbPersons", nbPersons.value);
+			Session.set("nbChildren", nbChildren.value);
+			Session.set("nbInfants", nbInfants.value);
+			Session.set("departureDate", departureDate.value);
+			Session.set("departureFrom", departureFrom.value);
 
-		Session.set('nbDays', nbDays);
-		var totalDays = 0;
 
-		//Go to proression bar screen and start counting
-		Meteor.call("getIpAddress", function(err, res){
-			if(!err){
-				Router.go('/progression');
-				Session.set("clientIp", res);
-				Meteor.call('insertProgressionUser', {user : Session.get("clientIp"), progress : 0, operation : "Initializing"});
+
+			for (var i=0; i<nbDaysElements.length; i++){
+				nbDays.push(nbDaysElements[i].value);
 			}
-		});
-		
 
-		console.log(Session.get('selectedIp'), Session.get('nbDays'));
+			Session.set('nbDays', nbDays);
+			var totalDays = 0;
 
-		//Call the update method for selectedIPDays
-		Meteor.call("updateIpDays", Session.get('selectedIp'), Session.get('nbDays'), function(error, result){
-			if (error){
-				console.log(error.reason);
-			}
-			else{
-				Session.set("ipDays", result);
-				console.log(Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"));
-				//send this information to the server to optimize and return result
-				Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"), function(error, res){
-					if(error){
-						alert("This is an error while updating the fares!");
-					}
-					else{
-						Router.go('/optimization/results');
-						Session.set("results", res[0][1]);
-						Session.set("minTotalPrice", res[0][0]);
-						Session.set("optimalCircuit", res[0][2]);
-						Session.set("newIpDays", res[0][3]);
-						console.log(res);
-						Session.set("totalResults", res);
-						Session.set("liveFlights", res[1]);
-						Session.set("selectedLiveFlights", res[1]);
-						Session.set("selectedLiveCars", res[0][1][1][4]);
-						Session.set("selectedLiveHotels", res[2]);
-						//drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
-						Meteor.call('deleteProgressionUser', Session.get("clientIp"));
-					}
-				});
-			}
-		});
+			//Go to proression bar screen and start counting
+			Meteor.call("getIpAddress", function(err, res){
+				if(!err){
+					Router.go('/progression');
+					Session.set("clientIp", res);
+					Meteor.call('insertProgressionUser', {user : Session.get("clientIp"), progress : 0, operation : "Initializing"});
+				}
+			});
+			
+
+			console.log(Session.get('selectedIp'), Session.get('nbDays'));
+
+			//Call the update method for selectedIPDays
+			Meteor.call("updateIpDays", Session.get('selectedIp'), Session.get('nbDays'), function(error, result){
+				if (error){
+					console.log(error.reason);
+				}
+				else{
+					Session.set("ipDays", result);
+					console.log(Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"));
+					//send this information to the server to optimize and return result
+					Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"), function(error, res){
+						if(error){
+							alert("This is an error while updating the fares!");
+						}
+						else{
+							Router.go('/optimization/results');
+							Session.set("results", res[0][1]);
+							Session.set("minTotalPrice", res[0][0]);
+							Session.set("optimalCircuit", res[0][2]);
+							Session.set("newIpDays", res[0][3]);
+							console.log(res);
+							Session.set("totalResults", res);
+							Session.set("liveFlights", res[1]);
+							Session.set("selectedLiveFlights", res[1]);
+							Session.set("selectedLiveCars", res[0][1][1][4]);
+							Session.set("selectedLiveHotels", res[2]);
+							//drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
+							Meteor.call('deleteProgressionUser', Session.get("clientIp"));
+						}
+					});
+				}
+			});
+		}
 	},
 
 
@@ -417,3 +427,20 @@ Template.home.events({
 	//-------------------------------------------------------------------------------------------------
 	//-------------------------------------------------------------------------------------------------
 });
+
+sanityCheck = function(departureFrom){
+	var passedSC = false;
+	var messageSC = "";
+
+	if(departureFrom.value==""){
+		messageSC = "Please enter a departure place";
+	}
+	else if(!(/^[a-zA-Z]+$/.test(departureFrom.value))){
+		messageSC = "Please make sur you enter only letters in the departure field";
+	}
+	else{
+		passedSC = true;
+	}
+
+	return [passedSC, messageSC];
+}
