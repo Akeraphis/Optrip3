@@ -321,7 +321,7 @@ Template.home.events({
 		var nbInfants = document.getElementById("NbInfants");
 		var nbDays = [];
 
-		var sc = sanityCheck(departureFrom);
+		var sc = sanityCheck(departureFrom, departureDate);
 		var passedSanityCheck = sc[0];
 		var messageSC = sc[1];
 
@@ -428,15 +428,19 @@ Template.home.events({
 	//-------------------------------------------------------------------------------------------------
 });
 
-sanityCheck = function(departureFrom){
+sanityCheck = function(departureFrom, departureDate){
 	var passedSC = false;
 	var messageSC = "";
+	console.log(moment(departureDate.value), moment(), moment(departureDate).isBefore(moment()))
 
 	if(departureFrom.value==""){
 		messageSC = "Please enter a departure place";
 	}
 	else if(!(/^[a-zA-Z]+$/.test(departureFrom.value))){
 		messageSC = "Please make sur you enter only letters in the departure field";
+	}
+	else if(moment(departureDate.value).isBefore(moment())){
+		messageSC = "Please enter a departure date after today";
 	}
 	else{
 		passedSC = true;
