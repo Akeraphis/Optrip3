@@ -28,7 +28,6 @@ Meteor.startup(function() {
 	GoogleMaps.load({key : googleKey});
 });
 
-
 //----------------------------------------------------------------------------------------------------------
 //MAP HELPERS
 //----------------------------------------------------------------------------------------------------------
@@ -337,7 +336,15 @@ Template.home.events({
 		Session.set('nbDays', nbDays);
 		var totalDays = 0;
 
-		Router.go('/optimization/results');
+		//Go to proression bar screen and start counting
+		Meteor.call("getIpAddress", function(err, res){
+			if(!err){
+				Router.go('/progression');
+				Session.set("clientIp", res);
+				Meteor.call('insertProgressionUser', {user : Session.get("clientIp"), progress : 0, operation : "Initializing"});
+			}
+		});
+		
 
 		console.log(Session.get('selectedIp'), Session.get('nbDays'));
 
@@ -355,6 +362,7 @@ Template.home.events({
 						alert("This is an error while updating the fares!");
 					}
 					else{
+						Router.go('/optimization/results');
 						Session.set("results", res[0][1]);
 						Session.set("minTotalPrice", res[0][0]);
 						Session.set("optimalCircuit", res[0][2]);
@@ -365,7 +373,8 @@ Template.home.events({
 						Session.set("selectedLiveFlights", res[1]);
 						Session.set("selectedLiveCars", res[0][1][1][4]);
 						Session.set("selectedLiveHotels", res[2]);
-						drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
+						//drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
+						Meteor.call('deleteProgressionUser', Session.get("clientIp"));
 					}
 				});
 			}
