@@ -321,7 +321,7 @@ Template.home.events({
 		var nbInfants = document.getElementById("NbInfants");
 		var nbDays = [];
 
-		var sc = sanityCheck(departureFrom, departureDate);
+		var sc = sanityCheck(departureFrom, departureDate, Session.get('selectedIp'), nbPersons, nbChildren, nbInfants);
 		var passedSanityCheck = sc[0];
 		var messageSC = sc[1];
 
@@ -353,9 +353,6 @@ Template.home.events({
 					Meteor.call('insertProgressionUser', {user : Session.get("clientIp"), progress : 0, operation : "Initializing"});
 				}
 			});
-			
-
-			console.log(Session.get('selectedIp'), Session.get('nbDays'));
 
 			//Call the update method for selectedIPDays
 			Meteor.call("updateIpDays", Session.get('selectedIp'), Session.get('nbDays'), function(error, result){
@@ -428,10 +425,9 @@ Template.home.events({
 	//-------------------------------------------------------------------------------------------------
 });
 
-sanityCheck = function(departureFrom, departureDate){
+sanityCheck = function(departureFrom, departureDate, selectedIp, nbAdults, nbChildren, nbInfants){
 	var passedSC = false;
 	var messageSC = "";
-	console.log(moment(departureDate.value), moment(), moment(departureDate).isBefore(moment()))
 
 	if(departureFrom.value==""){
 		messageSC = "Please enter a departure place";
@@ -442,9 +438,17 @@ sanityCheck = function(departureFrom, departureDate){
 	else if(moment(departureDate.value).isBefore(moment())){
 		messageSC = "Please enter a departure date after today";
 	}
+	else if(selectedIp.length<1){
+		messageSC = "Select at least one destination";
+	}
+	else if(selectedIp.length>8){
+		messageSC = "You cannot select more than 8 destinations";
+	}
+	else if(nbAdults.value+nbChildren.value+nbInfants.value>8){
+		messageSC = "Number of travelers cannot be above 8";
+	}
 	else{
 		passedSC = true;
 	}
-
 	return [passedSC, messageSC];
 }
