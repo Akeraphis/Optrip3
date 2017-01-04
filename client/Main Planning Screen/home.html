@@ -5,7 +5,7 @@
 				<div class="panel-heading">
 		    		<h3 class="panel-title">Where do you want to go ?</h3>
 		  		</div><br/>
-		  		<img src="question-mark-icon.png" height="30px" width="30px" data-toggle="tooltip" title="Optrip is an application that will help you build your holidays (flight+car+hotels) in an optimal way. Just seelect a number of cities you want to visit on the map and fill the fields below. Our powerful optimization engine will then find you the cheapest trip for your selection. (The computation time (empty page for now) can take up to several minutes)."><br/><br/>
+		  		<img src="question-mark-icon.png" height="30px" class="imagehelp" width="30px" data-toggle="tooltip" title="Optrip is an application that will help you build your holidays (flight+car+hotels) in an optimal way. Just seelect a number of cities you want to visit on the map and fill the fields below. Our powerful optimization engine will then find you the cheapest trip for your selection. (The computation time (empty page for now) can take up to several minutes)."><br/><br/>
 				{{> inputAutocomplete settings=settings id="departurePoint" class="form-control" name="departurePoint" placeholder="Departure from" }}
 				<br />
 				{{> inputPanel}}
@@ -25,7 +25,7 @@
 			<div class="input-group">
 				<input type="number" class="form-control" name="NbDays" id="NbDays" min="0" max="99" value="1" aria-describedby="basic-addon2">
 				<span class="input-group-addon" id="basic-addon2">nights</span>
-			</div>
+			</div><br/>
 		{{/each}}
 	</div>
 </template>
@@ -77,7 +77,7 @@
 	<!-- Modal -->
 	<div class="modal fade" id="mySCModal" tabindex="-1" role="dialog" aria-labelledby="mySCModalLabel">
 	  <div class="modal-dialog" role="document">
-	  	<div class="alert alert-danger" role="alert" id="myalert">Test !</div>
+	  	<div class="alert alert-danger" role="alert" id="myalert"></div>
 	  </div>
 	</div>
 </template>
