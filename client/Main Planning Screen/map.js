@@ -320,8 +320,16 @@ Template.home.events({
 		var nbChildren = document.getElementById("NbChildren");
 		var nbInfants = document.getElementById("NbInfants");
 		var nbDays = [];
+		var totalNbDays = 0;
 
-		var sc = sanityCheck(departureFrom, departureDate, Session.get('selectedIp'), nbPersons, nbChildren, nbInfants);
+		for (var i=0; i<nbDaysElements.length; i++){
+			nbDays.push(nbDaysElements[i].value);
+			totalNbDays += parseInt(nbDaysElements[i].value);
+		}
+
+		Session.set('nbDays', nbDays);
+
+		var sc = sanityCheck(departureFrom.value, departureDate.value, Session.get('selectedIp'), totalNbDays, nbPersons.value, nbChildren.value, nbInfants.value);
 		var passedSanityCheck = sc[0];
 		var messageSC = sc[1];
 
@@ -335,14 +343,6 @@ Template.home.events({
 			Session.set("nbInfants", nbInfants.value);
 			Session.set("departureDate", departureDate.value);
 			Session.set("departureFrom", departureFrom.value);
-
-
-
-			for (var i=0; i<nbDaysElements.length; i++){
-				nbDays.push(nbDaysElements[i].value);
-			}
-
-			Session.set('nbDays', nbDays);
 			var totalDays = 0;
 
 			//Go to proression bar screen and start counting
@@ -425,17 +425,17 @@ Template.home.events({
 	//-------------------------------------------------------------------------------------------------
 });
 
-sanityCheck = function(departureFrom, departureDate, selectedIp, nbAdults, nbChildren, nbInfants){
+sanityCheck = function(departureFrom, departureDate, selectedIp, totalNbDays, nbAdults, nbChildren, nbInfants){
 	var passedSC = false;
 	var messageSC = "";
 
-	if(departureFrom.value==""){
+	if(departureFrom==""){
 		messageSC = "Please enter a departure place";
 	}
-	else if(!(/^[a-zA-Z]+$/.test(departureFrom.value))){
+	else if(!(/^[a-zA-Z]+$/.test(departureFrom))){
 		messageSC = "Please make sur you enter only letters in the departure field";
 	}
-	else if(moment(departureDate.value).isBefore(moment())){
+	else if(moment(departureDate).isBefore(moment())){
 		messageSC = "Please enter a departure date after today";
 	}
 	else if(selectedIp.length<1){
@@ -444,8 +444,11 @@ sanityCheck = function(departureFrom, departureDate, selectedIp, nbAdults, nbChi
 	else if(selectedIp.length>8){
 		messageSC = "You cannot select more than 8 destinations";
 	}
-	else if(nbAdults.value+nbChildren.value+nbInfants.value>8){
+	else if(parseInt(nbAdults)+parseInt(nbChildren)+parseInt(nbInfants)>8){
 		messageSC = "Number of travelers cannot be above 8";
+	}
+	else if(totalNbDays>22){
+		messageSC = "The total number of nights must be less than 22 days";
 	}
 	else{
 		passedSC = true;
