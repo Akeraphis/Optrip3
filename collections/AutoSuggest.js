@@ -2,9 +2,9 @@ AutoSuggest = new Mongo.Collection("autoSuggest");
 
 Meteor.methods({
 	'insertAutoSuggest': function(doc){
-		var res = AutoSuggest.findOne({PlaceId: doc.PlaceId});
+		var res = AutoSuggest.findOne({value: doc.value});
 
-		if(res && res.CityId != ""){	
+		if(res && res.value != ""){	
 		}
 		else{
 			AutoSuggest.insert(doc);

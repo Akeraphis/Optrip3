@@ -287,7 +287,7 @@ Template.home.helpers({
 				{
 				// token: '',
 					collection: AutoSuggest,
-					field: 'PlaceName',
+					field: 'label',
 					matchAll: true,
 					template: Template.displayDeparture
 				}
@@ -362,8 +362,10 @@ Template.home.events({
 				else{
 					Session.set("ipDays", result);
 					console.log(Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"));
+					
+					// ----- OPTIMIZE VIA SKYSCANNER
 					//send this information to the server to optimize and return result
-					Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"), function(error, res){
+					/*Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"), function(error, res){
 						if(error){
 							alert("This is an error while updating the fares!");
 						}
@@ -382,7 +384,17 @@ Template.home.events({
 							//drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
 							Meteor.call('deleteProgressionUser', Session.get("clientIp"));
 						}
-					});
+					});*/
+
+
+					//---- OPTIMIZE VIA AMADEUS
+					Meteor.call('optimizeTripViaAmadeus', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"), function(err, res){
+						if(!error){
+							console.log(res);
+							Router.go('/optimization/results');
+							Meteor.call('deleteProgressionUser', Session.get("clientIp"));
+						}
+					})
 				}
 			});
 		}
@@ -394,7 +406,7 @@ Template.home.events({
 		var departureFrom = document.getElementById("departurePoint");
 
 		if(departureFrom.value.length >= 1){
-			var depAutoSuggest = Meteor.call("getPlaceAutosuggest", departureFrom.value, "EUR", "en-GB", "FR", function(error, result){
+			/*var depAutoSuggest = Meteor.call("getPlaceAutosuggest", departureFrom.value, "EUR", "en-GB", "FR", function(error, result){
 			if(error){
 				alert("There is no autocomplete suggested !");
 			}
@@ -408,7 +420,23 @@ Template.home.events({
 				}
 			}
 
-			});	
+			});*/
+
+			//Add the new Amadeus airport autocomplete
+			/*var depAutoSuggest = Meteor.call("getAmadeusAirportAutocomplete", departureFrom.value, function(err, res){
+				if(!err){
+					//Meteor.call("flushAllSuggests");
+					//Refresh collection
+					console.log(res);
+					for (var i = res.data.length - 1; i >= 0; i--) {
+						console.log(i, res.data[i]);
+						Meteor.call("insertAutoSuggest", res.data[i]);
+					}
+				}
+				else{
+					console.log(err);
+				}
+			});*/
 		}
 	},
 
@@ -432,9 +460,9 @@ sanityCheck = function(departureFrom, departureDate, selectedIp, totalNbDays, nb
 	if(departureFrom==""){
 		messageSC = "Please enter a departure place";
 	}
-	else if(!(/^[a-zA-Z]+$/.test(departureFrom))){
+	/*else if(!(/^[a-zA-Z]+$/.test(departureFrom))){
 		messageSC = "Please make sur you enter only letters in the departure field";
-	}
+	}*/
 	else if(moment(departureDate).isBefore(moment())){
 		messageSC = "Please enter a departure date after today";
 	}

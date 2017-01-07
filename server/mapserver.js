@@ -64,17 +64,17 @@ Meteor.methods({
 			});
 
 			//Step 6. Get the live flight prices
-			lfp = Meteor.call("getLiveFlightFaresInCollection", codeDep, optimalTrip[1][0][1].code, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
+			//lfp = Meteor.call("getLiveFlightFaresInCollection", codeDep, optimalTrip[1][0][1].code, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
 			console.log("---- Step 9 completed : Live flight prices retrieved ----");
 			Meteor.call("updateProgress", 85, "Getting live flight and hotel fares");
 
 			//Step 7. Restructure lfp
-			clfp = Meteor.call("restructureLfp", lfp);
+			//clfp = Meteor.call("restructureLfp", lfp);
 			console.log("---- Step 10 completed : Live flight restructured ----");
 			Meteor.call("updateProgress", 90, "Rendering results");
 
 			//Step 7. Get the Hotels live prices
-			var lhp = Meteor.call("getHotelsLivePrices", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
+			//var lhp = Meteor.call("getHotelsLivePrices", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
 			console.log("---- Step 11 completed : Live hotels retrieved ----");
 			Meteor.call("updateProgress", 95, "Rendering results");
 
@@ -87,24 +87,24 @@ Meteor.methods({
 		else if(codeArr.length==1){
 
 			//Step 6. Get the live flight prices
-			lfp = Meteor.call("getLiveFlightFaresInCollection", codeDep, codeArr[0].code, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
+			//lfp = Meteor.call("getLiveFlightFaresInCollection", codeDep, codeArr[0].code, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
 			console.log("---- Step 9 completed : Live flight prices retrieved ----");
 			Meteor.call("updateProgress", 85, "Getting live flight and hotel fares");
 
 			//Step 7. Restructure lfp
-			clfp = Meteor.call("restructureLfp", lfp);
+			//clfp = Meteor.call("restructureLfp", lfp);
 			console.log("---- Step 10 completed : Live flight restructured ----");
 			Meteor.call("updateProgress", 90, "Rendering results");
 
 			//Step 7. Get the Hotels live prices
-			var ip = [codeArr[0].ip]
+			/*var ip = [codeArr[0].ip]
 			ip[0].checkin = departureDate;
 			ip[0].checkout = returnDate;
-			var lhp = Meteor.call("getHotelsLivePrices", ip, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
+			var lhp = Meteor.call("getHotelsLivePrices", ip, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);*/
 			console.log("---- Step 11 completed : Live hotels retrieved ----");
 			Meteor.call("updateProgress", 95, "Rendering results");
 
-			optimalTrip = [100, [flightTable, [0,,,,] , [lhp[0].data.hotels_prices[0].agent_prices[0].price_total, lhp[0]]], codeArr, codeArr];
+			/*optimalTrip = [100, [flightTable, [0,,,,] , [lhp[0].data.hotels_prices[0].agent_prices[0].price_total, lhp[0]]], codeArr, codeArr];*/
 
 			aff = Meteor.call("getAmadeusFlightLowFare", codeDep, optimalTrip[1][0][1].code, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
 			console.log("---- Step 12 completed : Amadeus flight low fares retrieved ----");
