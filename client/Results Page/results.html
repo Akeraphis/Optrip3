@@ -1,7 +1,7 @@
 <template name="results">
 	{{#if results}}
 	<div class="row">
-		<div class="col-md-2">{{> minPrice}}<br/>{{> relaunch}}<br/>{{>options}}</div>
+		<div class="col-md-2">{{> minPrice}}<br/>{{> buy}}<br/>{{> relaunch}}<br/>{{>options}}</div>
 		<div class="col-md-10">
 				<div class="row">
 				<div class="col-md-6">
@@ -29,6 +29,12 @@
 <template name="relaunch">
 	<div>
 		<button type="submit" class="optimizeButton" name="refreshResults">Re-Optimize</button>
+	</div>
+</template>
+
+<template name="buy">
+	<div>
+		<button type="button" class="buyButton" name="Buy">BUY</button>
 	</div>
 </template>
 

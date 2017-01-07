@@ -71,6 +71,28 @@
     border-color: rgba(0,0,0,0.9);
 }
 
+.buyButton {
+    background-color: #699DB6;
+    border-color: rgba(0,0,0,0.3);
+    text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+    /*font: 20px Arial, Helvetica, sans-serif;*/    
+    font-family: 'Abel', sans-serif;
+    font-size : 25px;
+    color: #FFF;
+    height: 50px;
+    width: 200px;
+}
+
+.buyButton:hover {
+    background-color: #4F87A2;
+    border-color: rgba(0,0,0,0.5);
+}
+
+.buyButton:active {
+    background-color: #3C677B;
+    border-color: rgba(0,0,0,0.9);
+}
+
 #departurePoint{
     margin-left : 20px;
     margin-right: 20px;
@@ -125,6 +147,11 @@
 
 .panel-title{
     font-family: 'Abel', sans-serif;
+    font-size: 24px;
+}
+
+.panel-collapse{
+    font-family: 'Abel', sans-serif;
     font-size: 20px;
 }
 
@@ -146,4 +173,29 @@
 .navbar{
     font-family: 'Abel', sans-serif;
     font-size: 18px; 
+}
+
+.airport-group{
+    font-family: 'Abel', sans-serif;
+    font-size: 16px;
+}
+
+.carAgentGroup{
+    font-family: 'Abel', sans-serif;
+    font-size: 16px;
+}
+
+.panel-heading{
+    font-family: 'Abel', sans-serif;
+    font-size: 24px;
+}
+
+.list-group{
+    font-family: 'Abel', sans-serif;
+    font-size: 16px;
+}
+
+.panel-body{
+    font-family: 'Abel', sans-serif;
+    font-size: 16px;
 }

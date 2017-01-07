@@ -11,6 +11,7 @@ Meteor.methods({
 		var departureDate = makeDate(depDate).yyyymmdd();
 		var lfp = {};
 		var clfp = {};
+		var aff={};
 
 		//Get ip
 		var ip = Meteor.call('getIp', ipDays);
@@ -76,6 +77,10 @@ Meteor.methods({
 			var lhp = Meteor.call("getHotelsLivePrices", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
 			console.log("---- Step 11 completed : Live hotels retrieved ----");
 			Meteor.call("updateProgress", 95, "Rendering results");
+
+			//Step 8. Get the amadeus flight fares
+			aff = Meteor.call("getAmadeusFlightLowFare", codeDep, optimalTrip[1][0][1].code, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
+			console.log("---- Step 12 completed : Amadeus flight low fares retrieved ----");
 		}				
 		
 		//if it a one stop trip
@@ -100,13 +105,16 @@ Meteor.methods({
 			Meteor.call("updateProgress", 95, "Rendering results");
 
 			optimalTrip = [100, [flightTable, [0,,,,] , [lhp[0].data.hotels_prices[0].agent_prices[0].price_total, lhp[0]]], codeArr, codeArr];
+
+			aff = Meteor.call("getAmadeusFlightLowFare", codeDep, optimalTrip[1][0][1].code, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market);
+			console.log("---- Step 12 completed : Amadeus flight low fares retrieved ----");
 		}
 
 		//Step 10. Call car rental live prices for selected starting IP
 		//var HA = Meteor.call("searchHomeAway", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market, function(err,res){if(err){console.log(err)}});
 		//Step 11. Return : trip flights to starting IP selected, car rentals to starting IP selected, hotels list for each IP on each day selected
 
-		return [optimalTrip, clfp, lhp]
+		return [optimalTrip, clfp, lhp, aff]
 	},
 
 	refreshTrip: function(departureFrom, depDate, ipDays, currency, nbPerson, nbChildren, nbInfants, locale, market){
