@@ -1,0 +1,1 @@
+NearestRelevantAirport = new Mongo.Collection("nearestRelevantAirport");

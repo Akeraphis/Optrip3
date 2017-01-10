@@ -63,19 +63,6 @@ Meteor.methods({
 
 		return search;
 	},
-	getAmadeusNearestRelevantAirport : function(lat, lng){
-		var url="https://api.sandbox.amadeus.com/v1.2/airports/nearest-relevant"
-
-		var search = HTTP.call('GET', url, {
-			params : {
-				apikey: amadeusAPIKey,
-				latitude: lat,
-				longitude: lng
-			}
-		});
-
-		return search;
-	},
 	getAmadeusFlightExtensiveSearch : function(codeDep, optimalTrip, departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market){
 
 		var search = HTTP.call('GET', url, {
