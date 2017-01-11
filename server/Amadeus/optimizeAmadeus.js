@@ -35,7 +35,7 @@ Meteor.methods({
 		//-------------------
 
 		//Step 4. Find the cheapest flight/car combination in the lot
-		var minFlightAndCar = findCheapestFlightAndCar(allFlightFares, allCarFares)
+		var minFlightAndCar = findCheapestFlightAndCar(allFlightFares, allCarFares, ipDays)
 		console.log("---- Step 4 completed : Cheapest flight and car combination found ----");
 		Meteor.call("updateProgress", 20, "Retrieving Hotel fares");
 		//-------------------
@@ -91,34 +91,39 @@ getCodeDep = function(str){
 	return str.substring(str.lastIndexOf("[")+1,str.lastIndexOf("]"));
 };
 
-findCheapestFlightAndCar = function(allFlightFares, allCarFares){
+findCheapestFlightAndCar = function(allFlightFares, allCarFares, ipDays){
 	var minPrice = Infinity;
 	var res = [];
 	var minResCar={};
 	var minResFlight={};
 	var count = 0;
+	var distanceHotelNightAirport = 100;
 
 	_.forEach(allFlightFares, function(ff){
 		var minFlightPrice = Infinity;
 		var minCarPrice = Infinity;
+		var penaltyHotelNightAirport=100;
 		_.forEach(ff, function(f){
 			if(parseFloat(f.fare.total_price)<minFlightPrice){
-				console.log("flight :", f.fare.total_price, minPrice);
 				minResFlight = f;
 				minFlightPrice = parseFloat(f.fare.total_price);
 			}
 		});
 		_.forEach(allCarFares[count], function(cf){
+			_.forEach(ipDays, function(ipd){
+				if(distance(ipd.ip.lat, ipd.ip.lng, cf.location.latitude, cf.location.longitude)<distanceHotelNightAirport){
+					penaltyHotelNightAirport=0;
+				}
+			})
 			_.forEach(cf.cars, function(car){
 				if(parseFloat(car.estimated_total.amount)<minCarPrice){
-					console.log("car :", car.estimated_total.amount,minPrice);
 					minCarPrice = parseFloat(car.estimated_total.amount);
 					minResCar = cf;
 					minResCar.cars = car;
 				}
 			});
 		});
-		if(minFlightPrice+minCarPrice < minPrice){
+		if(minFlightPrice+minCarPrice+penaltyHotelNightAirport < minPrice){
 			minPrice = minFlightPrice+minCarPrice;
 			res = [minResFlight, minResCar];
 		}
@@ -142,3 +147,16 @@ getAllCarFares = function(allArrivalAirports, depDate, returnDate, currency){
 	});
 	return result;
 };
+
+distance = function(lat1, lon1, lat2, lon2) {
+	var radlat1 = Math.PI * lat1/180
+	var radlat2 = Math.PI * lat2/180
+	var theta = lon1-lon2
+	var radtheta = Math.PI * theta/180
+	var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+	dist = Math.acos(dist)
+	dist = dist * 180/Math.PI
+	dist = dist * 60 * 1.1515
+	dist = dist * 1.609344;
+	return dist
+}
