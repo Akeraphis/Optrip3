@@ -56,11 +56,11 @@
 		<div class="panel-heading">Flight</div>
 		<div class="panel-body">
 			{{#with minLiveFlight}}
-				{{#with PricingOptions}}
-					{{#with Agents}}
+				{{#with fare}}
+					<!--{{#with Agents}}
 						<img border="0" height="60" width="120" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
-					{{/with}}
-					<h3>{{Price}} {{symbolCurrency}}</h3>
+					{{/with}}-->
+					<h3>{{total_price}} {{symbolCurrency}}</h3>
 				{{/with}}
 				<br/>
 				<ul class="nav nav-tabs" role="tablist">
@@ -68,19 +68,21 @@
 					<li role="presentation"><a href="#inbound" aria-controls="home" role="tab" data-toggle="tab">Inbound</a></li>
 				</ul>
 				<br/>
-				<div class="tab-content">
-					<div role="tabpanel" class="tab-pane fade in active" id="outbound">
-						{{#with OutboundLeg}}
-							{{>leg leg=this}}
-						{{/with}}
+				{{#each itineraries}}
+					<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade in active" id="outbound">
+							{{#with outbound}}
+								{{>leg}}
+							{{/with}}
+						</div>
+						<div role="tabpanel" class="tab-pane fade" id="inbound">
+							{{#with inbound}}
+								{{>leg}}
+							{{/with}}
+						</div>
 					</div>
-					<div role="tabpanel" class="tab-pane fade" id="inbound">
-						{{#with InboundLeg}}
-							{{>leg leg=this}}
-						{{/with}}
-					</div>
-				</div>
-				<br/>
+					<br/>
+				{{/each}}
 			{{/with}}
 			{{>displayAllFlight}}
 		</div>
@@ -179,26 +181,25 @@
 </template>
 
 <template name="leg">
-	{{#with getLeg leg}}
-		{{#each newSegments}}
-			{{#with newOperatingCarrier}}
-				<img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
-			{{/with}}
-			<br/>
-			Flight Number : {{FlightNumber}}
-			<br/><br/>
-			{{getDepDate}} leaving at {{getDepTime}}<br/>
-			{{#with OriginStation}}
-				<b>{{Name}}  {{Type}}</b>
-			{{/with}}
-			<br/>in {{Duration}} minutes to<br/><br/>
-			{{getArrDate}} landing at {{getArrTime}}<br/>
-			{{#with DestinationStation}}
-				<b>{{Name}}  {{Type}}</b>
-			{{/with}}
-			<br/>
-		{{/each}}
-	{{/with}}
+	{{#each flights}}
+		{{#with newOperatingCarrier}}
+			<img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{ImageUrl}}"/>
+		{{/with}}
+		<br/>
+		Flight Number : {{operating_airline}}{{flight_number}}
+		Aircraft : {{aircraft}}
+		<br/><br/>
+		{{getDepDate}}<br/>
+		Leaving at {{getDepTime}}<br/>
+		{{#with origin}}
+			<b>{{airport}}</b>
+		{{/with}}<br/>
+		Landing at {{getArrTime}}<br/>
+		{{#with destination}}
+			<b>{{airport}}</b>
+		{{/with}}
+		<br/>
+	{{/each}}
 </template>
 	
 <template name="minCar">
@@ -206,21 +207,19 @@
 		<div class="panel-heading">Car</div>
 		<div class="panel-body">
 			{{#with minVehicle}}
-				<img border="0" height="60" width="120" hspace="0" src="{{getWebsiteImage website_id}}"/>
-				<h3>{{price_all_days}} {{symbolCurrency}}</h3>
-				<img border="0" height="120" width="240" hspace="0" src="{{getVehicleImage image_id}}"/>
-				<h4>{{vehicle}}</h4>
-				<br/>
-				Pick-Up : {{getDepartureDate}}
-				Drop Off : {{getReturnDate}}
-				<br/>
-				Car Class : {{getCarClass car_class_id}}<br/>
-				{{getManual manual}} car with {{doors}} doors and {{seats}} seats
-				<br/>
-				{{#with value_add}}
-					{{#with fuel}}
-						Fuel : {{type}}, {{policy}}
+				{{#with cars}}
+					{{#with estimated_total}}
+						<h3>{{amount}}{{symbolCurrency}}</h3>
 					{{/with}}
+				{{/with}}<br/>
+				{{#with provider}}
+					Renting company : {{company_code}}, {{company_name}}
+				{{/with}}<br/>
+				{{#with address}}
+					Address : {{line1}}, {{city}}
+				{{/with}}
+				{{#with vehicule_info}}
+					<h4>{{category}} {{manual}}</h4>
 				{{/with}}
 				<br/>
 			{{/with}}<br/>

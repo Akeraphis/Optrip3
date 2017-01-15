@@ -102,7 +102,7 @@ findCheapestFlightAndCar = function(allFlightFares, allCarFares, ipDays){
 	_.forEach(allFlightFares, function(ff){
 		var minFlightPrice = Infinity;
 		var minCarPrice = Infinity;
-		var penaltyHotelNightAirport=100;
+		var penaltyHotelNightAirport=150;
 		_.forEach(ff, function(f){
 			if(parseFloat(f.fare.total_price)<minFlightPrice){
 				minResFlight = f;

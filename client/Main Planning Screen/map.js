@@ -393,6 +393,10 @@ Template.home.events({
 							console.log(res);
 							Router.go('/optimization/results');
 							Meteor.call('deleteProgressionUser', Session.get("clientIp"));
+							Session.set("selectedLiveFlights", res[4]);
+							Session.set("selectedLiveCars", res[5]);
+							Session.set("cheapestLiveFlight", res[6][0]);
+							Session.set("cheapestLiveCar", res[6][1]);
 						}
 					})
 				}

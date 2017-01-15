@@ -43,7 +43,7 @@ Template.minFlight.events({
 
 Template.results.helpers({
 	results : function(){
-		if (Session.get("minTotalPrice")<Infinity){
+		if (Session.get("cheapestLiveFlight")){
 			return true;
 		}
 		else{
@@ -51,7 +51,7 @@ Template.results.helpers({
 		}
 	},
 	gotLiveFlight : function(){
-		if (Session.get("minLFP")){
+		if (Session.get("cheapestLiveFlight")){
 			return true;
 		}
 		else{
@@ -59,42 +59,35 @@ Template.results.helpers({
 		}
 	},
 	hasCar : function(){
-		if(Session.get("results")[1][1]){
-			if(Session.get("results")[1][1][1]){
-				return true
-			}
-			else{
-				return false
-			}
+		if(Session.get("cheapestLiveCar")){
+			return true
+		}
+		else{
+			return false
 		}
 	}
 });
 
 Template.minPrice.helpers({
-
 	minTotalPrice : function(){
-		var res = Session.get("results");
-		if(res.length >1 && Session.get("minLFP").OutboundLegId){
-			if(Session.get("SelectedCar")){
-				return Math.round(Session.get("SelectedCar").price_all_days+(Session.get("minLFP").PricingOptions.Price)*Session.get('nbPersons')+(res[2])[0]);
+		if(Session.get("cheapestLiveFlight")){
+			if(Session.get("cheapestLiveCar")){
+				return Math.round(parseInt(Session.get("cheapestLiveCar").cars.estimated_total.amount)+parseInt(Session.get("cheapestLiveFlight").fare.total_price));
 			}
 			else{
-				return Math.round((Session.get("minLFP").PricingOptions.Price)*Session.get('nbPersons')+(res[2])[0]);
+				return Math.round(Session.get("cheapestLiveFlight").fare.total_price);
 			}
 		}
 	},
 
 	minCarPrice : function(){
-		if(Session.get("SelectedCar")){
-			return Math.round(Session.get("SelectedCar").price_all_days);
+		if(Session.get("cheapestLiveCar")){
+			return Math.round(Session.get("cheapestLiveCar").cars.estimated_total.amount);
 		}
 	},
 
 	minFlightPrice : function(){
-		var res = (Session.get("minLFP"));
-		if(res.OutboundLegId){
-			return Math.round(res.PricingOptions.Price*Session.get('nbPersons'));
-		}
+		return Session.get("cheapestLiveFlight").fare.total_price;
 	},
 
 	minHotelPrices : function(){
@@ -115,20 +108,18 @@ Template.minPrice.helpers({
 		return Session.get('nbPersons');
 	},
 	hasCar : function(){
-		if(Session.get("results")[1][1]){
-			if(Session.get("results")[1][1][1]){
-				return true
-			}
-			else{
-				return false
-			}
+		if(Session.get("cheapestLiveCar")){
+			return true
+		}
+		else{
+			return false
 		}
 	}
 });
 
 Template.minFlight.helpers({
 	minLiveFlight : function(){
-		var res = Session.get("minLFP");
+		var res = Session.get("cheapestLiveFlight");
 		return res;
 	},
 	symbolCurrency : function(){
@@ -150,19 +141,19 @@ Template.minPrice.onRendered(function(){
 
 Template.leg.helpers({
 	getDepDate: function(){	
-		var depDateTime = this.DepartureDateTime;
+		var depDateTime = this.departs_at;
 		return depDateTime.substring(0, depDateTime.indexOf("T"));
 	},
 	getDepTime: function(){
-		var depDateTime = this.DepartureDateTime;
+		var depDateTime = this.departs_at;
 		return depDateTime.substring(depDateTime.indexOf("T")+1);
 	},
 	getArrDate: function(){
-		var depDateTime = this.ArrivalDateTime;
+		var depDateTime = this.arrives_at;
 		return depDateTime.substring(0, depDateTime.indexOf("T"));
 	},
 	getArrTime: function(){
-		var depDateTime = this.ArrivalDateTime;
+		var depDateTime = this.arrives_at;
 		return depDateTime.substring(depDateTime.indexOf("T")+1);
 	},
 	getLeg : function(leg){
@@ -170,68 +161,15 @@ Template.leg.helpers({
 	}
 });
 
-Template.minCar.onRendered(function(){
-	Session.set("SelectedCar", (Session.get("selectedLiveCars").carFare.cars)[0] );
-})
-
 Template.minCar.helpers({
 
 	minVehicle : function(){
-		return Session.get("SelectedCar");
-	},
-	getManual : function(manual){
-		if(manual){
-			return "Manual";
-			}
-		else{
-			return "Not manual";
-		}
+		return Session.get("cheapestLiveCar");
 	},
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
 		var cur2 = Currencies.findOne({Code : cur});
 		return cur2.Symbol;
-	},
-	getVehicleImage : function(imId){
-		var res = Session.get("selectedLiveCars").carFare.images;
-		var imUrl = "";
-
-		_.forEach(res, function(im){
-			if(im.id==imId){
-				imUrl = im.url;
-			}
-		});
-		return imUrl;
-	},
-	getCarClass :function(car_class_id){
-		var res = Session.get("selectedLiveCars").carFare.car_classes;
-		var cc = "";
-
-		_.forEach(res, function(im){
-			if(im.id==car_class_id){
-				cc = im.name;
-			}
-		});
-
-		return cc;
-	},
-	getWebsiteImage : function(imId){
-		var res = Session.get("selectedLiveCars").carFare.websites;
-		var imUrl = "";
-
-		_.forEach(res, function(im){
-			if(im.id==imId){
-				imUrl = im.image_url;
-			}
-		});
-
-		return imUrl;
-	},
-	getDepartureDate : function(){
-		return Session.get("selectedLiveCars").departureDate;
-	},
-	getReturnDate : function(){
-		return Session.get("selectedLiveCars").returnDate;
 	}
 });
 
@@ -421,13 +359,11 @@ getMinHotels = function(hf){
 
 Template.options.helpers({
 	hasCar : function(){
-		if(Session.get("results")[1][1]){
-			if(Session.get("results")[1][1][1]){
-				return true
-			}
-			else{
-				return false
-			}
+		if(Session.get("cheapestLiveCar")){
+			return true
+		}
+		else{
+			return false
 		}
 	},
 })
