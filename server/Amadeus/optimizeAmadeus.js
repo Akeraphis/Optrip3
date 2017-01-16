@@ -37,12 +37,23 @@ Meteor.methods({
 		//Step 4. Find the cheapest flight/car combination in the lot
 		var minFlightAndCar = findCheapestFlightAndCar(allFlightFares, allCarFares, ipDays)
 		console.log("---- Step 4 completed : Cheapest flight and car combination found ----");
-		Meteor.call("updateProgress", 20, "Retrieving Hotel fares");
+		Meteor.call("updateProgress", 20, "Ordering the stops");
+		//-------------------
+
+		//Step 5. Get the optimal tour
+		var optimalTour = Meteor.call("orderIps", ipDays);
+		console.log("---- Step 5 completed : Computing the optimal tour ----");
+		Meteor.call("updateProgress", 30, "Retrieving Hotel fares");
+		//-------------------
+
+		//Step 6. Find the cheapest hotel combination
+		var allHotelFares = getAllHotelFares(optimalTour, depDate, returnDate, currency, nbAdults, nbChildren, nbInfants);
+		console.log("---- Step 6 completed : Cheapest hotels combinations found ----");
+		Meteor.call("updateProgress", 80, "Retrieving Hotel fares");
 		//-------------------
 
 
-
-		return [departureFrom, depDate, ipDays, allArrivalAirports, allFlightFares, allCarFares, minFlightAndCar];
+		return [departureFrom, depDate, ipDays, allArrivalAirports, allFlightFares, allCarFares, minFlightAndCar, allHotelFares];
 	},
 
 });
@@ -145,6 +156,33 @@ getAllCarFares = function(allArrivalAirports, depDate, returnDate, currency){
 			}
 		})
 	});
+	return result;
+};
+
+getAllHotelFares = function(optimalTour, depDate, returnDate, currency, nbAdults, nbChildren, nbInfants){
+	var result = [];
+	var dayStart = 1;
+	var i=0;
+	var totalDays = 0;
+	var lastres = {};
+
+	for(i=0;i<optimalTour.length;i++){
+		if(i==0){
+			var endDays = optimalTour[0].nbDays - dayStart;
+			console.log("endDays :", endDays)
+			var checkoutFirst = (moment(depDate).add(dayStart, 'd')).format("YYYY-MM-DD");
+			var checkinLast  = (moment(returnDate).subtract(endDays, 'd')).format("YYYY-MM-DD");
+			result.push(Meteor.call("getAmadeusHotelFareInCollection", optimalTour[0].ip, depDate, checkoutFirst, currency, nbAdults, nbChildren, nbInfants));
+			lastres = Meteor.call("getAmadeusHotelFareInCollection", optimalTour[0].ip, checkinLast, returnDate, currency, nbAdults, nbChildren, nbInfants);
+		}
+		else{
+			var checkin = (moment(depDate).add(totalDays, 'd')).format("YYYY-MM-DD");
+			var checkout = (moment(checkin).add(optimalTour[i].nbDays, 'd')).format("YYYY-MM-DD");
+			result.push(Meteor.call("getAmadeusHotelFareInCollection", optimalTour[i].ip, checkin, checkout, currency, nbAdults, nbChildren, nbInfants));
+			totalDays = totalDays + dayStart + optimalTour[i].nbDays;
+		}
+	};
+	result.push(lastres);
 	return result;
 };
 
