@@ -38,10 +38,11 @@ Meteor.methods({
 		Meteor.call("updateProgress", 5, "Browsing through flight fares");
 
 		//Step 3. Get all the possible flights from departures to arrivals in Json format
-		var flightTable = getFlightFaresInCollection(codeDep, codeArr, departureDate, returnDate, currency, locale, market);
+		var flightTable = getFlightFaresInCollection(codeDep, codeArr, departureDate, returnDate, currency, locale, market, FPUsername, FPPassword);
 		console.log("---- Step 3 completed : Flights Fares retrieved ----");
 		Meteor.call("updateProgress", 10, "Retrieving Hotels and Car fares");
 
+		/*
 		//If it is at least a 2-stop trip
 		if(codeArr.length>=2){
 			//Step 4. Get the circuit
@@ -102,13 +103,14 @@ Meteor.methods({
 			Meteor.call("updateProgress", 95, "Rendering results");
 
 			optimalTrip = [100, [flightTable, [0,,,,] , [lhp[0].data.hotels_prices[0].agent_prices[0].price_total, lhp[0]]], codeArr, codeArr];
-		}
+		}*/
 
 		//Step 10. Call car rental live prices for selected starting IP
 		//var HA = Meteor.call("searchHomeAway", optimalTrip[1][2][1], departureDate, returnDate, currency, nbPerson, nbChildren, nbInfants, locale, market, function(err,res){if(err){console.log(err)}});
 		//Step 11. Return : trip flights to starting IP selected, car rentals to starting IP selected, hotels list for each IP on each day selected
 
-		return [optimalTrip, clfp, lhp]
+		//return [optimalTrip, clfp, lhp]
+		return [flightTable, codeArr]
 	},
 
 	refreshTrip: function(departureFrom, depDate, ipDays, currency, nbPerson, nbChildren, nbInfants, locale, market){
@@ -137,7 +139,7 @@ Meteor.methods({
 		console.log("---- Step 2 completed : Code of locations of arrivals retrieved ----");
 
 		//Step 3. Get all the possible flights from departures to arrivals in Json format
-		var flightTable = getFlightFaresInCollection(codeDep, codeArr, departureDate, returnDate, currency, locale, market);
+		var flightTable = getFlightFaresInCollection(codeDep, codeArr, departureDate, returnDate, currency, locale, market, FPUsername, FPPassword);
 		console.log("---- Step 3 completed : Flights Fares retrieved ----");
 
 		//Step 5. Get all the possible hotel and car rates for the trip
