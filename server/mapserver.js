@@ -1,6 +1,8 @@
 //Définition des clés API
 var skyScannerKey = 'cl675979726025908356913469447815';
 var googleKey = 'AIzaSyBa-oHgHxxTBaIhoFz8koYTBlHcuCyfiIk';
+var FPUsername = "jeanbaptiste.clouard@gmail.com";
+var FPPassword = "82C2FC1F";
 
 //Meteor.startup(function() { Kadira.connect('d62MSQCbwpDxdN4z3', '7f107ad7-8c15-493d-8875-813b7cea7410'); });
 
