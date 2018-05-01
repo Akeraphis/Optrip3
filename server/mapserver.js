@@ -28,12 +28,14 @@ Meteor.methods({
 
 		//Step 1. Get locations of departure	
 		var Dep = AutoSuggest.findOne({PlaceName: departureFrom});
-		var codeDep = Dep.PlaceId;
+		var codeDep = Dep.Airports;
+		console.log(codeDep);
 		Meteor.call("updateProgress", 2, "Retrieving possibilities");
 		console.log("---- Step 1 completed : Code of location of departure retrieved ----");
 		
 		//Step 2. Get locations of arrivals
 		var codeArr = Meteor.call('getCodeArr', ipDays, currency, locale, market);
+		console.log(codeArr);
 		console.log("---- Step 2 completed : Code of locations of arrivals retrieved ----");
 		Meteor.call("updateProgress", 5, "Browsing through flight fares");
 
@@ -206,8 +208,8 @@ Meteor.methods({
 					console.log(err);
 				}
 				else{
-					if(result.Places[0]){
-						codeArr.push({ip : ipa.ip, code : result.Places[0].PlaceId, nbDays : ipa.nbDays});
+					if(result){
+						codeArr.push({ip : ipa.ip, code : result.Airports, nbDays : ipa.nbDays});
 					}
 				}
 			});

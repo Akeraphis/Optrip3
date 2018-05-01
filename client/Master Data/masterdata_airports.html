@@ -1,0 +1,18 @@
+<template name="mdairports">
+		<h4>Airports list :</h4>
+		<form>
+			<label>Name : </label><input type="text" name="name" /><br />
+			<label>Code : </label><input type="text" name="code" /><br />
+			<label>Country : </label><input type="text" name="country" /><br />
+			<label>Size : </label><input type="text" name="size" /><br />
+			<button type='submit' name="enterAirport">Create a new airport</button><button type='reset' name="cancel">Reset</button>
+			<input type="button" name="generateAirports" value="Generate test airports" class="generateAirports" />
+			<input type="button" name="flushAirports" value="Flush all airports" class="flushAirports" />
+		</form>
+		<ul>
+			<h4>name | code | country | size</h4>
+			{{#each airports}}
+					<li>{{name}} | {{iata}} | {{iso}} | {{size}} | {{lat}} | {{long}} <button class="delete">&times;</button> </li>
+			{{/each}}
+		</ul>
+</template>

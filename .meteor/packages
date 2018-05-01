@@ -19,7 +19,6 @@ ecmascript@0.10.6              # Enable ECMAScript2015+ syntax in app code
 shell-server@0.3.1            # Server-side component of the `meteor shell` command
 
 insecure@1.0.7                # Allow all DB writes from clients (for prototyping)
-twbs:bootstrap
 mizzao:autocomplete
 babel-runtime@1.2.0
 iron:router
@@ -38,3 +37,6 @@ meteorhacks:npm
 npm-container
 dynamic-import
 ostrio:base64
+alexwine:bootstrap-4
+fortawesome:fontawesome
+aslagle:reactive-table

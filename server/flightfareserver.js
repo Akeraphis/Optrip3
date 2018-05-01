@@ -7,13 +7,16 @@ import { base64 } from 'meteor/ostrio:base64';
 Meteor.methods({
 
 	getPlaceAutosuggest : function(query, currency, locale, market){
-		// http://partners.api.skyscanner.net/apiservices/autosuggest/v1.0/{market}/{currency}/{locale}/?query={query}&apiKey={apiKey}
+		// http://intellisuggest.fareportal.com/api/IntelliSuggest/2.0/json/AutoSuggest/AIR/ALL/NYC
 
 		var url = "http://partners.api.skyscanner.net/apiservices/autosuggest/v1.0/"+  market + "/" + currency + "/" +locale + "/?query="+query+"&apiKey="+apiKey ;
+		console.log("-------- Place autosuggest : "+query);
 
 		try{
 			var response = HTTP.call('GET',url);
-        	return response.data;
+			if (response){
+				return response.data;
+			}	
 		}
     	catch(e){
         	console.log(e);
@@ -31,43 +34,43 @@ getFlightFares = function(codeDep, codeArr, departureDate, returnDate, currency,
 	//Create Authorization header
 	const nativeB64 = new base64({ useNative: true });
 	var svcCredentials = nativeB64.encode(FPUsername + ":" + FPPassword);
-	console.log("encoded logins : ", svcCredentials);
-	var headers = {
-		"Authorization": "Basic " + svcCredentials,
-		"Content-Type": "application/json"
-	};
-	//Create request body
-	var body = {
-		"ResponseVersion": "VERSION41",
-		"FlightSearchRequest": {
-			"Adults": "1",
-			"Child": "0",
-			"ClassOfService": "ECONOMY",
-			"InfantInLap": "0",
-			"InfantOnSeat": "0",
-			"Seniors": "0",
-			"TypeOfTrip": "ROUNDTRIP",
-			"SegmentDetails": [
-				{
-				"DepartureDate": "2018-10-28",
-				"DepartureTime": "0000",
-				"Destination": "NYC",
-				"Origin": "LON"
-				},
-				{
-				"DepartureDate": "2018-11-07",
-				"DepartureTime": "0000",
-				"Destination": "LON",
-				"Origin": "NYC"
-				}
-			]
-		}
-	};
+	console.log("encoded logins : ", svcCredentials, " codeDep : ", codeDep, " codeArr : ", codeArr, " depdate : ", departureDate);
 	//---
 
-	console.log("The params are : ", headers, body);
 	try{
-		var res = HTTP.call('POST', urlAPIStructure, [headers, body]);
+		var res = HTTP.call('POST', urlAPIStructure, 
+			{
+				headers:{
+					"Authorization": "Basic " + svcCredentials,
+					"Content-Type": "application/json"
+				}, 
+				data:{
+					"ResponseVersion": "VERSION41",
+					"FlightSearchRequest": {
+						"Adults": "1",
+						"Child": "0",
+						"ClassOfService": "ECONOMY",
+						"InfantInLap": "0",
+						"InfantOnSeat": "0",
+						"Seniors": "0",
+						"TypeOfTrip": "ROUNDTRIP",
+						"SegmentDetails": [
+							{
+							"DepartureDate": departureDate,
+							"DepartureTime": "0100",
+							"Destination": codeDep,
+							"Origin": codeArr
+							},
+							{
+							"DepartureDate": returnDate,
+							"DepartureTime": "0100",
+							"Destination": codeArr,
+							"Origin": codeDep
+							}
+						]
+					}
+				}
+		});
 		
 	}
 	catch(e){
@@ -85,31 +88,33 @@ getFlightFaresInCollection = function(codeDep, codeArr, departureDate, returnDat
 	var ffs = [];
 
 	//For all the possible traversed cities
-	_.forEach(codeArr, function(ca){
+	_.forEach(codeDep, function(cd){
+		_.forEach(codeArr, function(ca){
 
-		var res = FlightFares.findOne({departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate});
+			var res = FlightFares.findOne({departureCode : cd, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate});
 
-		// S'il y a une correspondance et que la mise à jour a eu lieu récemment
-		if(res && res.dateUpdate >= dateThreshold ){
-			//Just retrieve the field
-			ffs.push(res);
+			// S'il y a une correspondance et que la mise à jour a eu lieu récemment
+			if(res && res.dateUpdate >= dateThreshold ){
+				//Just retrieve the field
+				ffs.push(res);
 
-		}
-		else if(res && res.dateUpdate < dateThreshold){
-			//Remove the field and Retrieve
-			var ff = getFlightFares(codeDep, ca.code, departureDate, returnDate, currency, locale, market, FPUsername, FPPassword);
-			var result = FlightFares.update({ departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate}, {dateUpdate : dateNow, flightFare : ff });
-			ffs.push({ departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff });
-			console.log("alert flight to be refreshed");
+			}
+			else if(res && res.dateUpdate < dateThreshold){
+				//Remove the field and Retrieve
+				var ff = getFlightFares(cd, ca.code, departureDate, returnDate, currency, locale, market, FPUsername, FPPassword);
+				var result = FlightFares.update({ departureCode : cd, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate}, {dateUpdate : dateNow, flightFare : ff });
+				ffs.push({ departureCode : cd, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff });
+				console.log("alert flight to be refreshed");
 
-		}
-		else{
-			//Enter the missing search in the table and retrieve the result
-			var ff = getFlightFares(codeDep, ca.code, departureDate, returnDate, currency, locale, market, FPUsername, FPPassword);
-			var result = FlightFares.insert({ departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff });
-			ffs.push({ departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff });
-			console.log("alert flight no entry");
-		}
+			}
+			else{
+				//Enter the missing search in the table and retrieve the result
+				var ff = getFlightFares(cd, ca.code, departureDate, returnDate, currency, locale, market, FPUsername, FPPassword);
+				var result = FlightFares.insert({ departureCode : cd, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff });
+				ffs.push({ departureCode : cd, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff });
+				console.log("alert flight no entry");
+			}
+		});
 	});
 
 	return ffs;
