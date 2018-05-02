@@ -1,4 +1,5 @@
 <template name="mdairports">
+	{{#if Template.subscriptionsReady}}
 		<h4>Airports list :</h4>
 		<form>
 			<label>Name : </label><input type="text" name="name" /><br />
@@ -15,4 +16,5 @@
 					<li>{{name}} | {{iata}} | {{iso}} | {{size}} | {{lat}} | {{long}} <button class="delete">&times;</button> </li>
 			{{/each}}
 		</ul>
+	{{/if}}
 </template>

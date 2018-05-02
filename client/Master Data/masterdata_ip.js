@@ -1,5 +1,7 @@
+Meteor.subscribe("InterestPoints");
+Meteor.subscribe("Airports");
 
-Template.mdip.events({
+Template.mdips.events({
 
 	//create a new interest point
 	'submit form': function(e){
@@ -32,15 +34,6 @@ Template.mdip.events({
 		})
 	},
 
-	//delete selected interest point
-	'click .btn-danger': function(){
-		Meteor.call("deleteIP", this._id, function(err, id){
-		if(err){
-			alert(err.reason);
-		}
-		})
-	},
-	
 	//create some test Data
 	'click .generateIp' : function(){
 		Meteor.call("importCities", function(err,id){if(err){alert(err.reason);}});
@@ -50,11 +43,48 @@ Template.mdip.events({
 	'click .flushCities': function(){
 		Meteor.call("flushAllCities", function(err,id){if(err){alert(err.reason);}});
 	},
+
+	'click .reactive-table tbody tr': function (event) {
+		// set the blog post we'll display details and news for
+		var post = this;
+		Session.set("selectedIp", this);
+		FlowRouter.go('/masterdata/interestPoints/'+this._id);
+
+	}
 });
 
 //Helpers Cities/IP template
-Template.mdip.helpers({
+Template.mdips.helpers({
 	myCollection: function () {
-        return InterestPoints;
-    }
+        return InterestPoints.find({}).fetch();
+    },
+});
+
+Template.mdip.helpers({
+	'getCity': function(){
+		var id = FlowRouter.getParam('ipid');
+		return InterestPoints.findOne({_id : id});
+	},
+	'getAirportName': function(code){
+		if(code!=""){
+			return Airports.findOne({code : code}).name;
+		}
+	},
+	'getAirport': function(c){
+		return Airports.find({country: c}).fetch();
+	}
+});
+
+Template.mdip.events({
+	'click .returnToIpList': function(){
+		FlowRouter.go('/masterdata/interestPoints/')
+	},
+	'click .addAirportToIP': function(){
+		var airportSelected = $("#airport-select").val();
+		var airport = Airports.findOne({name : airportSelected});
+		var ipid = FlowRouter.getParam('ipid');
+		if(airport){
+			InterestPoints.update({_id : ipid}, {$push : {airports : {code : airport.code}}});
+		}
+	}
 });

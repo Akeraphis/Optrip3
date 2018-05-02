@@ -10,6 +10,10 @@ Meteor.publish("allInterestPoints", function(){
 	});
 });
 
+Meteor.publish("InterestPoints", function(id){
+	return InterestPoints.find({_id : id});
+})
+
 Meteor.publish("allFlightFares", function(){
 	return FlightFares.find({},{
 		fields: {content :0}

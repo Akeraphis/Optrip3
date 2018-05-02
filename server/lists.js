@@ -7,9 +7,7 @@ Meteor.methods({
 		myAirports = JSON.parse(Assets.getText('AirportsList.json'));
 
 		_.forEach(myAirports, function(myAirports){
-			if (myAirports.size == "large") {
-				Meteor.call("insertAirport", myAirports, function(err,id){if(err){alert(err.reason);}});
-			};
+			Meteor.call("insertAirport", myAirports, function(err,id){if(err){alert(err.reason);}});
 		})
 	},
 

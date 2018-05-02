@@ -1,3 +1,11 @@
+Meteor.subscribe("allAirports");
+
+Template.mdairports.helpers({
+	'airports': function(){
+		return Airports.find({});
+	}
+})
+
 //Events Airports
 Template.mdairports.events({
 	//Create a new airport

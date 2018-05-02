@@ -1,21 +1,23 @@
 <template name="home">
-	<div class="row">
-		<div class="col-md-4">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-		    		<h3 class="panel-title">Where do you want to go ?</h3>
-		  		</div><br/>
-		  		<img src="question-mark-icon.png" height="30px" class="imagehelp" width="30px" data-toggle="tooltip" title="Optrip is an application that will help you build your holidays (flight+car+hotels) in an optimal way. Just seelect a number of cities you want to visit on the map and fill the fields below. Our powerful optimization engine will then find you the cheapest trip for your selection. (The computation time (empty page for now) can take up to several minutes)."><br/><br/>
-				{{> inputAutocomplete settings=settings id="departurePoint" class="form-control" name="departurePoint" placeholder="Departure from" }}
-				<br />
-				{{> inputPanel}}
+	{{#if Template.subscriptionsReady}}
+		<div class="row">
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+			    		<h3 class="panel-title">Where do you want to go ?</h3>
+			  		</div><br/>
+			  		<img src="question-mark-icon.png" height="30px" class="imagehelp" width="30px" data-toggle="tooltip" title="Optrip is an application that will help you build your holidays (flight+car+hotels) in an optimal way. Just seelect a number of cities you want to visit on the map and fill the fields below. Our powerful optimization engine will then find you the cheapest trip for your selection. (The computation time (empty page for now) can take up to several minutes)."><br/><br/>
+					{{> inputAutocomplete settings=settings id="departurePoint" class="form-control" name="departurePoint" placeholder="Departure from" }}
+					<br />
+					{{> inputPanel}}
+				</div>
+			</div>
+			<div class="col-md-8">
+				<center>{{> map}}</center>
 			</div>
 		</div>
-		<div class="col-md-8">
-			<center>{{> map}}</center>
-		</div>
-	</div>
-	{{>sanityCheck}}
+		{{>sanityCheck}}
+	{{/if}}
 </template>
 
 <template name="selectedIPs">

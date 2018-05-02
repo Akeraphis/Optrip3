@@ -1,39 +1,38 @@
 <!-- Template used for displaying Interest points -->
+<template name="mdips">
+	{{#if Template.subscriptionsReady}}
+		<h4>Interest Points list :</h4>`
+		{{> reactiveTable collection=myCollection}}
+		<div class="form">
+			<form>
+				<label>Name : </label><input type="text" name="name" /><br />
+				<label>Latitude : </label><input type="text" name="latitude" /><br />
+				<label>Longitude : </label><input type="text" name="longitude" /><br />
+				<label>Province : </label><input type="textarea" name="description" /><br />
+				<label>Country : </label><input type="text" name="country" /><br /><br/>
+				<button type='submit' name="enterInterestPoints">Create a new Interest Points</button><button type='reset' name="cancel">Reset</button>
+				<input type="button" name="generateIp" value="Generate test data" class="generateIp" />
+				<input type="button" name="flushCities" value="Flush all cities" class="flushCities" />
+			</form>
+		</div>
+	{{/if}}
+</template>
+
 <template name="mdip">
-	<h4>Interest Points list :</h4>
-	
-	<div class="form">
-		<form>
-			<label>Name : </label><input type="text" name="name" /><br />
-			<label>Latitude : </label><input type="text" name="latitude" /><br />
-			<label>Longitude : </label><input type="text" name="longitude" /><br />
-			<label>Province : </label><input type="textarea" name="description" /><br />
-			<label>Country : </label><input type="text" name="country" /><br /><br/>
-			<button type='submit' name="enterInterestPoints">Create a new Interest Points</button><button type='reset' name="cancel">Reset</button>
-			<input type="button" name="generateIp" value="Generate test data" class="generateIp" />
-			<input type="button" name="flushCities" value="Flush all cities" class="flushCities" />
-		</form>
-	</div>
-	<br/><br />
-	{{> reactiveTable collection=myCollection}}
-</template>
-
-<template name="displayIP">
-    {{name}} <span style="color: {{color}}; background-color: {{bg}};"></span>
-</template>
-
-<template name="toggle_add_airports">
-	<p>
-		<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#{{city}}" aria-expanded="false" aria-controls="multiCollapseExample">Expand</button>
-	</p>
-	<div class="collapse multi-collapse" id="{{city}}">
-		<div class="card card-body">
+	<button class="returnToIpList"><i class="fa fa-arrow-left"></i></button>
+	{{#with getCity}}
+		<h4>Edition of {{city}}</h4>
 		<ul>
 			{{#each airports}}
-				<li>{{getAirportCode this}} - {{getAirportName this}}</li>
+				<li>{{getAirportName code}}</li>
 			{{/each}}
 		</ul>
-		<button class="add_airport"><i class="fa fa-plus"></i></button>
-		</div>
-	</div>
+		<h5>Add an Airport :</h5>
+		<select id="airport-select">
+			{{#each getAirport country}}
+				<option>{{name}}</option>
+			{{/each}}
+		</select>
+		<button type="submit" class="addAirportToIP"><i class='fa fa-plus'></i></button>
+	{{/with}}
 </template>

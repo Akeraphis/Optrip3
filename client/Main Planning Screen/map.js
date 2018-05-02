@@ -1,4 +1,6 @@
 //Create a session to select IPs
+Meteor.subscribe("allInterestPoints");
+Meteor.subscribe("allSuggestions");
 Session.set("selectedIp", []);
 var map=null;
 var markers = [];
