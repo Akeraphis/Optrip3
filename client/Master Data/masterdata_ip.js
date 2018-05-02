@@ -1,5 +1,3 @@
-Meteor.subscribe("InterestPoints");
-Meteor.subscribe("Airports");
 
 Template.mdips.events({
 
@@ -56,21 +54,26 @@ Template.mdips.events({
 //Helpers Cities/IP template
 Template.mdips.helpers({
 	myCollection: function () {
+		Meteor.subscribe("allInterestPoints");
+
         return InterestPoints.find({}).fetch();
     },
 });
 
 Template.mdip.helpers({
 	'getCity': function(){
+		Meteor.subscribe("allInterestPoints");
 		var id = FlowRouter.getParam('ipid');
 		return InterestPoints.findOne({_id : id});
 	},
 	'getAirportName': function(code){
+		Meteor.subscribe("Airports");
 		if(code!=""){
 			return Airports.findOne({code : code}).name;
 		}
 	},
 	'getAirport': function(c){
+		Meteor.subscribe("Airports");
 		return Airports.find({country: c}).fetch();
 	}
 });

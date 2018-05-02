@@ -1,5 +1,4 @@
 //Create a session to select IPs
-Meteor.subscribe("allInterestPoints");
 Meteor.subscribe("allSuggestions");
 Session.set("selectedIp", []);
 var map=null;
@@ -47,63 +46,79 @@ Template.map.helpers({
 			};
 			return map;
 		}
+	},
+	places: function() {
+		return InterestPoints.find();
 	}
 
 });
 
+Template.map.onCreated(function(){
 
-Template.map.onCreated(function() {
+	var self = this;
 
-  // We can use the `ready` callback to interact with the map API once the map is ready.
 	GoogleMaps.ready('map', function(map) {
+		self.autorun(function() {
+			getBox();
+			var handle = Meteor.subscribe('places', Session.get('box'));
+			if(handle.ready()){
+				//-------------------------------------------------------------------------------------------------
+				// Position all Interest Points on the map, add info on hovering and events linked to the markers
+				//-------------------------------------------------------------------------------------------------
+			    // retrieve all IPs and display them on the map
+				var ipArray = InterestPoints.find().fetch();
 
-		//-------------------------------------------------------------------------------------------------
-		// Position all Interest Points on the map, add info on hovering and events linked to the markers
-		//-------------------------------------------------------------------------------------------------
-	    // retrieve all IPs and display them on the map
-		var ipArray = InterestPoints.find().fetch();
+				google.maps.event.addListener(map.instance, 'dragend', function(e){
+			         getBox();
+			    });
 
-		//Loop to add all IPs
-	    _.forEach(ipArray, function(ip){
+			    google.maps.event.addListener(map.instance, 'zoom_changed', function(e){
+			        getBox();
+			    });
 
-	    	//add marker for considered ip
-	    	var myLatlng = new google.maps.LatLng(ip.lat, ip.lng);
-	    	var k = 0;
+			    console.log(ipArray);
 
-	    	var marker = addMarker(myLatlng, ip.city, map.instance);
+				//Loop to add all IPs
+			    _.forEach(ipArray, function(ip){
 
-	    	//Add info window
-			var contentString = '<b>'+ip.city + '</b>, ' + ip.province + ', '+ ip.country;
-			var infowindow = new google.maps.InfoWindow({content: contentString, disableAutoPan : true});
+			    	//add marker for considered ip
+			    	var myLatlng = new google.maps.LatLng(ip.lat, ip.lng);
+			    	var k = 0;
+
+			    	var marker = addMarker(myLatlng, ip.city, map.instance);
+
+			    	//Add info window
+					var contentString = '<b>'+ip.city + '</b>, ' + ip.province + ', '+ ip.country;
+					var infowindow = new google.maps.InfoWindow({content: contentString, disableAutoPan : true});
 
 
-			//Add event to display info upon hovering
-			google.maps.event.addListener(marker, 'mouseover', function(){
-				infowindow.open(map.instance,marker);
-			});
+					//Add event to display info upon hovering
+					google.maps.event.addListener(marker, 'mouseover', function(){
+						infowindow.open(map.instance,marker);
+					});
 
-			//Add event to undisplay when mouse is leaving the marker
-			google.maps.event.addListener(marker, 'mouseout', function(){
-				infowindow.close(map.instance, marker);
-			});
+					//Add event to undisplay when mouse is leaving the marker
+					google.maps.event.addListener(marker, 'mouseout', function(){
+						infowindow.close(map.instance, marker);
+					});
 
-			//Set to selected/unselected upon clicking
-			google.maps.event.addListener(marker, 'click', function(){
-				//if the ip is already selected
-				if (IsSelected(ip)){
-					UnSelectCity(ip);
-					marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red.png');
-				}
-				//if it is not already selected
-				else{
-					SelectCity(ip);
-					marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green.png');
-					marker.setLabel("");
-				}
-			});
-
-	    });
-
+					//Set to selected/unselected upon clicking
+					google.maps.event.addListener(marker, 'click', function(){
+						//if the ip is already selected
+						if (IsSelected(ip)){
+							UnSelectCity(ip);
+							marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red.png');
+						}
+						//if it is not already selected
+						else{
+							SelectCity(ip);
+							marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green.png');
+							marker.setLabel("");
+						}
+					});
+			    });
+			}
+		});
 	});
 });
 
@@ -278,7 +293,15 @@ function showMarkers() {
 function deleteMarkers() {
   clearMarkers();
   markers = [];
-}
+};
+
+//Function to get the box we are currently looking at
+function getBox() {
+	var bounds = GoogleMaps.maps.map.instance.getBounds();
+	var ne = bounds.getNorthEast();
+	var sw = bounds.getSouthWest();
+	Session.set('box', [[sw.lat(),sw.lng()], [ne.lat(),ne.lng()]]);
+};
 
 Template.home.helpers({
 	settings: function() {
@@ -456,4 +479,4 @@ sanityCheck = function(departureFrom, departureDate, selectedIp, totalNbDays, nb
 		passedSC = true;
 	}
 	return [passedSC, messageSC];
-}
+};

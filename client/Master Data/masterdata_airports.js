@@ -1,7 +1,6 @@
-Meteor.subscribe("allAirports");
-
 Template.mdairports.helpers({
 	'airports': function(){
+		Meteor.subscribe("allAirports");
 		return Airports.find({});
 	}
 })

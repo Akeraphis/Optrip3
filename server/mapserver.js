@@ -27,8 +27,7 @@ Meteor.methods({
 		var prog = ProgressionUsers.findOne({ user : this.connection.clientAddress});
 
 		//Step 1. Get locations of departure	
-		var Dep = AutoSuggest.findOne({PlaceName: departureFrom});
-		var codeDep = Dep.Airports;
+		var codeDep = departureFrom.Airports;
 		console.log(codeDep);
 		Meteor.call("updateProgress", 2, "Retrieving possibilities");
 		console.log("---- Step 1 completed : Code of location of departure retrieved ----");
@@ -203,16 +202,17 @@ Meteor.methods({
 		var codeArr = [];
 
 		_.forEach(ipDays, function(ipa){
-			Meteor.call("getPlaceAutosuggest", ipa.ip.city, currency, locale, market, function(err, result){
-				if(err){
-					console.log(err);
-				}
-				else{
-					if(result){
-						codeArr.push({ip : ipa.ip, code : result.Airports, nbDays : ipa.nbDays});
-					}
-				}
-			});
+			// Meteor.call("getPlaceAutosuggest", ipa.ip.city, currency, locale, market, function(err, result){
+			// 	if(err){
+			// 		console.log(err);
+			// 	}
+			// 	else{
+			// 		if(result){
+			// 			codeArr.push({ip : ipa.ip, code : result.Airports, nbDays : ipa.nbDays});
+			// 		}
+			// 	}
+			// });
+			codeArr.push({ip : ipa.ip, code : ipa.ip.Airports, nbDays : ipa.nbDays})
 		});
 
 		return codeArr;
