@@ -1,5 +1,6 @@
 //Create a session to select IPs
 Meteor.subscribe("allSuggestions");
+Meteor.subscribe("allProgressionUsers");
 Session.set("selectedIp", []);
 var map=null;
 var markers = [];
@@ -373,7 +374,7 @@ Template.home.events({
 			//Go to proression bar screen and start counting
 			Meteor.call("getIpAddress", function(err, res){
 				if(!err){
-					Router.go('/progression');
+					FlowRouter.go('/progression');
 					Session.set("clientIp", res);
 					Meteor.call('insertProgressionUser', {user : Session.get("clientIp"), progress : 0, operation : "Initializing"});
 				}
@@ -393,7 +394,7 @@ Template.home.events({
 							alert("This is an error while updating the fares!");
 						}
 						else{
-							Router.go('/optimization/results');
+							FlowRouter.go('/optimization/results');
 							Session.set("results", res[0][1]);
 							Session.set("minTotalPrice", res[0][0]);
 							Session.set("optimalCircuit", res[0][2]);

@@ -1,7 +1,12 @@
 //---------------------------------------------------------
 //HELPERS MASTERDATA
 //---------------------------------------------------------
-
+Template.mdff.helpers({
+	"getAllFlightFares": function(){
+		Meteor.subscribe("allFlightFares");
+		return FlightFares.find({});
+	}
+})
 
 
 //---------------------------------------------------------
