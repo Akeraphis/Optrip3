@@ -77,8 +77,6 @@ Template.map.onCreated(function(){
 			        getBox();
 			    });
 
-			    console.log(ipArray);
-
 				//Loop to add all IPs
 			    _.forEach(ipArray, function(ip){
 

@@ -1,0 +1,2107 @@
+[
+{ "city": "Florence",
+  "checkin": "2018-07-25",
+  "checkout": "2018-07-26",
+  "hotelFare": 
+  {
+  "results": [
+    {
+      "property_code": "CHFLRH52",
+      "property_name": "Hotel Fiorita",
+      "marketing_text": "The 2 star Fiorita Hotel in Florence is a recently renovated elegant building dating from the early twentieth century and offering a high quality service and a superb location. Ideal for a romantic holiday and relax with the family and friends. Some rooms have a balcony and a view of the cathedral. Furthemore, a bar service and an ADSL or WiFi Internet Point are also available on request. Every morning a plentiful buffet breakfast is served in the terrace where it is possible to have a wonderful sight of Florence. The staff is at your complete disposal to advise you on typical restaurants, to book tickets for shows and exhibitions, tours of the city and its surroundings and a trip to the famous The Mall, a haven of clothing outlets located in Leccio Reggello, just outside Florence. Nearby private garage. Small pets are accepted.",
+      "location": {
+        "latitude": 43.77768,
+        "longitude": 11.24983
+      },
+      "address": {
+        "line1": "Via Fiume 20",
+        "city": "Florence",
+        "postal_code": "50123",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "64.45",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "64.45",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39 055 283189"
+        },
+        {
+          "type": "FAX",
+          "detail": "39 055 2728153"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "ELEVATORS",
+          "ota_code": 33,
+          "description": "Elevators"
+        },
+        {
+          "amenity": "PARKING",
+          "ota_code": 68,
+          "description": "Parking"
+        },
+        {
+          "amenity": "SAFE_DEPOSIT_BOX",
+          "ota_code": 78,
+          "description": "Safe deposit box"
+        }
+      ],
+      "awards": [],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "C1SBAR",
+          "room_type_code": "C1S",
+          "rate_plan_code": "BAR",
+          "total_amount": {
+            "amount": "64.45",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 64.45
+            }
+          ],
+          "descriptions": [
+            "Best Available Rate",
+            "Economy Single Room, small simple room with",
+            "private bath, sat TV, minibar, telephone,"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Standard",
+            "bed_type": "Single",
+            "number_of_beds": "1"
+          },
+          "rate_type_code": "BAR"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/CHFLRH52?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "UIFLRAOJ",
+      "property_name": "Select Executive",
+      "location": {
+        "latitude": 43.78328,
+        "longitude": 11.23724
+      },
+      "address": {
+        "line1": "Via Giuseppe Galliano 13-a",
+        "city": "Florenze",
+        "postal_code": "50144",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "78.26",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "78.26",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39-055-3249600"
+        },
+        {
+          "type": "FAX",
+          "detail": "39-055-3910697"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "LAUNDRY_SERVICE",
+          "ota_code": 58,
+          "description": "Laundry/Valet service"
+        },
+        {
+          "amenity": "SOLARIUM",
+          "ota_code": 83,
+          "description": "Solarium"
+        },
+        {
+          "amenity": "SAFE_DEPOSIT_BOX",
+          "ota_code": 78,
+          "description": "Safe deposit box"
+        }
+      ],
+      "awards": [
+        {
+          "provider": "Local Star Rating",
+          "rating": "4"
+        }
+      ],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "N1QPR2",
+          "room_type_code": "N1Q",
+          "rate_plan_code": "PR2",
+          "total_amount": {
+            "amount": "78.26",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 78.26
+            }
+          ],
+          "descriptions": [
+            "Early booking NON ref book in",
+            "adv and save 15pcnt prepaid non ref no cxl",
+            "bi-level superior queen room"
+          ],
+          "room_type_info": {
+            "room_type": "Non-smoking",
+            "bed_type": "Queen",
+            "number_of_beds": "1"
+          },
+          "rate_type_code": "PR2"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/UIFLRAOJ?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "RTFLRNOR",
+      "property_name": "Ibis Firenze Nord",
+      "location": {
+        "latitude": 43.8104,
+        "longitude": 11.17778
+      },
+      "address": {
+        "line1": "Via Volturno 5",
+        "city": "Sesto Fiorentino",
+        "postal_code": "50019",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "80.56",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "80.56",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39/055/34511"
+        },
+        {
+          "type": "FAX",
+          "detail": "39/055/3024894"
+        },
+        {
+          "type": "EMAIL",
+          "detail": "H3728@accor.com"
+        },
+        {
+          "type": "URL",
+          "detail": "www.accorhotels.com"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "ELEVATORS",
+          "ota_code": 33,
+          "description": "Elevators"
+        },
+        {
+          "amenity": "FRONT_DESK_24_HOURS",
+          "ota_code": 1,
+          "description": "24-hour front desk"
+        },
+        {
+          "amenity": "SAFE_DEPOSIT_BOX",
+          "ota_code": 78,
+          "description": "Safe deposit box"
+        },
+        {
+          "amenity": "AC_220V",
+          "ota_code": 115,
+          "description": "220 AC"
+        },
+        {
+          "amenity": "PARKING",
+          "ota_code": 68,
+          "description": "Parking"
+        },
+        {
+          "amenity": "INTERNET_SERVICES",
+          "ota_code": 223,
+          "description": "Internet services"
+        },
+        {
+          "amenity": "PETS_ALLOWED",
+          "ota_code": 224,
+          "description": "Pets allowed"
+        },
+        {
+          "amenity": "ACCESSIBLE_FACILITIES",
+          "ota_code": 47,
+          "description": "Accessible facilities"
+        },
+        {
+          "amenity": "",
+          "ota_code": 179,
+          "description": "Wireless internet connection in public areas"
+        },
+        {
+          "amenity": "",
+          "ota_code": 53,
+          "description": "Indoor parking"
+        },
+        {
+          "amenity": "RESTAURANT",
+          "ota_code": 76,
+          "description": "Restaurant"
+        }
+      ],
+      "awards": [
+        {
+          "provider": "Local Star Rating",
+          "rating": "3"
+        }
+      ],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "C2TRZI",
+          "room_type_code": "C2T",
+          "rate_plan_code": "RZI",
+          "total_amount": {
+            "amount": "80.56",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 80.56
+            }
+          ],
+          "descriptions": [
+            "HOT DEAL RESTRICTED",
+            "Room with twin beds"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Standard",
+            "bed_type": "Twin",
+            "number_of_beds": "2"
+          },
+          "rate_type_code": "RZI"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/RTFLRNOR?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "ONFLRHPA",
+      "property_name": "Hotel Panorama",
+      "marketing_text": "Hotel Panorama is centrally located surrounded by some important historical monuments in front of us along Via Cavour lies the beautiful Chiostro dello Scalzo, in Via della Dogana is the rear of the Saint Mark Museum and in Via La Pira is the Giardino dei Semplici. You can start your visit to Florence by just stepping out of the hotel. Only a couple of blocks away are also the Accademy Gallery where the worldwide famous David by Michelangelo is, Lo Spedale degli Innocenti and The Cathedral. The hotel is also well connected with public transportation and can be easily reached by car parking is possible at a closeby public underground.",
+      "location": {
+        "latitude": 43.77934,
+        "longitude": 11.25946
+      },
+      "address": {
+        "line1": "Via Cavour 60",
+        "city": "Firenze",
+        "postal_code": "50129",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "85.34",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "81.16",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39 055 2382043"
+        },
+        {
+          "type": "FAX",
+          "detail": "39 055 264404"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "ELEVATORS",
+          "ota_code": 33,
+          "description": "Elevators"
+        },
+        {
+          "amenity": "LOUNGE_BARS",
+          "ota_code": 165,
+          "description": "Lounges/bars"
+        },
+        {
+          "amenity": "LOUNGE_BARS",
+          "ota_code": 165,
+          "description": "Lounges/bars"
+        },
+        {
+          "amenity": "SAFE_DEPOSIT_BOX",
+          "ota_code": 78,
+          "description": "Safe deposit box"
+        }
+      ],
+      "awards": [],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "C1SPPP",
+          "room_type_code": "C1S",
+          "rate_plan_code": "PPP",
+          "total_amount": {
+            "amount": "85.34",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 81.16
+            }
+          ],
+          "descriptions": [
+            "Non refundable Prepayment Advanced Purchase",
+            "Rate",
+            "Single room modernly furnished for 1 person,"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Standard",
+            "bed_type": "Single",
+            "number_of_beds": "1"
+          },
+          "rate_type_code": "PPP"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/ONFLRHPA?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "UZFLR209",
+      "property_name": "Art Hotel Milano",
+      "location": {
+        "latitude": 43.87862,
+        "longitude": 11.10501
+      },
+      "address": {
+        "line1": "Via Tiziano 15",
+        "city": "Prato",
+        "postal_code": "59100",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "85.93",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "85.93",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39-574-23371"
+        },
+        {
+          "type": "FAX",
+          "detail": "39-574-27706"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "BABY_SITTING",
+          "ota_code": 8,
+          "description": "Baby sitting"
+        }
+      ],
+      "awards": [
+        {
+          "provider": "Local Star Rating",
+          "rating": "4"
+        }
+      ],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "C9QPRO",
+          "room_type_code": "C9Q",
+          "rate_plan_code": "PRO",
+          "total_amount": {
+            "amount": "85.93",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 85.93
+            }
+          ],
+          "descriptions": [
+            "BAR",
+            "Single Room"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Standard",
+            "bed_type": "Queen",
+            "number_of_beds": "9"
+          },
+          "rate_type_code": "PRO"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/UZFLR209?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "FGFLRARZ",
+      "property_name": "Hotel Arizona",
+      "location": {
+        "latitude": 43.77267,
+        "longitude": 11.2653
+      },
+      "address": {
+        "line1": "Via Luigi Carlo Farini 2",
+        "city": "Firenze",
+        "postal_code": "50121",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "89.04",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "84.86",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "+39 055245321"
+        },
+        {
+          "type": "FAX",
+          "detail": "+39 0552346130"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "COFFEE_SHOP",
+          "ota_code": 20,
+          "description": "Coffee shop"
+        },
+        {
+          "amenity": "RESTAURANT",
+          "ota_code": 76,
+          "description": "Restaurant"
+        },
+        {
+          "amenity": "CAR_RENTAL",
+          "ota_code": 15,
+          "description": "Car rental desk"
+        },
+        {
+          "amenity": "ELEVATORS",
+          "ota_code": 33,
+          "description": "Elevators"
+        },
+        {
+          "amenity": "LAUNDRY_SERVICE",
+          "ota_code": 58,
+          "description": "Laundry/Valet service"
+        },
+        {
+          "amenity": "PARKING",
+          "ota_code": 68,
+          "description": "Parking"
+        },
+        {
+          "amenity": "PETS_ALLOWED",
+          "ota_code": 224,
+          "description": "Pets allowed"
+        },
+        {
+          "amenity": "LOUNGE_BARS",
+          "ota_code": 165,
+          "description": "Lounges/bars"
+        },
+        {
+          "amenity": "ROOM_SERVICE",
+          "ota_code": 77,
+          "description": "Room service"
+        },
+        {
+          "amenity": "SAFE_DEPOSIT_BOX",
+          "ota_code": 78,
+          "description": "Safe deposit box"
+        }
+      ],
+      "awards": [
+        {
+          "provider": "Local Star Rating",
+          "rating": "4"
+        }
+      ],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "C1SPP9",
+          "room_type_code": "C1S",
+          "rate_plan_code": "PP9",
+          "total_amount": {
+            "amount": "89.04",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 84.86
+            }
+          ],
+          "descriptions": [
+            "NOT REFUNDABLE RATE",
+            "SINGLE ROOM / SINGLE BED / 11 SQM / PRIVATE",
+            "BATHROOM / TV / MINIBAR / SAFE / AIR COND /"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Standard",
+            "bed_type": "Single",
+            "number_of_beds": "1"
+          },
+          "rate_type_code": "PP9"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/FGFLRARZ?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "KYFLRFOR",
+      "property_name": "Exe La Fortezza Hotel",
+      "marketing_text": "Contemporary style hotel, refubished in 2002. Located just 50 mt from the Fortezza da Basso and 700 mt from the Central railway Station, very close to the Historical Centre. Inside of a Villa of year 1800 you will find 39 rooms endowed of a",
+      "location": {
+        "latitude": 43.7836,
+        "longitude": 11.25334
+      },
+      "address": {
+        "line1": "Viale Milton,95",
+        "city": "Florence",
+        "postal_code": "50129",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "94.29",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "94.29",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "(+39)055 46391"
+        },
+        {
+          "type": "FAX",
+          "detail": "(+39)055 46391388"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "LOUNGE_BARS",
+          "ota_code": 165,
+          "description": "Lounges/bars"
+        },
+        {
+          "amenity": "ACCESSIBLE_FACILITIES",
+          "ota_code": 47,
+          "description": "Accessible facilities"
+        },
+        {
+          "amenity": "ELEVATORS",
+          "ota_code": 33,
+          "description": "Elevators"
+        },
+        {
+          "amenity": "CURRENCY_EXCHANGE",
+          "ota_code": 26,
+          "description": "Currency exchange"
+        },
+        {
+          "amenity": "LAUNDRY_SERVICE",
+          "ota_code": 58,
+          "description": "Laundry/Valet service"
+        },
+        {
+          "amenity": "PARKING",
+          "ota_code": 68,
+          "description": "Parking"
+        },
+        {
+          "amenity": "SAFE_DEPOSIT_BOX",
+          "ota_code": 78,
+          "description": "Safe deposit box"
+        }
+      ],
+      "awards": [],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "B1SLPR",
+          "room_type_code": "B1S",
+          "rate_plan_code": "LPR",
+          "total_amount": {
+            "amount": "94.29",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 94.29
+            }
+          ],
+          "descriptions": [
+            "BEST AVAILABLE RATE",
+            "SINGLE STANDARD WITH BREAKFAST"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Moderate",
+            "bed_type": "Single",
+            "number_of_beds": "1"
+          },
+          "rate_type_code": "LPR"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/KYFLRFOR?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "UIFLRMIR",
+      "property_name": "Hotel Mirage Florence",
+      "location": {
+        "latitude": 43.79478,
+        "longitude": 11.20585
+      },
+      "address": {
+        "line1": "Via F. Baracca 231-18",
+        "city": "Florence",
+        "postal_code": "50127",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "95.36",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "95.36",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39-055-352011"
+        },
+        {
+          "type": "FAX",
+          "detail": "39-055-374096"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "COFFEE_SHOP",
+          "ota_code": 20,
+          "description": "Coffee shop"
+        },
+        {
+          "amenity": "ACCESSIBLE_FACILITIES",
+          "ota_code": 47,
+          "description": "Accessible facilities"
+        },
+        {
+          "amenity": "BABY_SITTING",
+          "ota_code": 8,
+          "description": "Baby sitting"
+        },
+        {
+          "amenity": "CAR_RENTAL",
+          "ota_code": 15,
+          "description": "Car rental desk"
+        },
+        {
+          "amenity": "LAUNDRY_SERVICE",
+          "ota_code": 58,
+          "description": "Laundry/Valet service"
+        },
+        {
+          "amenity": "PARKING",
+          "ota_code": 68,
+          "description": "Parking"
+        },
+        {
+          "amenity": "SOLARIUM",
+          "ota_code": 83,
+          "description": "Solarium"
+        },
+        {
+          "amenity": "SAFE_DEPOSIT_BOX",
+          "ota_code": 78,
+          "description": "Safe deposit box"
+        }
+      ],
+      "awards": [
+        {
+          "provider": "Local Star Rating",
+          "rating": "4"
+        }
+      ],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "N2TPR1",
+          "room_type_code": "N2T",
+          "rate_plan_code": "PR1",
+          "total_amount": {
+            "amount": "95.36",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 95.36
+            }
+          ],
+          "descriptions": [
+            "Discounted Non refundable Non",
+            "amendable,non cancelable breakfast wifi VAT",
+            "Classic Twin Room Single bed,"
+          ],
+          "room_type_info": {
+            "room_type": "Non-smoking",
+            "bed_type": "Twin",
+            "number_of_beds": "2"
+          },
+          "rate_type_code": "PR1"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/UIFLRMIR?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "CHFLRH54",
+      "property_name": "Hotel Villa Bonelli",
+      "marketing_text": "The 3 stars Hotel Villa Bonelli is located in Fiesole in the green hills surrounding Florence in a quiet friendly environment.Magnificent Fiesole is one of the more ancient cities of Tuscany.22 rooms,all with private bathroom,television,telephone,A/C,minibar,hairdryer and wall safe.",
+      "location": {
+        "latitude": 43.80686,
+        "longitude": 11.29727
+      },
+      "address": {
+        "line1": "Via F Poeti  1",
+        "city": "Fiesole",
+        "postal_code": "50014",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "95.48",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "95.48",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39 055 59513"
+        },
+        {
+          "type": "FAX",
+          "detail": "39 055 598942"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "ACCESSIBLE_FACILITIES",
+          "ota_code": 47,
+          "description": "Accessible facilities"
+        },
+        {
+          "amenity": "ELEVATORS",
+          "ota_code": 33,
+          "description": "Elevators"
+        },
+        {
+          "amenity": "PARKING",
+          "ota_code": 68,
+          "description": "Parking"
+        },
+        {
+          "amenity": "LOUNGE_BARS",
+          "ota_code": 165,
+          "description": "Lounges/bars"
+        }
+      ],
+      "awards": [],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "B1SBAR",
+          "room_type_code": "B1S",
+          "rate_plan_code": "BAR",
+          "total_amount": {
+            "amount": "95.48",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 95.48
+            }
+          ],
+          "descriptions": [
+            "Best Available Rate",
+            "Superior single room with a/c,sat",
+            "TV,minibar,radio,safe,direct telephone."
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Moderate",
+            "bed_type": "Single",
+            "number_of_beds": "1"
+          },
+          "rate_type_code": "BAR"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/CHFLRH54?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "HAFLROGN",
+      "property_name": "Hotel Palazzo Ognissanti",
+      "location": {
+        "latitude": 43.77335,
+        "longitude": 11.24476
+      },
+      "address": {
+        "line1": "Via Maso Finiguerra 12",
+        "city": "Firenze",
+        "postal_code": "50123",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "100.44",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "100.44",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39 055 21 30 21"
+        },
+        {
+          "type": "FAX",
+          "detail": "39 055 26 57 81 2"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "ACCESSIBLE_FACILITIES",
+          "ota_code": 47,
+          "description": "Accessible facilities"
+        },
+        {
+          "amenity": "CAR_RENTAL",
+          "ota_code": 15,
+          "description": "Car rental desk"
+        },
+        {
+          "amenity": "ELEVATORS",
+          "ota_code": 33,
+          "description": "Elevators"
+        },
+        {
+          "amenity": "LAUNDRY_SERVICE",
+          "ota_code": 58,
+          "description": "Laundry/Valet service"
+        },
+        {
+          "amenity": "PARKING",
+          "ota_code": 68,
+          "description": "Parking"
+        },
+        {
+          "amenity": "LOUNGE_BARS",
+          "ota_code": 165,
+          "description": "Lounges/bars"
+        },
+        {
+          "amenity": "ROOM_SERVICE",
+          "ota_code": 77,
+          "description": "Room service"
+        },
+        {
+          "amenity": "SAFE_DEPOSIT_BOX",
+          "ota_code": 78,
+          "description": "Safe deposit box"
+        }
+      ],
+      "awards": [
+        {
+          "provider": "Local Star Rating",
+          "rating": "4"
+        }
+      ],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "B1SLPR",
+          "room_type_code": "B1S",
+          "rate_plan_code": "LPR",
+          "total_amount": {
+            "amount": "100.44",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 100.44
+            }
+          ],
+          "descriptions": [
+            "BEST AVAILABLE RATE",
+            "SINGLE WITH BREAKFAST"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Moderate",
+            "bed_type": "Single",
+            "number_of_beds": "1"
+          },
+          "rate_type_code": "LPR"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/HAFLROGN?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "HAFLRBAS",
+      "property_name": "Basilea",
+      "marketing_text": "The 3 star Basilea Hotel in Florence is a welcoming hotel,housed in a converted ex-convent built by Augustinian friars in the 1300s,situated in the historic San Lorenzo district.The 38 comfortable rooms have been recently renovated and offer a warm and pleasant atmosphere.They are all equipped with private bathroom with hairdryer and have individually controlled air conditioning,colour TV,mini bar,direct phone and internet connection.Some rooms boast a small private balcony.Offering a comfortable and welcoming destination for business and leisure travellers alike.The Hotel is easy to reach from the Santa Maria Novella railway station and offers an ideal base for a convenient visit of the city on foot.A friendly and knowledgeable team is always on hand to give terrific advice or provide great suggestions and all kinds of useful information.",
+      "location": {
+        "latitude": 43.77806,
+        "longitude": 11.25361
+      },
+      "address": {
+        "line1": "Via Guelfa 41",
+        "city": "Firenze",
+        "postal_code": "50129",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "100.97",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "100.97",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "(+39)055-214 587"
+        },
+        {
+          "type": "FAX",
+          "detail": "(+38)055-268 350"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "PARKING",
+          "ota_code": 68,
+          "description": "Parking"
+        },
+        {
+          "amenity": "PETS_ALLOWED",
+          "ota_code": 224,
+          "description": "Pets allowed"
+        },
+        {
+          "amenity": "ROOM_SERVICE",
+          "ota_code": 77,
+          "description": "Room service"
+        },
+        {
+          "amenity": "SAFE_DEPOSIT_BOX",
+          "ota_code": 78,
+          "description": "Safe deposit box"
+        },
+        {
+          "amenity": "ELEVATORS",
+          "ota_code": 33,
+          "description": "Elevators"
+        },
+        {
+          "amenity": "FREE_HIGH_SPEED_INTERNET",
+          "ota_code": 222,
+          "description": "Free high speed internet connection"
+        }
+      ],
+      "awards": [
+        {
+          "provider": "Local Star Rating",
+          "rating": "3"
+        }
+      ],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "B1DLPR",
+          "room_type_code": "B1D",
+          "rate_plan_code": "LPR",
+          "total_amount": {
+            "amount": "100.97",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 100.97
+            }
+          ],
+          "descriptions": [
+            "BEST AVAILABLE RATE",
+            "DOUBLE ROOM LARGE BED WITH BREAKFAST"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Moderate",
+            "bed_type": "Double",
+            "number_of_beds": "1"
+          },
+          "rate_type_code": "LPR"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/HAFLRBAS?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "CHFLRHCE",
+      "property_name": "Hotel I Cedri",
+      "marketing_text": "The new three star Hotel I Cedri is located in Scandicci just a stones throw from Florence, a perfect blend of culture and business, ideal for the manager and the businessman who want to combine closeness to the business zone with the artistic beauties of the old city centre, and also for the tourist who can admire both the city and the beautiful hills that surround it. 15 double bedrooms with private bathroom with shower, all modernly furnished and equipped with air conditioning, minibar, safe, satellite TV and telephone. Private car park and a bright breakfast room where a delicious buffet breakfast is served every morning.",
+      "location": {
+        "latitude": 43.76805,
+        "longitude": 11.14112
+      },
+      "address": {
+        "line1": "Via Pisana 595a",
+        "city": "Firenze",
+        "postal_code": "50010",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "101.45",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "101.45",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39 055 7221464"
+        },
+        {
+          "type": "FAX",
+          "detail": "39 055 790379"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "ACCESSIBLE_FACILITIES",
+          "ota_code": 47,
+          "description": "Accessible facilities"
+        },
+        {
+          "amenity": "ELEVATORS",
+          "ota_code": 33,
+          "description": "Elevators"
+        },
+        {
+          "amenity": "FREE_HIGH_SPEED_INTERNET",
+          "ota_code": 222,
+          "description": "Free high speed internet connection"
+        },
+        {
+          "amenity": "PARKING",
+          "ota_code": 68,
+          "description": "Parking"
+        }
+      ],
+      "awards": [],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "C1DBAR",
+          "room_type_code": "C1D",
+          "rate_plan_code": "BAR",
+          "total_amount": {
+            "amount": "101.45",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 101.45
+            }
+          ],
+          "descriptions": [
+            "Best Available Rate",
+            "Standard double room with ac, direct",
+            "telephone, sat TV, minibar, safe internet"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Standard",
+            "bed_type": "Double",
+            "number_of_beds": "1"
+          },
+          "rate_type_code": "BAR"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/CHFLRHCE?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "UZQPRPRA",
+      "property_name": "Art Hotel Museo",
+      "location": {
+        "latitude": 43.85997,
+        "longitude": 11.10984
+      },
+      "address": {
+        "line1": "Viale Della Repubblica 289",
+        "city": "Prato",
+        "postal_code": "50047",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "106.22",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "106.22",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39-057-45787"
+        },
+        {
+          "type": "FAX",
+          "detail": "39-057-4578880"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "BABY_SITTING",
+          "ota_code": 8,
+          "description": "Baby sitting"
+        },
+        {
+          "amenity": "SAFE_DEPOSIT_BOX",
+          "ota_code": 78,
+          "description": "Safe deposit box"
+        }
+      ],
+      "awards": [
+        {
+          "provider": "Local Star Rating",
+          "rating": "4"
+        }
+      ],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "C3TPR1",
+          "room_type_code": "C3T",
+          "rate_plan_code": "PR1",
+          "total_amount": {
+            "amount": "106.22",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 106.22
+            }
+          ],
+          "descriptions": [
+            "Promotional rate w/breakfast",
+            "Standard room for three",
+            "persons Comfortable room with private bathroom,"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Standard",
+            "bed_type": "Twin",
+            "number_of_beds": "3"
+          },
+          "rate_type_code": "PR1"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/UZQPRPRA?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "CHFLRHMT",
+      "property_name": "Hotel Martelli",
+      "marketing_text": "The elegant 3 star Martelli Hotel in Florence,housed in an ancient Medicean building in the historical centre of the city, has been completely renovated. The 53 rooms have a traditional design, are in a silent position and are all equipped with private bathroom with hairdryer, central air conditioning, colour TV, direct dial telephone, mini bar and safety deposit box. Some rooms feature original frescoed walls. It is believed that Caterina de Medici(1519-1589)slept in room number 47 on her visits to Florence. Both the living room and the breakfast room have maintained their original Florentine style and are equipped with ancient furniture and decorated with wonderful frescos on the walls. A private garage is situated 100 mt from the hotel.",
+      "location": {
+        "latitude": 43.77379,
+        "longitude": 11.25167
+      },
+      "address": {
+        "line1": "Via Panzani 8",
+        "city": "Firenze",
+        "postal_code": "50123",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "106.22",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "106.22",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39 055 217151"
+        },
+        {
+          "type": "FAX",
+          "detail": "39 055 268504"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "ELEVATORS",
+          "ota_code": 33,
+          "description": "Elevators"
+        },
+        {
+          "amenity": "PARKING",
+          "ota_code": 68,
+          "description": "Parking"
+        },
+        {
+          "amenity": "VALET_PARKING",
+          "ota_code": 97,
+          "description": "Valet parking "
+        },
+        {
+          "amenity": "LOUNGE_BARS",
+          "ota_code": 165,
+          "description": "Lounges/bars"
+        },
+        {
+          "amenity": "ROOM_SERVICE",
+          "ota_code": 77,
+          "description": "Room service"
+        },
+        {
+          "amenity": "SAFE_DEPOSIT_BOX",
+          "ota_code": 78,
+          "description": "Safe deposit box"
+        }
+      ],
+      "awards": [],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "C1KPPP",
+          "room_type_code": "C1K",
+          "rate_plan_code": "PPP",
+          "total_amount": {
+            "amount": "106.22",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 106.22
+            }
+          ],
+          "descriptions": [
+            "Non refundable Prepayment Advanced Purchased",
+            "Rate",
+            "Standard double room with king bed, ac, sat"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Standard",
+            "bed_type": "King",
+            "number_of_beds": "1"
+          },
+          "rate_type_code": "PPP"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/CHFLRHMT?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "HAFLRCAP",
+      "property_name": "Hotel Villa Cappugi",
+      "marketing_text": "New and elegant construction in a wide refined Tuscan atmosphere, situated in the magnificent park of Villa Cappugi between the gentle undulating hills and the ancient historical city of Pistoia. It is an ideal starting point for tourist an",
+      "location": {
+        "latitude": 43.94949,
+        "longitude": 10.91932
+      },
+      "address": {
+        "line1": "Via Collegliato 45",
+        "city": "Pistoia",
+        "postal_code": "51100",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "109.80",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "109.80",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "0039 0573450297"
+        },
+        {
+          "type": "FAX",
+          "detail": "0039 0573453550"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "LOUNGE_BARS",
+          "ota_code": 165,
+          "description": "Lounges/bars"
+        },
+        {
+          "amenity": "RESTAURANT",
+          "ota_code": 76,
+          "description": "Restaurant"
+        },
+        {
+          "amenity": "ACCESSIBLE_FACILITIES",
+          "ota_code": 47,
+          "description": "Accessible facilities"
+        },
+        {
+          "amenity": "ELEVATORS",
+          "ota_code": 33,
+          "description": "Elevators"
+        },
+        {
+          "amenity": "CURRENCY_EXCHANGE",
+          "ota_code": 26,
+          "description": "Currency exchange"
+        },
+        {
+          "amenity": "LAUNDRY_SERVICE",
+          "ota_code": 58,
+          "description": "Laundry/Valet service"
+        },
+        {
+          "amenity": "LOUNGE_BARS",
+          "ota_code": 165,
+          "description": "Lounges/bars"
+        },
+        {
+          "amenity": "ROOM_SERVICE",
+          "ota_code": 77,
+          "description": "Room service"
+        },
+        {
+          "amenity": "OUTDOOR_POOL",
+          "ota_code": 66,
+          "description": "Outdoor pool"
+        }
+      ],
+      "awards": [],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "B2TXX2",
+          "room_type_code": "B2T",
+          "rate_plan_code": "XX2",
+          "total_amount": {
+            "amount": "109.80",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 109.8
+            }
+          ],
+          "descriptions": [
+            "BEST AVAILABLE RATE",
+            "TWIN TWO BEDS WITH BREAKFAST"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Moderate",
+            "bed_type": "Twin",
+            "number_of_beds": "2"
+          },
+          "rate_type_code": "XX2"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/HAFLRCAP?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "OKFLRROH",
+      "property_name": "Hotel Rosso 23",
+      "location": {
+        "latitude": 43.77352,
+        "longitude": 11.25022
+      },
+      "address": {
+        "line1": "Piazza Santa Maria Novella 23",
+        "city": "Florence",
+        "postal_code": "50123",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "111.00",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "111.00",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39-055-277300"
+        },
+        {
+          "type": "FAX",
+          "detail": "39-055-27730199"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "RESTAURANT",
+          "ota_code": 76,
+          "description": "Restaurant"
+        },
+        {
+          "amenity": "ACCESSIBLE_FACILITIES",
+          "ota_code": 47,
+          "description": "Accessible facilities"
+        },
+        {
+          "amenity": "BABY_SITTING",
+          "ota_code": 8,
+          "description": "Baby sitting"
+        },
+        {
+          "amenity": "CHILDREN_WELCOME",
+          "ota_code": 218,
+          "description": "Children welcome"
+        },
+        {
+          "amenity": "ELEVATORS",
+          "ota_code": 33,
+          "description": "Elevators"
+        },
+        {
+          "amenity": "PETS_ALLOWED",
+          "ota_code": 224,
+          "description": "Pets allowed"
+        }
+      ],
+      "awards": [
+        {
+          "provider": "Local Star Rating",
+          "rating": "4"
+        }
+      ],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "C1SNRF",
+          "room_type_code": "C1S",
+          "rate_plan_code": "PRO",
+          "total_amount": {
+            "amount": "111.00",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 111
+            }
+          ],
+          "descriptions": [
+            "Not Refundable RATE",
+            "CLASSIC SINGLE-1S-ENSUITE-AIRCON-DDPH-10 SM",
+            "MINIBAR-SATTV-DESK-WIFI-COURTYARD VIEW-MAX 1"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Standard",
+            "bed_type": "Single",
+            "number_of_beds": "1"
+          },
+          "rate_type_code": "PRO"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/OKFLRROH?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "OKFLRHUN",
+      "property_name": "Hotel Universo",
+      "location": {
+        "latitude": 43.77414,
+        "longitude": 11.25009
+      },
+      "address": {
+        "line1": "Pzza St Maria Novella 20",
+        "city": "Florence",
+        "postal_code": "50123",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "113.39",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "113.39",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39-055-293891"
+        },
+        {
+          "type": "FAX",
+          "detail": "39-055-29389199"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "RESTAURANT",
+          "ota_code": 76,
+          "description": "Restaurant"
+        },
+        {
+          "amenity": "CAR_RENTAL",
+          "ota_code": 15,
+          "description": "Car rental desk"
+        },
+        {
+          "amenity": "CHILDREN_WELCOME",
+          "ota_code": 218,
+          "description": "Children welcome"
+        },
+        {
+          "amenity": "ELEVATORS",
+          "ota_code": 33,
+          "description": "Elevators"
+        },
+        {
+          "amenity": "LAUNDRY_SERVICE",
+          "ota_code": 58,
+          "description": "Laundry/Valet service"
+        },
+        {
+          "amenity": "MASSAGE_SERVICES",
+          "ota_code": 61,
+          "description": "Massage services"
+        },
+        {
+          "amenity": "PARKING",
+          "ota_code": 68,
+          "description": "Parking"
+        },
+        {
+          "amenity": "PETS_ALLOWED",
+          "ota_code": 224,
+          "description": "Pets allowed"
+        },
+        {
+          "amenity": "VALET_PARKING",
+          "ota_code": 97,
+          "description": "Valet parking "
+        }
+      ],
+      "awards": [],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "C1SBAR",
+          "room_type_code": "C1S",
+          "rate_plan_code": "PRO",
+          "total_amount": {
+            "amount": "113.39",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 113.39
+            }
+          ],
+          "descriptions": [
+            "BEST AVAILABLE RATE",
+            "CLASSIC SINGLE ROOM-ENSUITE-AIRCON-SATTV-1 P",
+            "1SINGLE-MINIBAR-SAFE-DESK-DDPHONE"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Standard",
+            "bed_type": "Single",
+            "number_of_beds": "1"
+          },
+          "rate_type_code": "PRO"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/OKFLRHUN?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "BWFLR300",
+      "property_name": "De La Pace, Sure Hotel Collection",
+      "location": {
+        "latitude": 43.78127,
+        "longitude": 11.26218
+      },
+      "address": {
+        "line1": "Via A Lamarmora 28",
+        "city": "Florence",
+        "postal_code": "50121",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "116.97",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "116.97",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39-055-577343"
+        },
+        {
+          "type": "FAX",
+          "detail": "39-055-577576"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "RESTAURANT",
+          "ota_code": 76,
+          "description": "Restaurant"
+        },
+        {
+          "amenity": "ACCESSIBLE_FACILITIES",
+          "ota_code": 47,
+          "description": "Accessible facilities"
+        },
+        {
+          "amenity": "BABY_SITTING",
+          "ota_code": 8,
+          "description": "Baby sitting"
+        },
+        {
+          "amenity": "CHILDREN_WELCOME",
+          "ota_code": 218,
+          "description": "Children welcome"
+        },
+        {
+          "amenity": "ELEVATORS",
+          "ota_code": 33,
+          "description": "Elevators"
+        },
+        {
+          "amenity": "INTERNET_PUBLIC_AREAS",
+          "ota_code": 178,
+          "description": "Internet access in public areas"
+        },
+        {
+          "amenity": "LOUNGE_BARS",
+          "ota_code": 165,
+          "description": "Lounges/bars"
+        },
+        {
+          "amenity": "LOUNGE_BARS",
+          "ota_code": 165,
+          "description": "Lounges/bars"
+        },
+        {
+          "amenity": "SAFE_DEPOSIT_BOX",
+          "ota_code": 78,
+          "description": "Safe deposit box"
+        }
+      ],
+      "awards": [
+        {
+          "provider": "Local Star Rating",
+          "rating": "3"
+        }
+      ],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "A1TSNRA",
+          "room_type_code": "A1T",
+          "rate_plan_code": "SNR",
+          "total_amount": {
+            "amount": "116.97",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 116.97
+            }
+          ],
+          "descriptions": [
+            "EUROPEAN SENIOR RATE*RATE AVAILABLE TO ",
+            "1 SINGLE BED,STND,FULL BREAKFAST",
+            "STANDARD"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Superior",
+            "bed_type": "Twin",
+            "number_of_beds": "1"
+          },
+          "rate_type_code": "SNR"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/BWFLR300?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "UIFLREXE",
+      "property_name": "Executive Hotel",
+      "marketing_text": "Situated in a quiet and elegant area in the old part of florence, the executive hotel was restored in may 1990.",
+      "location": {
+        "latitude": 43.77422,
+        "longitude": 11.24253
+      },
+      "address": {
+        "line1": "Via Curtatone 5",
+        "city": "Florence",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "121.74",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "121.74",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39-055-217451"
+        },
+        {
+          "type": "FAX",
+          "detail": "39-055-268346"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "BABY_SITTING",
+          "ota_code": 8,
+          "description": "Baby sitting"
+        },
+        {
+          "amenity": "LAUNDRY_SERVICE",
+          "ota_code": 58,
+          "description": "Laundry/Valet service"
+        },
+        {
+          "amenity": "SAFE_DEPOSIT_BOX",
+          "ota_code": 78,
+          "description": "Safe deposit box"
+        }
+      ],
+      "awards": [
+        {
+          "provider": "Local Star Rating",
+          "rating": "4"
+        }
+      ],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "C2TSP2",
+          "room_type_code": "C2T",
+          "rate_plan_code": "SP2",
+          "total_amount": {
+            "amount": "121.74",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 121.74
+            }
+          ],
+          "descriptions": [
+            "Advanced Booking Special book",
+            "in adv save 15 pcnt prepaid non ref no cxl",
+            "Standard Room 2 Singles BKFST"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Standard",
+            "bed_type": "Twin",
+            "number_of_beds": "2"
+          },
+          "rate_type_code": "SP2"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/UIFLREXE?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    },
+    {
+      "property_code": "CHFLRROG",
+      "property_name": "Rosary Garden Hotel",
+      "marketing_text": "Feeling at home. a warm sensation that the Rosary Garden is able to convey to its guests. Located just outside the hubbub of the city center, between the Arno, Michelangelo square and the hills that surround the southern part of Florence, it is the ideal place either for a business or a leisure trip. Completely refurbished, thus creating a charming and cozy atmosphere, elegant and friendly at the same time. Each bedroom is different from the other and equipped with air conditioning, direct telephone, free WiFi, LCD satellite TV, minibar, safe, make up mirror, hairdryer. A charming English style breakfast room, a Tea room, to enjoy daily a complimentary afternoon tea, intimate sitting areas and an Internet point makes the Rosary Garden be your home away from home. The friendly yet professional staff will be able to fulfill your every need. Adjoining restaurant and private parking.",
+      "location": {
+        "latitude": 43.75625,
+        "longitude": 11.28903
+      },
+      "address": {
+        "line1": "Via Di Ripoli 169",
+        "city": "Firenze",
+        "postal_code": "50126",
+        "country": "IT"
+      },
+      "total_price": {
+        "amount": "123.17",
+        "currency": "USD"
+      },
+      "min_daily_rate": {
+        "amount": "118.40",
+        "currency": "USD"
+      },
+      "contacts": [
+        {
+          "type": "PHONE",
+          "detail": "39 055 6800136"
+        },
+        {
+          "type": "FAX",
+          "detail": "39 055 6800458"
+        }
+      ],
+      "amenities": [
+        {
+          "amenity": "ICE_MACHINE",
+          "ota_code": 52,
+          "description": "Ice machine"
+        },
+        {
+          "amenity": "CAR_RENTAL",
+          "ota_code": 15,
+          "description": "Car rental desk"
+        },
+        {
+          "amenity": "ELEVATORS",
+          "ota_code": 33,
+          "description": "Elevators"
+        },
+        {
+          "amenity": "CURRENCY_EXCHANGE",
+          "ota_code": 26,
+          "description": "Currency exchange"
+        },
+        {
+          "amenity": "PARKING",
+          "ota_code": 68,
+          "description": "Parking"
+        },
+        {
+          "amenity": "PETS_ALLOWED",
+          "ota_code": 224,
+          "description": "Pets allowed"
+        },
+        {
+          "amenity": "LOUNGE_BARS",
+          "ota_code": 165,
+          "description": "Lounges/bars"
+        },
+        {
+          "amenity": "ROOM_SERVICE",
+          "ota_code": 77,
+          "description": "Room service"
+        }
+      ],
+      "awards": [
+        {
+          "provider": "Michelin",
+          "rating": "3"
+        }
+      ],
+      "images": [],
+      "rooms": [
+        {
+          "booking_code": "C1SBAR",
+          "room_type_code": "C1S",
+          "rate_plan_code": "BAR",
+          "total_amount": {
+            "amount": "123.17",
+            "currency": "USD"
+          },
+          "rates": [
+            {
+              "start_date": "2018-07-25",
+              "end_date": "2018-07-26",
+              "currency_code": "USD",
+              "price": 118.4
+            }
+          ],
+          "descriptions": [
+            "Best Available Rate",
+            "Single Room is furnished with French bed,",
+            "private bathroom, air conditioning, heating,"
+          ],
+          "room_type_info": {
+            "room_type": "Room with bath - Standard",
+            "bed_type": "Single",
+            "number_of_beds": "1"
+          },
+          "rate_type_code": "BAR"
+        }
+      ],
+      "_links": {
+        "more_rooms_at_this_hotel": {
+          "href": "https://api.sandbox.amadeus.com/v1.2/hotels/CHFLRROG?apikey=HSGrlULdIappATMn3SRIrL0H80cO4Sll&check_in=2018-07-25&check_out=2018-07-26&referrer=more_rooms_at_this_hotel"
+        }
+      }
+    }
+  ]
+},
+}
+]
