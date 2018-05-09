@@ -3,7 +3,7 @@ var dateFlightRefresh = 8;
 
 Meteor.methods({
 	getAmadeusFlightLowFare : function(codeDep, codeArr, departureDate, returnDate, currency, nbAdults, nbChildren, nbInfants){
-		var url = "http://api.sandbox.amadeus.com/v1.2/flights/low-fare-search"
+		var url = "https://api.sandbox.amadeus.com/v1.2/flights/low-fare-search"
 
 		var search = HTTP.call('GET', url, {
 			params : {

@@ -2,76 +2,6 @@
 	<h3>Edit the master data</h3>
 </template>
 
-
-<template name="mdairports">
-		<h4>Airports list :</h4>
-		<form>
-			<label>Name : </label><input type="text" name="name" /><br />
-			<label>Code : </label><input type="text" name="code" /><br />
-			<label>Country : </label><input type="text" name="country" /><br />
-			<label>Size : </label><input type="text" name="size" /><br />
-			<button type='submit' name="enterAirport">Create a new airport</button><button type='reset' name="cancel">Reset</button>
-			<input type="button" name="generateAirports" value="Generate test airports" class="generateAirports" />
-			<input type="button" name="flushAirports" value="Flush all airports" class="flushAirports" />
-		</form>
-		<ul>
-			<h4>name | code | country | size</h4>
-			{{#each airports}}
-					<li>{{name}} | {{iata}} | {{iso}} | {{size}} | {{lat}} | {{long}} <button class="delete">&times;</button> </li>
-			{{/each}}
-		</ul>
-</template>
-
-<!-- Template used for displaying Interest points -->
-<template name="mdip">
-	<h4>Interest Points list :</h4>
-	<div class="form">
-		<form>
-			<label>Name : </label><input type="text" name="name" /><br />
-			<label>Latitude : </label><input type="text" name="latitude" /><br />
-			<label>Longitude : </label><input type="text" name="longitude" /><br />
-			<label>Province : </label><input type="textarea" name="description" /><br />
-			<label>Country : </label><input type="text" name="country" /><br /><br/>
-			<button type='submit' name="enterInterestPoints">Create a new Interest Points</button><button type='reset' name="cancel">Reset</button>
-			<input type="button" name="generateIp" value="Generate test data" class="generateIp" />
-			<input type="button" name="flushCities" value="Flush all cities" class="flushCities" />
-		</form>
-	</div>
-	<br/><br />
-	<div class="table">
-		<table>
-			<caption>Table of all interest points</caption>
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Latitude</th>
-					<th>Longitude</th>
-					<th>Province</th>
-					<th>Country</th>
-					<th>Population</th>
-				</tr>
-			</thead>
-			<tbody>
-				{{#each interestPoints}}
-					<tr>
-						<td class="city">{{city}}</td>
-						<td class="latitude">{{lat}}</td>
-						<td class="longitude">{{lng}}</td>
-						<td class="province">{{province}}</td>
-						<td class="country">{{country}}</td>
-						<td class="pop">{{pop}}</td>
-						<td><button class="delete">&times;</button></td>
-					</tr>
-				{{/each}}
-			</tbody>
-		</table>
-	</div>
-</template>
-
-<template name="displayIP">
-    {{name}} <span style="color: {{color}}; background-color: {{bg}};"></span>
-</template>
-
 <!-- Template used for displaying Flight Fares -->
 <template name="mdff">
 		<h4>Flight Fare list :</h4>
@@ -81,7 +11,7 @@
 		</form>
 		<ul>
 			<h4>departure from | arrival to | departure Date | min Price | direct | Carrier</h4>
-			{{#each flightFares}}
+			{{#each getAllFlightFares}}
 				{{dataQuotes data}}
 			{{/each}}
 		</ul>

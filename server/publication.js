@@ -10,6 +10,11 @@ Meteor.publish("allInterestPoints", function(){
 	});
 });
 
+Meteor.publish('places', function(box) {
+    return InterestPoints.find({lat : {$gt : box[0][0], $lt : box[1][0]}, lng: {$gt: box[0][1], $lt: box[1][1]}});
+});
+
+
 Meteor.publish("allFlightFares", function(){
 	return FlightFares.find({},{
 		fields: {content :0}

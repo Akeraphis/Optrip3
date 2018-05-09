@@ -1,3 +1,4 @@
+
 {
   "name": "optrip3",
   "private": true,
@@ -5,7 +6,9 @@
     "start": "meteor run"
   },
   "dependencies": {
-    "babel-runtime": "^6.20.0",
+    "@babel/runtime": "^7.0.0-beta.46",
+    "babel-runtime": "^6.26.0",
+    "bcrypt": "^2.0.1",
     "bootstrap": "^3.3.7",
     "meteor-node-stubs": "~0.2.0"
   }

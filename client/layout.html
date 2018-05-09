@@ -10,9 +10,7 @@
 	<body class='mainLayout'>
 		{{> NavBar}}
 		<center><h1 class="titleSite">Optrip</h1></center><br />
-		<div>
-			{{>yield}}
-		</div>
+		{{> Template.dynamic template=main}}
 	</body>
 </template>
 

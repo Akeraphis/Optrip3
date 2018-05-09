@@ -3,6 +3,8 @@ Session.set("selectedIp", []);
 var map=null;
 var markers = [];
 var googleKey = 'AIzaSyBa-oHgHxxTBaIhoFz8koYTBlHcuCyfiIk';
+Meteor.subscribe("allSuggestions");
+
 
 Session.set("selectedCurrency", "EUR");
 Session.set("selectedLocal", "en-GB");
@@ -50,58 +52,70 @@ Template.map.helpers({
 });
 
 
-Template.map.onCreated(function() {
+Template.map.onCreated(function(){
 
-  // We can use the `ready` callback to interact with the map API once the map is ready.
+	var self = this;
+
 	GoogleMaps.ready('map', function(map) {
+		self.autorun(function() {
+			getBox();
+			var handle = Meteor.subscribe('places', Session.get('box'));
+			if(handle.ready()){
+				//-------------------------------------------------------------------------------------------------
+				// Position all Interest Points on the map, add info on hovering and events linked to the markers
+				//-------------------------------------------------------------------------------------------------
+			    // retrieve all IPs and display them on the map
+				var ipArray = InterestPoints.find().fetch();
 
-		//-------------------------------------------------------------------------------------------------
-		// Position all Interest Points on the map, add info on hovering and events linked to the markers
-		//-------------------------------------------------------------------------------------------------
-	    // retrieve all IPs and display them on the map
-		var ipArray = InterestPoints.find().fetch();
+				google.maps.event.addListener(map.instance, 'dragend', function(e){
+			         getBox();
+			    });
 
-		//Loop to add all IPs
-	    _.forEach(ipArray, function(ip){
+			    google.maps.event.addListener(map.instance, 'zoom_changed', function(e){
+			        getBox();
+			    });
 
-	    	//add marker for considered ip
-	    	var myLatlng = new google.maps.LatLng(ip.lat, ip.lng);
-	    	var k = 0;
+				//Loop to add all IPs
+			    _.forEach(ipArray, function(ip){
 
-	    	var marker = addMarker(myLatlng, ip.city, map.instance);
+			    	//add marker for considered ip
+			    	var myLatlng = new google.maps.LatLng(ip.lat, ip.lng);
+			    	var k = 0;
 
-	    	//Add info window
-			var contentString = '<b>'+ip.city + '</b>, ' + ip.province + ', '+ ip.country;
-			var infowindow = new google.maps.InfoWindow({content: contentString, disableAutoPan : true});
+			    	var marker = addMarker(myLatlng, ip.city, map.instance);
+
+			    	//Add info window
+					var contentString = '<b>'+ip.city + '</b>, ' + ip.province + ', '+ ip.country;
+					var infowindow = new google.maps.InfoWindow({content: contentString, disableAutoPan : true});
 
 
-			//Add event to display info upon hovering
-			google.maps.event.addListener(marker, 'mouseover', function(){
-				infowindow.open(map.instance,marker);
-			});
+					//Add event to display info upon hovering
+					google.maps.event.addListener(marker, 'mouseover', function(){
+						infowindow.open(map.instance,marker);
+					});
 
-			//Add event to undisplay when mouse is leaving the marker
-			google.maps.event.addListener(marker, 'mouseout', function(){
-				infowindow.close(map.instance, marker);
-			});
+					//Add event to undisplay when mouse is leaving the marker
+					google.maps.event.addListener(marker, 'mouseout', function(){
+						infowindow.close(map.instance, marker);
+					});
 
-			//Set to selected/unselected upon clicking
-			google.maps.event.addListener(marker, 'click', function(){
-				//if the ip is already selected
-				if (IsSelected(ip)){
-					UnSelectCity(ip);
-					marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red.png');
-				}
-				//if it is not already selected
-				else{
-					SelectCity(ip);
-					marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green.png');
-					marker.setLabel("");
-				}
-			});
-
-	    });
-
+					//Set to selected/unselected upon clicking
+					google.maps.event.addListener(marker, 'click', function(){
+						//if the ip is already selected
+						if (IsSelected(ip)){
+							UnSelectCity(ip);
+							marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red.png');
+						}
+						//if it is not already selected
+						else{
+							SelectCity(ip);
+							marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green.png');
+							marker.setLabel("");
+						}
+					});
+			    });
+			}
+		});
 	});
 });
 
@@ -278,6 +292,15 @@ function deleteMarkers() {
   markers = [];
 }
 
+//Function to get the box we are currently looking at
+function getBox() {
+	var bounds = GoogleMaps.maps.map.instance.getBounds();
+	var ne = bounds.getNorthEast();
+	var sw = bounds.getSouthWest();
+	Session.set('box', [[sw.lat(),sw.lng()], [ne.lat(),ne.lng()]]);
+};
+
+
 Template.home.helpers({
 	settings: function() {
 		return {
@@ -348,7 +371,7 @@ Template.home.events({
 			//Go to proression bar screen and start counting
 			Meteor.call("getIpAddress", function(err, res){
 				if(!err){
-					Router.go('/progression');
+					FlowRouter.go('/progression');
 					Session.set("clientIp", res);
 					Meteor.call('insertProgressionUser', {user : Session.get("clientIp"), progress : 0, operation : "Initializing"});
 				}
@@ -391,7 +414,7 @@ Template.home.events({
 					Meteor.call('optimizeTripViaAmadeus', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"), function(err, res){
 						if(!error){
 							console.log(res);
-							Router.go('/optimization/results');
+							FlowRouter.go('/optimization/results');
 							Meteor.call('deleteProgressionUser', Session.get("clientIp"));
 							Session.set("selectedLiveFlights", res[4]);
 							Session.set("selectedLiveCars", res[5]);
@@ -410,7 +433,7 @@ Template.home.events({
 		var departureFrom = document.getElementById("departurePoint");
 
 		if(departureFrom.value.length >= 1){
-			/*var depAutoSuggest = Meteor.call("getPlaceAutosuggest", departureFrom.value, "EUR", "en-GB", "FR", function(error, result){
+			var depAutoSuggest = Meteor.call("getPlaceAutosuggest", departureFrom.value, "EUR", "en-GB", "FR", function(error, result){
 			if(error){
 				alert("There is no autocomplete suggested !");
 			}
@@ -424,10 +447,10 @@ Template.home.events({
 				}
 			}
 
-			});*/
+			});
 
 			//Add the new Amadeus airport autocomplete
-			/*var depAutoSuggest = Meteor.call("getAmadeusAirportAutocomplete", departureFrom.value, function(err, res){
+			var depAutoSuggest = Meteor.call("getAmadeusAirportAutocomplete", departureFrom.value, function(err, res){
 				if(!err){
 					//Meteor.call("flushAllSuggests");
 					//Refresh collection
@@ -440,7 +463,7 @@ Template.home.events({
 				else{
 					console.log(err);
 				}
-			});*/
+			});
 		}
 	},
 
