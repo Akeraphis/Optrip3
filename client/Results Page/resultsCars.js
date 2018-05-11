@@ -1,7 +1,9 @@
 Template.displayAllCars.helpers({
 	allCars : function(){
-		filterCars();
-		return Session.get("selectedLiveCars").carFare.cars;
+		if(Session.get("selectedLiveCars").carFare){
+			filterCars();
+			return Session.get("selectedLiveCars").carFare.cars;
+		}
 	},
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
@@ -43,7 +45,8 @@ Template.displayAllCars.events({
 
 Template.carAgents.helpers({
 	allAgents : function(){
-		return Session.get("selectedLiveCars").carFare.websites;
+		//return Session.get("selectedLiveCars").carFare.websites;
+		return "";
 	},
 });
 

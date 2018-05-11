@@ -24,6 +24,7 @@ Meteor.methods({
 
 		//Step 2. Get all the fares for the selected airports
 		var allFlightFares = getAllFlightFares(codeDep, allArrivalAirports, depDate, returnDate, currency, nbAdults, nbChildren, nbInfants);
+		var uniqueTabFF = uniqueTableFF(allFlightFares);
 		console.log("---- Step 2 completed : Flights Fares retrieved ----");
 		Meteor.call("updateProgress", 10, "Retrieving Car fares");
 		//-------------------
@@ -52,8 +53,7 @@ Meteor.methods({
 		Meteor.call("updateProgress", 80, "Retrieving Hotel fares");
 		//-------------------
 
-
-		return [departureFrom, depDate, ipDays, allArrivalAirports, allFlightFares, allCarFares, minFlightAndCar, allHotelFares];
+		return [departureFrom, depDate, ipDays, allArrivalAirports, uniqueTabFF, allCarFares, minFlightAndCar, allHotelFares];
 	},
 
 });
@@ -96,6 +96,16 @@ getAllFlightFares = function(departureFrom, allArrivalAirports, depDate, returnD
 		})
 	});
 	return result;
+};
+
+uniqueTableFF = function(result){
+	var res2 =[];
+
+	_.forEach(result, function(resi){
+		res2 = res2.concat(resi);
+	});
+
+	return res2;
 };
 
 getCodeDep = function(str){

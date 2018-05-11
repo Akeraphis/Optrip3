@@ -33,73 +33,24 @@ Template.displayAllFlight.helpers({
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
 		var cur2 = Currencies.findOne({Code : cur});
-		return cur2.Symbol;
+		//return cur2.Symbol;
+		return "€";
 	}
 });
 
 Template.displayLeg.helpers({
-	lfleg : function(legId){
-		var res = Session.get("liveFlights").flightFare.Legs;
-		var lfleg={};
-
-		_.forEach(res, function(leg){
-			if(legId == leg.Id){
-				lfleg=leg
-			}
-		});
-		return lfleg
-	}
-});
-
-Template.displaySegment.helpers({
-	lfseg : function(segId){
-		var res = Session.get("liveFlights").flightFare.Segments;
-		var lfseg={};
-
-		_.forEach(res, function(seg){
-			if(segId == seg.Id){
-				lfseg=seg
-			}
-		});
-		return lfseg
+	getDepDate: function(depDateTime){
+		if(depDateTime){
+			return depDateTime.substring(0, depDateTime.indexOf("T"));
+		}
 	},
-	getPlace : function(placeId){
-		var res = Session.get("liveFlights").flightFare.Places;
-		var place={};
-
-		_.forEach(res, function(pl){
-			if(placeId == pl.Id){
-				place=pl
-			}
-		});
-		return place
+	getDepTime: function(depDateTime){
+		if(depDateTime){
+			return depDateTime.substring(depDateTime.indexOf("T")+1);
+		}
 	},
-	getCar : function(carId){
-		var res = Session.get("liveFlights").flightFare.Carriers;
-		var carrier={};
-
-		_.forEach(res, function(car){
-			if(carId == car.Id){
-				carrier=car
-			}
-		});
-		return carrier
-	},
-	getDepDate: function(){	
-		var depDateTime = this.DepartureDateTime;
-		return depDateTime.substring(0, depDateTime.indexOf("T"));
-	},
-	getDepTime: function(){
-		var depDateTime = this.DepartureDateTime;
-		return depDateTime.substring(depDateTime.indexOf("T")+1);
-	},
-	getArrDate: function(){
-		var depDateTime = this.ArrivalDateTime;
-		return depDateTime.substring(0, depDateTime.indexOf("T"));
-	},
-	getArrTime: function(){
-		var depDateTime = this.ArrivalDateTime;
-		return depDateTime.substring(depDateTime.indexOf("T")+1);
+	getLeg : function(leg){
+		return leg
 	}
 });
 
@@ -153,11 +104,9 @@ Template.depAirport.helpers({
 		var depId = [];
 
 		_.forEach(ff, function(itin){
-			if(itin.OutboundLeg.Directionality == "Outbound"){
-				if(!containsId(itin.OutboundLeg.OriginStation.Id, depId)){
-					depId.push(itin.OutboundLeg.OriginStation.Id);
-					res.push(itin.OutboundLeg.OriginStation);
-				}
+			if(!containsId(itin.itineraries.outbound.flights[0].origin.airport, depId)){
+				depId.push(itin.itineraries.outbound.flights[0].origin.airport);
+				res.push(itin.itineraries.outbound.flights[0].origin);
 			}
 		});
 
@@ -197,23 +146,30 @@ getMinMaxDuration = function(){
 	var min = Infinity;
 	var max = 0;
 
-	_.forEach(res,  function(itin){
-		if(itin.InboundLeg.Duration<min){
-			min = itin.InboundLeg.Duration;
-		}
-		else if(itin.InboundLeg.Duration>max){
-			max = itin.InboundLeg.Duration;
-		}
-		else if(itin.OutboundLeg.Duration<min){
-			min = itin.OutboundLeg.Duration;
-		}
-		else if(itin.OutboundLeg.Duration>max){
-			max = itin.OutboundLeg.Duration;
-		}
-	});
+	//In the middle of being changed for Amadeus
+	//--
+	// _.forEach(res,  function(itin){
+	// 	_.forEach(itin.itineraries, function(itin2){
+	// 		if(itin2.itineraries.InboundLeg.Duration<min){
+	// 			min = itin.InboundLeg.Duration;
+	// 		}
+	// 		else if(itin.InboundLeg.Duration>max){
+	// 			max = itin.InboundLeg.Duration;
+	// 		}
+	// 		else if(itin.OutboundLeg.Duration<min){
+	// 			min = itin.OutboundLeg.Duration;
+	// 		}
+	// 		else if(itin.OutboundLeg.Duration>max){
+	// 			max = itin.OutboundLeg.Duration;
+	// 		}
+	// 	});
+	// });
 
-	var minDur = Math.round(min/30)/2;
-	var maxDur = Math.round(max/30)/2;
+	// var minDur = Math.round(min/30)/2;
+	// var maxDur = Math.round(max/30)/2;
+
+	var minDur = 1;
+	var maxDur = 40;
 
 	return [minDur, maxDur]
 };

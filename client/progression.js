@@ -1,5 +1,6 @@
 Template.progression.helpers({
 	'getProgress' : function(){
+		Meteor.subscribe("allProgressionUsers");
 		var prog = ProgressionUsers.findOne({ user : Session.get("clientIp")});
 		if(prog){
 			Session.set("progress", prog.progress);

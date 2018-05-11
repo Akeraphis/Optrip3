@@ -420,6 +420,7 @@ Template.home.events({
 							Session.set("selectedLiveCars", res[5]);
 							Session.set("cheapestLiveFlight", res[6][0]);
 							Session.set("cheapestLiveCar", res[6][1]);
+							Session.set("selectedLiveHotels", res[7]);
 						}
 					})
 				}
@@ -454,9 +455,7 @@ Template.home.events({
 				if(!err){
 					//Meteor.call("flushAllSuggests");
 					//Refresh collection
-					console.log(res);
 					for (var i = res.data.length - 1; i >= 0; i--) {
-						console.log(i, res.data[i]);
 						Meteor.call("insertAutoSuggest", res.data[i]);
 					}
 				}

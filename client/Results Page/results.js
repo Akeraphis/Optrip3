@@ -72,7 +72,12 @@ Template.minPrice.helpers({
 	minTotalPrice : function(){
 		if(Session.get("cheapestLiveFlight")){
 			if(Session.get("cheapestLiveCar")){
-				return Math.round(parseInt(Session.get("cheapestLiveCar").cars.estimated_total.amount)+parseInt(Session.get("cheapestLiveFlight").fare.total_price));
+				if(Session.get("cheapestHotelCombinations")){
+					return Math.round(parseInt(Session.get("cheapestLiveCar").cars.estimated_total.amount)+parseInt(Session.get("cheapestLiveFlight").fare.total_price)+Session.get("cheapestHotelCombinations"));
+				}
+				else{
+					return Math.round(parseInt(Session.get("cheapestLiveCar").cars.estimated_total.amount)+parseInt(Session.get("cheapestLiveFlight").fare.total_price));
+				}
 			}
 			else{
 				return Math.round(Session.get("cheapestLiveFlight").fare.total_price);
@@ -91,17 +96,27 @@ Template.minPrice.helpers({
 	},
 
 	minHotelPrices : function(){
-		var res = Session.get("results");
-		var hp = [];
-		if(res.length >1){
-			return Math.round((res[2])[0]);
+		var res = Session.get("selectedLiveHotels");
+		var hp = 0;
+
+		_.forEach(res, function(r){
+			if (r.hotelFare.results.length>0){
+				hp = hp + parseFloat(r.hotelFare.results[0].total_price.amount);
+			}
+		});
+
+		Session.set("cheapestHotelCombinations", hp);
+
+		if(hp >0){
+			return Math.round(hp);
 		}
 	},
 
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
 		var cur2 = Currencies.findOne({Code : cur});
-		return cur2.Symbol;
+		//return cur2.Symbol;
+		return "€";
 	},
 
 	nbPersons : function(){
@@ -122,22 +137,18 @@ Template.minFlight.helpers({
 		var res = Session.get("cheapestLiveFlight");
 		return res;
 	},
+	getFirstItinerary : function(){
+		var res = Session.get("cheapestLiveFlight");
+		return res.itineraries[0];
+	},
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
 		var cur2 = Currencies.findOne({Code : cur});
-		return cur2.Symbol;
+		//return cur2.Symbol;
+		return "€";
 	}
 });
 
-Template.minPrice.onRendered(function(){
-
-	var res = Session.get("selectedLiveFlights")[0];
-	var po = Session.get("selectedLiveFlights")[0].PricingOptions[0];
-	var ag = Session.get("selectedLiveFlights")[0].PricingOptions[0].newAgents[0];
-	po.Agents = ag;
-	res.PricingOptions = po;
-	Session.set("minLFP", res)
-})
 
 Template.leg.helpers({
 	getDepDate: function(){	
@@ -169,7 +180,8 @@ Template.minCar.helpers({
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
 		var cur2 = Currencies.findOne({Code : cur});
-		return cur2.Symbol;
+		//return cur2.Symbol;
+		return "€";
 	}
 });
 
@@ -181,7 +193,8 @@ Template.minHotel.helpers({
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
 		var cur2 = Currencies.findOne({Code : cur});
-		return cur2.Symbol;
+		//return cur2.Symbol;
+		return "€";
 	},
 	getFirstImage : function(hotelId){
 		var res ={};
@@ -225,46 +238,6 @@ Template.minHotel.helpers({
 	}
 });
 
-Template.amenities.helpers({
-	getHotel : function(hotelId){
-		var res ={};
-		var slh = Session.get("selectedLiveHotels");
-
-		_.forEach(slh, function(lh){
-			_.forEach(lh.data.hotels, function(hot){
-				if(hot.hotel_id==hotelId){
-					res = hot;
-				}
-			})
-		});
-
-		return res;
-	}
-});
-
-Template.allImages.helpers({
-	getHotel : function(hotelId){
-		var res ={};
-		var slh = Session.get("selectedLiveHotels");
-
-		_.forEach(slh, function(lh){
-			_.forEach(lh.data.hotels, function(hot){
-				if(hot.hotel_id==hotelId){
-					res = hot;
-				}
-			})
-		});
-
-		return res;
-	},
-	getHotelIdDiesed : function(hotelId){
-		return "#"+hotelId+"hotelImage";
-	},
-	getHotelIdNotDiesed : function(hotelId){
-		return hotelId+"hotelImage";
-	}
-});
-
 Template.tripDays.onRendered(function(){
 
 	//Display trip stops
@@ -302,28 +275,6 @@ Template.tripDays.events({
 	},
 });
 
-Template.priceOptions.helpers({
-	itin : function(Itineraries){
-		return Itineraries
-	},
-	getAgent : function(agentId){
-		var res = Session.get("liveFlights").flightFare.Agents;
-		var agent={};
-
-		_.forEach(res, function(ag){
-			if(agentId == ag.Id){
-				agent=ag
-			}
-		});
-		return agent
-	},
-	symbolCurrency : function(){
-		var cur = Session.get("selectedCurrency");
-		var cur2 = Currencies.findOne({Code : cur});
-		return cur2.Symbol;
-	}
-});
-
 getMinHotels = function(hf){
 
 	var minHotels = [];
@@ -334,24 +285,17 @@ getMinHotels = function(hf){
 		var temphf = hff;
 		var minap = {};
 
-		_.forEach(hff.data.hotels_prices, function(hp){
-			_.forEach(hp.agent_prices, function(ap){
-				if(ap.price_total < minhp){
-					minhp = ap.price_total;
-					minHP = hp.id
-					minhotP = hp;
-					minhotP.agent_prices = ap;
-				}
-			});
-		});
-
-		_.forEach(hff.data.hotels, function(hot){
-			if(minHP==hot.hotel_id){
-				temphf.data.hotels = hot;
-				temphf.data.hotels_prices = minhotP;
-				minHotels.push(temphf);
+		_.forEach(hff.hotelFare.results, function(hp){
+			if(hp.total_price.amount < minhp){
+				minhp = hp.total_price.amount;
+				minHP = hp.property_code;
+				minhotP = hp;
 			}
 		});
+
+		temphf.hotelFare.results = minhotP;
+		minHotels.push(temphf);
+
 	});
 
 	return minHotels
