@@ -242,44 +242,45 @@
 		<div class="panel-heading">Hotels </div>
 			<div class="panel-body">
 				{{#each minHotels}}
-					{{#with results}}
-						<div class="col-sm-6 col-md-4">
-							<div class="thumbnail">
-								<div class="caption">
-									{{#with address}}
-										<h3>{{city}}</h3>
-										<h4>{{property_name}}
-										{{#each getStars property_code}}	
-											<img height="15" width="15" hspace="0" src="/star_PNG1597.png"/>
-										{{/each}}</h4>
-									{{/with}}
-									<p>
-										{{#with total_price}}
-											<h4>{{amount}}{{currency}}</h4>
-										{{/with}}
+					{{#with hotelFare}}
+						{{#with results}}
+							<div class="col-sm-6 col-md-4">
+								<div class="thumbnail">
+									<div class="caption">
 										{{#with address}}
-											<i>{{line1}}, {{city}} in {{country}} </i><br/>
+											<h3>{{city}}</h3>
 										{{/with}}
-										<a class="btn btn-primary" role="button" data-toggle="collapse" href="#{{hotel_id}}" aria-expanded="false" aria-controls="{{hotel_id}}">
-											Details
-										</a>
-										<div class="collapse" id="{{hotel_id}}">
-											<div class="well">
-												<b>Description :</b>
-												{{marketing_text}}<br/>
-												<b>Amenities :</b>
-												{{#each amenities}}
-													{{description}}
-												{{/each}}
+										<h4>{{property_name}}</h4>
+										<p>
+											{{#with total_price}}
+												<h4>{{amount}} {{currency}}</h4>
+											{{/with}}
+											{{#with address}}
+												<i>{{line1}}, {{city}} in {{country}} </i><br/>
+											{{/with}}
+											<a class="btn btn-primary" role="button" data-toggle="collapse" href="#{{property_code}}" aria-expanded="false" aria-controls="{{hotel_id}}">
+												Details
+											</a>
+											<div class="collapse" id="{{property_code}}">
+												<div class="well">
+													<b>Description :</b>
+													{{marketing_text}}<br/>
+													<b>Amenities :</b>
+													<ul>
+														{{#each amenities}}
+															<li>{{description}}</li>
+														{{/each}}
+													</ul>
+												</div>
 											</div>
-										</div>
-										<br/>
-										<!--{{>displayAllHotels param = this}}-->
-									</p>
+											<br/>
+											<!--{{>displayAllHotels param = this}}-->
+										</p>
+									</div>
 								</div>
 							</div>
-						</div>
-					{{/with}}
+						{{/with}}
+					{{/with}}	
 				{{/each}}
 			</div>
 		</div>

@@ -188,53 +188,15 @@ Template.minCar.helpers({
 Template.minHotel.helpers({
 	minHotels : function(){
 		var res = Session.get("selectedLiveHotels");
-		return getMinHotels(res);
+		var res2 = getMinHotels(res);
+		console.log(res2);
+		return res2;
 	},
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
 		var cur2 = Currencies.findOne({Code : cur});
 		//return cur2.Symbol;
 		return "€";
-	},
-	getFirstImage : function(hotelId){
-		var res ={};
-		var slh = Session.get("selectedLiveHotels");
-
-		_.forEach(slh, function(lh){
-			_.forEach(lh.data.hotels, function(hot){
-				if(hot.hotel_id==hotelId){
-					res = hot.newImages[0].url;
-				}
-			})
-		});
-		return res;
-	},
-	getStars : function(hotelId){
-		var res ="";
-		var slh = Session.get("selectedLiveHotels");
-
-		_.forEach(slh, function(lh){
-			_.forEach(lh.data.hotels, function(hot){
-				if(hot.hotel_id==hotelId){
-					if(hot.star_rating==1){
-						res=[{}];
-					}
-					else if(hot.star_rating==2){
-						res=[{},{}];
-					}
-					else if(hot.star_rating==3){
-						res=[{},{},{}];
-					}
-					else if(hot.star_rating==4){
-						res=[{},{},{},{}];
-					}
-					else if(hot.star_rating==5){
-						res=[{},{},{},{},{}];
-					}
-				}
-			})
-		});
-		return res;
 	}
 });
 
