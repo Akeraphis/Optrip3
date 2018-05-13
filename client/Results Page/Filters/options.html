@@ -1,0 +1,84 @@
+
+
+<template name="options">
+	<div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+	  <div class="pcard">
+	    <div class="card-header" role="tab" id="headingOne">
+	      <h4 class="mb-0">
+	        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+		        Flight Options
+	        </a>
+	      </h4>
+	    </div>
+	    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+	      {{> nbStops}}
+	      {{> tripLength}}
+	      {{> depAirport}}
+	    </div>
+	  </div>
+	  {{#if hasCar}}
+		  <div class="card">
+		    <div class="card-header" role="tab" id="headingTwo">
+		      <h4 class="mb-0">
+		        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+		        	Car Options
+		        </a>
+		      </h4>
+		    </div>
+		    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+		      <div class="panel-body">
+		      	{{> carAgents}}
+		      </div>
+		    </div>
+		  </div>
+	  {{/if}}
+	  <div class="card">
+	    <div class="card-header" role="tab" id="headingThree">
+	      <h4 class="mb-0">
+	        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+	          Hotel Options
+	        </a>
+	      </h4>
+	    </div>
+	    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+	      <div class="panel-body">
+	        blabla 3
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</template>
+
+
+<template name='tripLength'>
+	<b>Duration Range :</b><br/>
+	<input type="rangeslide" id="durationFlight"/>
+	<br/>
+</template>
+
+<template name="depAirport">
+	<div class="airport-group">
+		<b>Departure Airports :</b><br/>
+		{{#each depAirports}}
+			<input type="checkbox" name="airportSelected" id="{{Code}}" checked>{{airport}}<br/>
+		{{/each}}
+	</div><br/>
+</template>
+
+<template name="carAgents">
+	<b>Agents :</b><br/>
+	<div class='carAgentGroup'>
+		{{#each allAgents}}
+			<input type="checkbox" name="agentSelected" id="{{id}}" checked>{{name}}<br/>
+		{{/each}}
+	</div>
+</template>
+
+<template name='nbStops'>
+	<div class="list-group">
+		<b>Number of Stops :</b><br/>
+		<input type="checkbox" class="flightLegOption" id="direct" checked>Direct flight<br/>
+		<input type="checkbox" class="flightLegOption" id="oneStop" checked>1 stop<br/>
+		<input type="checkbox" class="flightLegOption" id="twoStops" checked>2+ stops<br/>
+	</div><br/>
+</template>

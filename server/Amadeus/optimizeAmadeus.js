@@ -174,10 +174,10 @@ getAllHotelFares = function(optimalTour, depDate, returnDate, currency, nbAdults
 	var dayStart = 1;
 	var i=0;
 	var totalDays = 0;
-	var lastres = {};
+	var lastres = null;
 
 	for(i=0;i<optimalTour.length;i++){
-		if(i==0){
+		if(i==0 && optimalTour[0].nbDays>1){
 			var endDays = optimalTour[0].nbDays - dayStart;
 			console.log("endDays :", endDays)
 			var checkoutFirst = (moment(depDate).add(dayStart, 'd')).format("YYYY-MM-DD");
@@ -189,10 +189,12 @@ getAllHotelFares = function(optimalTour, depDate, returnDate, currency, nbAdults
 			var checkin = (moment(depDate).add(totalDays, 'd')).format("YYYY-MM-DD");
 			var checkout = (moment(checkin).add(optimalTour[i].nbDays, 'd')).format("YYYY-MM-DD");
 			result.push(Meteor.call("getAmadeusHotelFareInCollection", optimalTour[i].ip, checkin, checkout, currency, nbAdults, nbChildren, nbInfants));
-			totalDays = totalDays + dayStart + optimalTour[i].nbDays;
+			totalDays = totalDays + dayStart + optimalTour[i].nbDays -1 ;
 		}
 	};
-	result.push(lastres);
+	if(lastres){
+		result.push(lastres);
+	}
 	return result;
 };
 

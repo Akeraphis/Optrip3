@@ -1,26 +1,8 @@
-.body{
-    font-family: 'Abel', sans-serif;
-}
-
-.titleSite{
-    font-weight: 900;
-    font-size : 120px;
-    font-family: 'Abel', sans-serif;
-    color :  RGB(18,106,181);
-}
-
 .map {
-    /*position: absolute;
-    top : 200px;
-    left: 20px;*/
-	height: 600px;
-    width: 1200px;
+    height: 550px;
+    width: 1470px;
     padding: 5px;
     font-size: 16px;
-    /*font: 14px/16px Arial, Helvetica, sans-serif;*/
-    background: white;
-    background: rgba(255,255,255,0.8);
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
     border-radius: 1px;
     margin-left: 1 0px;
     font-family: 'Abel', sans-serif;
@@ -28,7 +10,6 @@
 
 .info {
     padding: 6px 8px;
-    /*font: 14px/16px Arial, Helvetica, sans-serif;*/
     font-family: 'Abel', sans-serif;
     font-size : 16px;
     background: white;
@@ -41,19 +22,26 @@
     color: #777;
 }
 
-.startingPanel {
-    width : 1400px;
-    margin-left: 20px;
+.body{
+    font-family: 'Abel', sans-serif;
 }
 
+.titleSite{
+    font-weight: 900;
+    font-size : 120px;
+    font-family: 'Abel', sans-serif;
+    color :  RGB(18,106,181);
+}
 
-/* Optimize button */
+.card-img-top{
+    max-width:450px;
+    max-height:450px;
+}
 
 .optimizeButton {
     background-color: #699DB6;
     border-color: rgba(0,0,0,0.3);
     text-shadow: 0 1px 0 rgba(0,0,0,0.5);
-    /*font: 20px Arial, Helvetica, sans-serif;*/    
     font-family: 'Abel', sans-serif;
     font-size : 25px;
     color: #FFF;
@@ -74,8 +62,7 @@
 .buyButton {
     background-color: #699DB6;
     border-color: rgba(0,0,0,0.3);
-    text-shadow: 0 1px 0 rgba(0,0,0,0.5);
-    /*font: 20px Arial, Helvetica, sans-serif;*/    
+    text-shadow: 0 1px 0 rgba(0,0,0,0.5); 
     font-family: 'Abel', sans-serif;
     font-size : 25px;
     color: #FFF;
@@ -98,19 +85,16 @@
     margin-right: 20px;
     width: 90%;
     font-family: 'Abel', sans-serif;
-    /*width:500px;*/
 }
 
 #departureDate{
     margin-right: 20px;
     margin-left: 5px;
-    /*width: 100%;*/
     width: 300px;
     font-family: 'Abel', sans-serif;
 }
  
 #NbDays{
-    /*width: 100%;*/
     width:150px;
     font-family: 'Abel', sans-serif;
 }
@@ -157,17 +141,12 @@
 
 .label-success{
     font-family: 'Abel', sans-serif;
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .alert{
     font-family: 'Abel', sans-serif;
     font-size: 20px;
-}    
-
-.input-group{
-    font-family: 'Abel', sans-serif;
-    font-size: 16px;
 }
 
 .navbar{
@@ -197,5 +176,4 @@
 
 .panel-body{
     font-family: 'Abel', sans-serif;
-    font-size: 16px;
 }

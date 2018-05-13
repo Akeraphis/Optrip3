@@ -1,4 +1,3 @@
-
 {
   "name": "optrip3",
   "private": true,
@@ -9,7 +8,8 @@
     "@babel/runtime": "^7.0.0-beta.46",
     "babel-runtime": "^6.26.0",
     "bcrypt": "^2.0.1",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.0.0",
+    "bootswatch": "^4.1.1",
     "meteor-node-stubs": "~0.2.0"
   }
 }

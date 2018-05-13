@@ -1,0 +1,94 @@
+
+<template name="minHotel">
+	<div class="card">
+		<div class="card-header">Hotels </div>
+			<div class="card-body">
+				<div class="card-group">
+					{{#each minHotels}}
+						<div class="col-sm-6 col-md-4">
+							<div class="card">
+								{{#with hotelFare}}
+									{{#with results}}
+										<div class="card-header">
+											{{#with address}}
+												<h3>{{city}}</h3>
+											{{/with}}
+										</div>
+										<div class="card-body">
+											<h4>{{property_name}}</h4>
+											<p>
+												{{#with total_price}}
+													<h4>{{amount}} {{currency}}</h4>
+												{{/with}}
+												{{#with address}}
+													<i>{{line1}}, {{city}} in {{country}} </i><br/>
+												{{/with}}
+												<a class="btn btn-primary" role="button" data-toggle="collapse" href="#{{property_code}}" aria-expanded="false" aria-controls="{{hotel_id}}">
+													Details
+												</a>
+												<div class="collapse" id="{{property_code}}">
+													<div class="well">
+														<b>Description :</b>
+														{{marketing_text}}<br/>
+														<b>Amenities :</b>
+														<ul>
+															{{#each amenities}}
+																<li>{{description}}</li>
+															{{/each}}
+														</ul>
+													</div>
+												</div>
+												<br/>
+												<!--{{>displayAllHotels param = this}}-->
+											</p>
+										</div>
+									{{/with}}
+								{{/with}}
+								<p class="card-text"><small class="text-muted">{{checkin}}/{{checkout}}</small></p>		
+							</div>
+						</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+</template>
+
+<template name="displayAllHotels">
+	<button class="btn btn-info" type="button" name="otherHotels" data-toggle="modal" data-target="{{getIDDiased param}}">Other Hotels</button>
+	<!-- Modal -->
+	<div class="modal fade" id="{{getIdNotDiased param}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title" id="myModalLabel">Hotels</h4>
+	      </div>
+	      <div class="modal-body">
+	      	{{#with allHotels param}}
+		      	<div class="well">
+		      		{{#each hotels}}
+		      			<img border="10" height="100%" width="100%" hspace="0" src="{{getFirstImage this}}"/>
+		      			<h2>{{name}}</h2>
+		      		{{/each}}
+		      		{{#each hotels_prices}}
+				      	<table class="table table-striped">
+				      		<th>Agent</th>
+				      		<th>Price</th>
+					      		{{#each agent_prices}}
+					      			<tr>
+					      			<td><img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{getAgentImage id}}"/></td>
+					      			<td><b>{{price_total}}{{symbolCurrency}}</b></td>
+					      			</tr>
+					      		{{/each}}
+				      			<button class="btn btn-success hotelSelection" type="button" >Select</button>
+			      		</table>
+			      	{{/each}}
+			    </div>
+	      	{{/with}}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</template>

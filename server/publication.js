@@ -74,3 +74,7 @@ Meteor.publish("allProgressionUsers", function(){
 		fields:{content :0}
 	});
 });
+
+Meteor.publish("allAirlines", function(){
+	return Airlines.find({});
+});

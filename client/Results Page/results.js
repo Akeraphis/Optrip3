@@ -34,13 +34,6 @@ Template.relaunch.events({
 	},
 });
 
-Template.minFlight.events({
-	'click #myTabs a': function(e){
-		e.preventDefault()
-  		$(this).tab('show')
-	}
-})
-
 Template.results.helpers({
 	results : function(){
 		if (Session.get("cheapestLiveFlight")){
@@ -132,73 +125,6 @@ Template.minPrice.helpers({
 	}
 });
 
-Template.minFlight.helpers({
-	minLiveFlight : function(){
-		var res = Session.get("cheapestLiveFlight");
-		return res;
-	},
-	getFirstItinerary : function(){
-		var res = Session.get("cheapestLiveFlight");
-		return res.itineraries[0];
-	},
-	symbolCurrency : function(){
-		var cur = Session.get("selectedCurrency");
-		var cur2 = Currencies.findOne({Code : cur});
-		//return cur2.Symbol;
-		return "€";
-	}
-});
-
-
-Template.leg.helpers({
-	getDepDate: function(){	
-		var depDateTime = this.departs_at;
-		return depDateTime.substring(0, depDateTime.indexOf("T"));
-	},
-	getDepTime: function(){
-		var depDateTime = this.departs_at;
-		return depDateTime.substring(depDateTime.indexOf("T")+1);
-	},
-	getArrDate: function(){
-		var depDateTime = this.arrives_at;
-		return depDateTime.substring(0, depDateTime.indexOf("T"));
-	},
-	getArrTime: function(){
-		var depDateTime = this.arrives_at;
-		return depDateTime.substring(depDateTime.indexOf("T")+1);
-	},
-	getLeg : function(leg){
-		return leg
-	}
-});
-
-Template.minCar.helpers({
-
-	minVehicle : function(){
-		return Session.get("cheapestLiveCar");
-	},
-	symbolCurrency : function(){
-		var cur = Session.get("selectedCurrency");
-		var cur2 = Currencies.findOne({Code : cur});
-		//return cur2.Symbol;
-		return "€";
-	}
-});
-
-Template.minHotel.helpers({
-	minHotels : function(){
-		var res = Session.get("selectedLiveHotels");
-		var res2 = getMinHotels(res);
-		console.log(res2);
-		return res2;
-	},
-	symbolCurrency : function(){
-		var cur = Session.get("selectedCurrency");
-		var cur2 = Currencies.findOne({Code : cur});
-		//return cur2.Symbol;
-		return "€";
-	}
-});
 
 Template.tripDays.onRendered(function(){
 
@@ -215,18 +141,21 @@ Template.tripDays.onRendered(function(){
 		countDays= countDays+ipDays.nbDays;
 	});
 
-	if(Session.get("minLFP")){
-		var event2 = {title : "trip", start : moment(Session.get("minLFP").OutboundLeg.Departure), end: moment(Session.get("minLFP").InboundLeg.Arrival), editable : 'true' };
+	if(Session.get("selectedLiveHotels")){
+		var nbOutboundFlights = Session.get("cheapestLiveFlight").itineraries[0].outbound.flights.length;
+		var nbInboundFlights = Session.get("cheapestLiveFlight").itineraries[0].inbound.flights.length;
+		var event2 = {title : "trip", start : moment(Session.get("cheapestLiveFlight").itineraries[0].outbound.flights[0].departs_at), end: moment(Session.get("cheapestLiveFlight").itineraries[0].inbound.flights[nbInboundFlights-1].arrives_at), editable : 'true' };
 
 		$('#myCalendar').fullCalendar( 'renderEvent', event2, true);
 		$('#myCalendar').fullCalendar( 'gotoDate', moment(depDate) );
 
 		//Display Flights
-		var outboundFlight = {title : 'Outbound Flight', start : moment(Session.get("minLFP").OutboundLeg.Departure), end : moment(Session.get("minLFP").OutboundLeg.Arrival), color:'green'};
-		var inboundFlight= {title : 'Inbound Flight', start : moment(Session.get("minLFP").InboundLeg.Departure), end : moment(Session.get("minLFP").InboundLeg.Arrival), color:'green'};
+		var outboundFlight = {title : 'Outbound Flight', start : moment(Session.get("cheapestLiveFlight").itineraries[0].outbound.flights[0].departs_at), end : moment(Session.get("cheapestLiveFlight").itineraries[0].outbound.flights[nbOutboundFlights-1].arrives_at), color:'green'};
+		var inboundFlight= {title : 'Inbound Flight', start : moment(Session.get("cheapestLiveFlight").itineraries[0].inbound.flights[0].departs_at), end : moment(Session.get("cheapestLiveFlight").itineraries[0].inbound.flights[nbInboundFlights-1].arrives_at), color:'green'};
 		$('#myCalendar').fullCalendar( 'renderEvent', outboundFlight, true);
 		$('#myCalendar').fullCalendar( 'renderEvent', inboundFlight, true);
 	}
+
 });
 
 Template.tripDays.events({
@@ -236,40 +165,3 @@ Template.tripDays.events({
 		}
 	},
 });
-
-getMinHotels = function(hf){
-
-	var minHotels = [];
-	_.forEach(hf, function(hff){
-		var minhp = Infinity;
-		var minHP = "";
-		var minhotP = {};
-		var temphf = hff;
-		var minap = {};
-
-		_.forEach(hff.hotelFare.results, function(hp){
-			if(hp.total_price.amount < minhp){
-				minhp = hp.total_price.amount;
-				minHP = hp.property_code;
-				minhotP = hp;
-			}
-		});
-
-		temphf.hotelFare.results = minhotP;
-		minHotels.push(temphf);
-
-	});
-
-	return minHotels
-}
-
-Template.options.helpers({
-	hasCar : function(){
-		if(Session.get("cheapestLiveCar")){
-			return true
-		}
-		else{
-			return false
-		}
-	},
-})

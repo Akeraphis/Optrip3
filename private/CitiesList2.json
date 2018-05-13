@@ -36858,7 +36858,9 @@
     "country": "Italy",
     "iso2": "IT",
     "iso3": "ITA",
-    "province": "Toscana"
+    "province": "Toscana",
+    "image": "https://generationvoyage.fr/wp-content/uploads/2017/03/tour-pise-1.jpg",
+    "description": "Ville située dans la région italienne de la Toscane, Pise est célèbre pour son emblématique tour. Déjà penché à son achèvement en 1372, ce cylindre en marbre blanc de 56 mètres de haut est le campanile de la cathédrale romane en marbre clair et sombre qui s'élève à ses côtés sur la Piazza dei Miracoli. Cette place des miracles comprend également le baptistère, connu pour son acoustique que des chanteurs amateurs testent tous les jours, ainsi que le cimetière du Camposanto Monumentale."
   },
   {
     "city": "Livorno",
@@ -36880,7 +36882,9 @@
     "country": "Italy",
     "iso2": "IT",
     "iso3": "ITA",
-    "province": "Toscana"
+    "province": "Toscana",
+    "image": "https://generationvoyage.fr/wp-content/uploads/2017/05/visiter-sienne-1.jpg",
+    "description": "Sienne, ville située en Toscane, au centre de l'Italie, se caractérise par ses bâtiments médiévaux en briques. Sur la Piazza del Campo, la place centrale en forme de coquillage, se dressent le Palazzo Pubblico, l'hôtel de ville gothique, et la Torre del Mangia, tour étroite du XIVe siècle offrant une vue panoramique depuis son sommet en travertin blanc. Les 17 'contrades' (quartiers) historiques de la ville s'articulent autour de la piazza."
   },
   {
     "city": "Arezzo",
@@ -37166,7 +37170,9 @@
     "country": "Italy",
     "iso2": "IT",
     "iso3": "ITA",
-    "province": "Toscana"
+    "province": "Toscana",
+    "image" : "https://www.lonelyplanet.fr/sites/lonelyplanet/files/styles/manual_crop/public/media/destination/slider/mobile/shutterstock_230424784.jpg",
+    "description" : "Florence, capitale de la Toscane, est riche de nombreux chefs-d'œuvre de l'art et de l'architecture de la Renaissance. L'un de ses sites les plus emblématiques est le Duomo, la cathédrale dont la coupole en terre cuite a été conçue par Brunelleschi et, le campanile, par Giotto. La Galleria dell'Accademia abrite le David de Michel-Ange et la Galerie des Offices La Naissance de Vénus de Botticelli et l Annonciation de Léonard de Vinci."
   },
   {
     "city": "Catania",

@@ -19,7 +19,6 @@ ecmascript@0.10.6              # Enable ECMAScript2015+ syntax in app code
 shell-server@0.3.1            # Server-side component of the `meteor shell` command
 
 insecure@1.0.7                # Allow all DB writes from clients (for prototyping)
-twbs:bootstrap
 mizzao:autocomplete
 dburles:google-maps
 session@1.1.7
@@ -38,3 +37,5 @@ dynamic-import@0.3.0
 babel-runtime
 kadira:flow-router
 kadira:blaze-layout
+aslagle:reactive-table
+alexwine:bootstrap-4

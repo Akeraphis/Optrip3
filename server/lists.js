@@ -22,5 +22,14 @@ Meteor.methods({
 		_.forEach(myCities, function(myCities){
 			Meteor.call("insertIP", myCities, function(err,id){if(err){alert(err.reason);}});
 		})
-	}
-})
+	},
+
+	importAirlines : function(){
+		var myAirlines = {};
+		myAirlines = JSON.parse(Assets.getText('AirlinesList.json'));
+
+		_.forEach(myAirlines, function(mair){
+			Meteor.call("insertAirline", mair, function(err,id){if(err){alert(err.reason);}});
+		})
+	},
+});

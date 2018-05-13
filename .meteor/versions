@@ -1,6 +1,9 @@
 accounts-base@1.4.2
 accounts-password@1.5.1
+alexwine:bootstrap-4@4.1.0
 allow-deny@1.1.0
+anti:i18n@0.4.3
+aslagle:reactive-table@0.8.45
 autoupdate@1.4.0
 babel-compiler@7.0.8
 babel-runtime@1.2.2
@@ -101,7 +104,6 @@ templating-compiler@1.3.3
 templating-runtime@1.3.2
 templating-tools@1.1.2
 tracker@1.1.3
-twbs:bootstrap@3.3.6
 ui@1.0.13
 underscore@1.0.10
 url@1.2.0

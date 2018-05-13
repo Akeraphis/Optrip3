@@ -1,3 +1,6 @@
+Session.set("count",0);
+var toBeDisplayed = 15;
+
 Template.displayAllFlight.events({
 	'click .pricingOption': function(e){
 		var link = this.DeepLinkUrl;
@@ -27,14 +30,22 @@ Template.displayAllFlight.events({
 
 Template.displayAllFlight.helpers({
 	allItineraries : function(){
-		//return Session.get("selectedLiveFlights").flightFare.Itineraries;
-		return Session.get("selectedLiveFlights")
+		return Session.get("selectedLiveFlights").slice(0, toBeDisplayed);
 	},
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
 		var cur2 = Currencies.findOne({Code : cur});
 		//return cur2.Symbol;
 		return "€";
+	},
+	getOutboundId : function(){
+		return "outbound"+Session.get("count");
+	},
+	getInboundId : function(){
+		return "inbound"+Session.get("count");
+	},
+	increment : function(){
+		Session.set("count", Session.get("count")+1);
 	}
 });
 
@@ -99,14 +110,14 @@ Template.tripLength.onRendered(function(){
 
 Template.depAirport.helpers({
 	'depAirports': function(){
-		var ff = Session.get("liveFlights");
+		var ff = Session.get("selectedLiveFlights");
 		var res = [];
 		var depId = [];
 
 		_.forEach(ff, function(itin){
-			if(!containsId(itin.itineraries.outbound.flights[0].origin.airport, depId)){
-				depId.push(itin.itineraries.outbound.flights[0].origin.airport);
-				res.push(itin.itineraries.outbound.flights[0].origin);
+			if(!containsId(itin.itineraries[0].outbound.flights[0].origin.airport, depId)){
+				depId.push(itin.itineraries[0].outbound.flights[0].origin.airport);
+				res.push(itin.itineraries[0].outbound.flights[0].origin);
 			}
 		});
 
@@ -119,13 +130,6 @@ Template.depAirport.events({
 		var airports = getSelectedAirports();
 		filterFlights(document.getElementById("direct").checked, document.getElementById("oneStop").checked, document.getElementById("twoStops").checked, $("#durationFlight").data("ionRangeSlider").result.from, $("#durationFlight").data("ionRangeSlider").result.to, airports);
 		var res = Session.get("selectedLiveFlights")[0]
-		if(res.InboundLegId){
-			var po = res.PricingOptions[0];
-			var ag = res.PricingOptions[0].newAgents[0];
-			po.Agents = ag;
-			res.PricingOptions = po;
-		}
-		Session.set("minLFP", res);
 	},
 });
 
