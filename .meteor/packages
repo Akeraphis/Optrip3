@@ -24,7 +24,6 @@ dburles:google-maps
 session@1.1.7
 msavin:mongol
 http@1.4.0
-rzymek:fullcalendar
 momentjs:moment
 postrednik:meteor-rangeslider
 meteorhacks:kadira
@@ -39,3 +38,4 @@ kadira:flow-router
 kadira:blaze-layout
 aslagle:reactive-table
 alexwine:bootstrap-4
+rzymek:fullcalendar

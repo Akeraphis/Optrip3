@@ -27,36 +27,30 @@
 	<button class="btn btn-info" type="button" name="otherFlights" data-toggle="modal" data-target="#myModal">Other Flights</button>
 	<!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
+	  <div class="modal-dialog modal-lg" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h4 class="modal-title" id="myModalLabel">Flights</h4>
 	      </div>
 	      <div class="modal-body">
 	      	{{#each allItineraries}}
-	      		<div class="well">
+	      		<div class="card" style="width: 47rem;">
 	      			{{#with fare}}
 	      				<h3>Price : {{total_price}}{{symbolCurrency}}</h3>
 	      			{{/with}}
 	      			{{#each itineraries}}
-	      				<!-- counting the number of loops -->
-	      				{{increment}}
-		      			<ul class="nav nav-tabs" role="tablist">
-							<li role="presentation" class="active"><a href="#{{getOutboundId}}" aria-controls="home" role="tab" data-toggle="tab">Outbound</a></li>
-							<li role="presentation"><a href="#{{getInboundId}}" aria-controls="home" role="tab" data-toggle="tab">Inbound</a></li>
-						</ul>
-						<br/>
-						<div class="tab-content">
-							<div role="tabpanel" class="tab-pane fade in active" id="{{getOutboundId}}">
-								{{>displayLeg leg=this.outbound}}
+		      			<center>
+		      				<div class="card" style="width: 44rem;">
+			      				<!-- counting the number of loops -->
+			      				{{increment}}
+			      				{{>displayLeg leg=this.outbound}}
+			      				{{>displayLeg leg=this.inbound}}
+			      				<button type="button" class="btn btn-success">Select</button>
 							</div>
-							<div role="tabpanel" class="tab-pane fade" id="{{getInboundId}}">
-								{{>displayLeg leg=this.inbound}}
-							</div>
-						</div>
-						<br/>
+							<br/>
+						</center>
 					{{/each}}
-	      		</div>
+				</div><br/><br/>
 	      	{{/each}}
 	      </div>
 	      <div class="modal-footer">
@@ -76,7 +70,7 @@
 
 <template name="leg">
 	<div class="container">
-		{{#each flights}}
+		{{#each flights}}		
 			<div class="row">
 				<div class="col-sm">
 					<img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{getImage marketing_airline}}"/>

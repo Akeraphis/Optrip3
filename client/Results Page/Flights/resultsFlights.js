@@ -2,28 +2,26 @@ Session.set("count",0);
 var toBeDisplayed = 15;
 
 Template.displayAllFlight.events({
-	'click .pricingOption': function(e){
-		var link = this.DeepLinkUrl;
-		var price = this.Price;
-		//var It = Session.get("selectedLiveFlights").flightFare.Itineraries;
+	'click .btn-success': function(e){
+		var depPlace = this.outbound.flights[0].origin.airport;
+		var arrPlace = this.inbound.flights[this.inbound.flights.length - 1].destination.airport;
+		var depTime = this.outbound.flights[0].departs_at;
+		var arrTime = this.inbound.flights[this.inbound.flights.length - 1].arrives_at;
+
 		var It = Session.get("selectedLiveFlights")
 		var res = {};
 
-		_.forEach(It, function(itin){
-			_.forEach(itin.PricingOptions, function(po){
-				if(po.DeepLinkUrl == link && po.Price == price ){
-					res = itin;
+		_.forEach(It, function(prop){
+			_.forEach(prop.itineraries, function(itin){
+				if(itin.outbound.flights[0].origin.airport == depPlace && itin.inbound.flights[itin.inbound.flights.length - 1].destination.airport == arrPlace && depTime == itin.outbound.flights[0].departs_at && arrTime == itin.inbound.flights[itin.inbound.flights.length - 1].arrives_at){
+					res = prop;
+					res2 = itin;
 				}
-			})
+			});
 		});
 
-		if(res.InboundLegId){
-			var po = res.PricingOptions[0];
-			var ag = res.PricingOptions[0].newAgents[0];
-			po.Agents = ag;
-			res.PricingOptions = po;
-		}
-		Session.set("minLFP", res);
+		Session.set("selectedItin", res);
+		Session.set("selectedFlightPrice", res2);
 		$('#myModal').modal('hide');
 	}
 });
@@ -46,7 +44,10 @@ Template.displayAllFlight.helpers({
 	},
 	increment : function(){
 		Session.set("count", Session.get("count")+1);
-	}
+	},
+	getInc : function(increment){
+		return Session.get("count");
+	},
 });
 
 Template.displayLeg.helpers({

@@ -11,12 +11,10 @@ Template.minFlight.events({
 
 Template.minFlight.helpers({
 	minLiveFlight : function(){
-		var res = Session.get("cheapestLiveFlight");
-		return res;
+		return Session.get("cheapestLiveFlight");
 	},
 	getFirstItinerary : function(){
-		var res = Session.get("cheapestLiveFlight");
-		return res.itineraries[0];
+		return Session.get("cheapestLiveFlight").itineraries[0];
 	},
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");

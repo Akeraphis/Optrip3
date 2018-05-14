@@ -43,14 +43,6 @@ Template.results.helpers({
 			return false;
 		}
 	},
-	gotLiveFlight : function(){
-		if (Session.get("cheapestLiveFlight")){
-			return true;
-		}
-		else{
-			return false;
-		}
-	},
 	hasCar : function(){
 		if(Session.get("cheapestLiveCar")){
 			return true
@@ -156,12 +148,4 @@ Template.tripDays.onRendered(function(){
 		$('#myCalendar').fullCalendar( 'renderEvent', inboundFlight, true);
 	}
 
-});
-
-Template.tripDays.events({
-	'click #myCalendar': function(e){
-		if(e.target.class =="fc.content"){
-			console.log(e.target)
-		}
-	},
 });
