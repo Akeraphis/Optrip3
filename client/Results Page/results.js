@@ -58,14 +58,14 @@ Template.minPrice.helpers({
 		if(Session.get("cheapestLiveFlight")){
 			if(Session.get("cheapestLiveCar")){
 				if(Session.get("cheapestHotelCombinations")){
-					return Math.round(parseInt(Session.get("cheapestLiveCar").cars.estimated_total.amount)+parseInt(Session.get("cheapestLiveFlight").fare.total_price)+Session.get("cheapestHotelCombinations"));
+					return Math.round((parseInt(Session.get("cheapestLiveCar").cars.estimated_total.amount)+parseInt(Session.get("selectedFlightPrice").total_price)+parseInt(Session.get("cheapestHotelCombinations")))/Session.get('nbPersons'));
 				}
 				else{
-					return Math.round(parseInt(Session.get("cheapestLiveCar").cars.estimated_total.amount)+parseInt(Session.get("cheapestLiveFlight").fare.total_price));
+					return Math.round((parseInt(Session.get("cheapestLiveCar").cars.estimated_total.amount)+parseInt(Session.get("selectedFlightPrice").total_price))/Session.get('nbPersons'));
 				}
 			}
 			else{
-				return Math.round(Session.get("cheapestLiveFlight").fare.total_price);
+				return Math.round(Session.get("selectedFlightPrice").total_price/Session.get('nbPersons'));
 			}
 		}
 	},
@@ -77,7 +77,7 @@ Template.minPrice.helpers({
 	},
 
 	minFlightPrice : function(){
-		return Session.get("cheapestLiveFlight").fare.total_price;
+		return Session.get("selectedFlightPrice").total_price;
 	},
 
 	minHotelPrices : function(){

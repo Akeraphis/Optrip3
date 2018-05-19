@@ -1,0 +1,35 @@
+<template name="displayAllFlight">
+	<button type="button" class="btn btn-default">Back</button>
+	<h2>All Flights</h2>
+	<div class="row">
+		<div class="col-md-3">
+			{{>flightOptions}}
+		</div>
+		<div class="col-md-9">
+			{{#each allItineraries}}
+				<div class="card" style="width: 47rem;">
+					{{#with fare}}
+						<h3>Price : {{total_price}}{{symbolCurrency}}</h3>
+					{{/with}}
+					{{#each itineraries}}
+			  			<center>
+			  				<div class="card" style="width: 44rem;">
+			      				{{>displayLeg leg=this.outbound}}
+			      				{{>displayLeg leg=this.inbound}}
+			      				<button type="button" class="btn btn-success">Select</button>
+							</div>
+							<br/>
+						</center>
+					{{/each}}
+				</div><br/><br/>
+			{{/each}}
+		</div>
+	</div>
+</template>
+
+<template name="displayLeg">
+	{{#with getLeg leg}}
+		{{>leg}}
+	{{/with}}
+	<br/>
+</template>

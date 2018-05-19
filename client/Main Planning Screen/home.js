@@ -91,8 +91,11 @@ Template.home.events({
 							FlowRouter.go('/optimization/results');
 							Meteor.call('deleteProgressionUser', Session.get("clientIp"));
 							Session.set("selectedLiveFlights", res[4]);
+							Session.set("allLiveFlights", res[4]);
 							Session.set("selectedLiveCars", res[5]);
 							Session.set("cheapestLiveFlight", res[6][0]);
+							Session.set("selectedFlightPrice", (res[6][0]).fare);
+							Session.set("selectedItin", res[6][0].itineraries[0]);
 							Session.set("cheapestLiveCar", res[6][1]);
 							Session.set("selectedLiveHotels", res[7]);
 							Session.set("newIpDays", res[2]);

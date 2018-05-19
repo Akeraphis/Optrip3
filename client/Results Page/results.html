@@ -4,14 +4,11 @@
 		<div class="col-md-2">{{> minPrice}}<br/>{{> buy}}<br/>{{> relaunch}}<br/>{{>options}}</div>
 		<div class="col-md-10">
 			<div class="row">
-				<div class="col-md-4">
-					{{>tripDays}}	
-				</div>
-				<div class="col-md-4">
+				<div class="col-md-6">
 					{{> minFlight}}
 				</div>
 				{{#if hasCar}}
-					<div class="col-md-4">
+					<div class="col-md-6">
 						{{> minCar}}
 					</div>
 				{{/if}}
@@ -38,7 +35,7 @@
 
 <template name="minPrice">
 	<div class="card">
-		<div class="card-header"><h1>{{minTotalPrice}} {{symbolCurrency}}</h1></div>
+		<div class="card-header"><h1>{{minTotalPrice}} {{symbolCurrency}}</h1> per person</div>
 		<div class="card-body">
 			For {{nbPersons}} adults :
 			<h4>Flight: {{minFlightPrice}} {{symbolCurrency}}</h4>
