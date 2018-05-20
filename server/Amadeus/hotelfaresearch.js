@@ -1,6 +1,6 @@
 var amadeusAPIKey = "HSGrlULdIappATMn3SRIrL0H80cO4Sll";
 var dateFlightRefresh = 8;
-var perimeterHotelInKm = 25;
+var perimeterHotelInKm = 42;
 
 Meteor.methods({
 	getAmadeusHotelFare : function(ip, checkin, checkout, currency, nbAdults, nbChildren, nbInfants){

@@ -26,9 +26,10 @@ filterCars = function(){
 	var maxCarPrice = Infinity;
 	var res = [];
 	var arr = Session.get("newIpDays")[0];
+	var dist = 50;
 
 	_.forEach(result, function(car){
-		if(car.address.city.toLowerCase()!=arr.ip.city.toLowerCase()){}
+		if(distance(car.location.latitude, car.location.longitude, arr.ip.lat, arr.ip.lng) > dist){}
 		else if (sanitycheckAgent(car.provider.company_code, getSelectedAgents())){}
 		else if(parseInt(car.cars.estimated_total.amount)<maxCarPrice){
 			res.push(car);
@@ -80,3 +81,16 @@ sanitycheckAgent = function(agId, agents){
 	}
 	return res
 };
+
+distance = function(lat1, lon1, lat2, lon2) {
+	var radlat1 = Math.PI * lat1/180
+	var radlat2 = Math.PI * lat2/180
+	var theta = lon1-lon2
+	var radtheta = Math.PI * theta/180
+	var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+	dist = Math.acos(dist)
+	dist = dist * 180/Math.PI
+	dist = dist * 60 * 1.1515
+	dist = dist * 1.609344;
+	return dist
+}
