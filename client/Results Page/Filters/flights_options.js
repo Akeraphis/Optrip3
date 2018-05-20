@@ -58,7 +58,6 @@ Template.depAirport.events({
 	'click .airport-group' : function(e){
 		var airports = getSelectedAirports();
 		filterFlights(document.getElementById("direct").checked, document.getElementById("oneStop").checked, document.getElementById("twoStops").checked, $("#durationFlight").data("ionRangeSlider").result.from, $("#durationFlight").data("ionRangeSlider").result.to, airports);
-		var res = Session.get("selectedLiveFlights")[0]
 	},
 });
 
@@ -124,26 +123,24 @@ filterFlights = function(direct, oneStop, twoStops, minDuration, maxDuration, ai
 		var maxFlightPrice = Infinity;
 
 		//filtered out if not direct
-		if(!direct && (countSegIn==1 || countSegOut==1)){console.log("no 1 !")}
+		if(!direct && (countSegIn==1 || countSegOut==1)){}
 		//filtered out if not one stop
-		else if(!oneStop && (countSegIn==2 || countSegOut==2)){console.log("no 2 !")}
+		else if(!oneStop && (countSegIn==2 || countSegOut==2)){}
 		//filtered out for legs with more than 2 stops
-		else if(!twoStops && (countSegIn>2 || countSegOut>2)){console.log("no 3 !")}
+		else if(!twoStops && (countSegIn>2 || countSegOut>2)){}
 		//filtered out if leg in is not in duration range
-		else if(durationLegIn<minDuration || durationLegIn>maxDuration){console.log("no 4 !")}
+		else if(durationLegIn<minDuration || durationLegIn>maxDuration){}
 		//same for leg out
-		else if(durationLegOut<minDuration || durationLegOut>maxDuration){console.log("no 5 !")}
+		else if(durationLegOut<minDuration || durationLegOut>maxDuration){}
 		//filtered if not in the authorized airports
-		else if(sanitycheckAirport(airports, depOutbound, arrInbound)){console.log("no 6 !")}
+		else if(sanitycheckAirport(airports, depOutbound, arrInbound)){}
 		//if not skimmed out by filters then add to the selection list
 		else{
-			console.log("yes !")
 			resItin.push(itin);
 			maxFlightPrice = resItin[resItin.length-1].fare.total_price;
 		}
 	});
 
-	console.log(resItin);
 
 	Session.set("selectedLiveFlights", resItin.sort(function(a,b){
 		if(parseInt(a.fare.total_price)>parseInt(b.fare.total_price)){

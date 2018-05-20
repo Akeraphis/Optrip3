@@ -3,58 +3,35 @@
 		<div class="card-header">Car</div>
 		<div class="card-body">
 			{{#with minVehicle}}
-				{{#with cars}}
-					{{#with estimated_total}}
-						<h3>{{amount}}{{symbolCurrency}}</h3>
-					{{/with}}
-				{{/with}}<br/>
-				{{#with provider}}
-					Renting company : {{company_code}}, {{company_name}}
-				{{/with}}<br/>
-				{{#with address}}
-					Address : {{line1}}, {{city}}
-				{{/with}}
-				{{#with vehicule_info}}
-					<h4>{{category}} {{manual}}</h4>
-				{{/with}}
-				<br/>
+				{{>displayCar}}
 			{{/with}}<br/>
-			{{>displayAllCars}}
+			<button class="btn btn-info" type="button" name="otherCars">Other Cars</button>
 		</div>
 	</div>	
 </template>
 
-<template name="displayAllCars">
-	<button class="btn btn-info" type="button" name="otherCars" data-toggle="modal" data-target="#myModal2">Other Cars</button>
-	<!-- Modal -->
-	<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h4 class="modal-title" id="myModalLabel">Cars</h4>
-	      </div>
-	      <div class="modal-body">
-	      	{{#each allCars}}
-	      		<div class="well">
-	      			<!-- <img border="0" height="60" width="120" hspace="0" src="{{getWebsiteImage website_id}}"/> -->
-	      			<h4>Price : {{price_all_days}} {{symbolCurrency}}</h4>
-	      			<br/>
-	      			<img border="0" height="60" width="120" hspace="0" src="{{getCarImage image_id}}"/>
-					{{vehicle}}<br/>
-	      			{{#with location}}
-	      				{{#with pick_up}}
-	      					address : {{address}}
-	      				{{/with}}
-	      			{{/with}}<br/>
-	      			<button class="btn btn-success carSelection" type="button" >Select</button>
-	      		</div>
-	      	{{/each}}
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+<template name="displayCar">
+	{{#with cars}}
+		{{#with estimated_total}}
+			<h3>{{amount}}{{currency}}</h3>
+		{{/with}}
+		{{#if images}}
+			{{#each images}}
+				<img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{url}}"/>
+			{{/each}}
+		{{/if}}
+		{{#with vehicle_info}}
+			<h4>{{category}} {{transmission}}</h4>
+		{{/with}}
+	{{/with}}<br/>
+	{{#with provider}}
+		Renting company : {{company_name}}
+	{{/with}}<br/>
+	{{#with address}}
+		Address : {{line1}}, {{city}}
+	{{/with}}
+	<br/>
 </template>
+
+
 		

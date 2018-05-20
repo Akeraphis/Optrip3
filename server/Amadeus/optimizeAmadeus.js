@@ -24,13 +24,14 @@ Meteor.methods({
 
 		//Step 2. Get all the fares for the selected airports
 		var allFlightFares = getAllFlightFares(codeDep, allArrivalAirports, depDate, returnDate, currency, nbAdults, nbChildren, nbInfants);
-		var uniqueTabFF = uniqueTableFF(allFlightFares);
+		var uniqueTabFF = uniqueTable(allFlightFares);
 		console.log("---- Step 2 completed : Flights Fares retrieved ----");
 		Meteor.call("updateProgress", 10, "Retrieving Car fares");
 		//-------------------
 
 		//Step 3. Retrieve all car fares
 		var allCarFares = getAllCarFares(allArrivalAirports, depDate, returnDate, currency);
+		var uniqueTabCF = uniqueTable(allCarFares);
 		console.log("---- Step 3 completed : Car fares retrieved ----");
 		Meteor.call("updateProgress", 15, "Calculating the cheapest car, flight option");
 		//-------------------
@@ -53,7 +54,7 @@ Meteor.methods({
 		Meteor.call("updateProgress", 80, "Retrieving Hotel fares");
 		//-------------------
 
-		return [departureFrom, depDate, ipDays, allArrivalAirports, uniqueTabFF, allCarFares, minFlightAndCar, allHotelFares];
+		return [departureFrom, depDate, ipDays, allArrivalAirports, uniqueTabFF, uniqueTabCF, minFlightAndCar, allHotelFares];
 	},
 
 });
@@ -98,7 +99,7 @@ getAllFlightFares = function(departureFrom, allArrivalAirports, depDate, returnD
 	return result;
 };
 
-uniqueTableFF = function(result){
+uniqueTable = function(result){
 	var res2 =[];
 
 	_.forEach(result, function(resi){
@@ -136,13 +137,11 @@ findCheapestFlightAndCar = function(allFlightFares, allCarFares, ipDays){
 					penaltyHotelNightAirport=0;
 				}
 			})
-			_.forEach(cf.cars, function(car){
-				if(parseFloat(car.estimated_total.amount)<minCarPrice){
-					minCarPrice = parseFloat(car.estimated_total.amount);
-					minResCar = cf;
-					minResCar.cars = car;
-				}
-			});
+			if(parseFloat(cf.cars.estimated_total.amount)<minCarPrice){
+				minCarPrice = parseFloat(cf.cars.estimated_total.amount);
+				minResCar = cf;
+				minResCar.cars = cf.cars;
+			}
 		});
 		if(minFlightPrice+minCarPrice+penaltyHotelNightAirport < minPrice){
 			minPrice = minFlightPrice+minCarPrice;
@@ -159,7 +158,7 @@ getAllCarFares = function(allArrivalAirports, depDate, returnDate, currency){
 	_.forEach(allArrivalAirports, function(air){
 		Meteor.call("getAmadeusCarAirportFareInCollection", air.airport, depDate, returnDate, currency, function(err, res){
 			if(!err){
-				result.push(res.carFare.data.results);
+				result.push(transformCarFares(res.carFare.data.results));
 			}
 			else{
 				console.log(err);
@@ -167,6 +166,18 @@ getAllCarFares = function(allArrivalAirports, depDate, returnDate, currency){
 		})
 	});
 	return result;
+};
+
+transformCarFares = function(result){
+	var res2 = [];
+	_.forEach(result, function(cF){
+		var temp = cF;
+		_.forEach(cF.cars, function(c){
+			temp.cars = c;
+			res2.push(temp);
+		});
+	});
+	return res2;
 };
 
 getAllHotelFares = function(optimalTour, depDate, returnDate, currency, nbAdults, nbChildren, nbInfants){

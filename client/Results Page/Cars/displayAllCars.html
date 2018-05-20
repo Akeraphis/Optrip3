@@ -1,0 +1,17 @@
+<template name="displayAllCars">
+	<button type="button" class="btn btn-default">Back</button>
+	<h2>All Cars</h2>
+	<div class="row">
+		<div class="col-md-3">
+			{{>carOptions}}
+		</div>
+		<div class="col-md-9">
+			{{#each allCars}}
+				<div class="card" style="width: 47rem;">
+					{{>displayCar}}
+					<button type="button" class="btn btn-success">Select</button>
+				</div><br/><br/>
+			{{/each}}
+		</div>
+	</div>
+</template>

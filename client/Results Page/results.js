@@ -56,12 +56,12 @@ Template.results.helpers({
 Template.minPrice.helpers({
 	minTotalPrice : function(){
 		if(Session.get("cheapestLiveFlight")){
-			if(Session.get("cheapestLiveCar")){
+			if(Session.get("selectedCar")){
 				if(Session.get("cheapestHotelCombinations")){
-					return Math.round((parseInt(Session.get("cheapestLiveCar").cars.estimated_total.amount)+parseInt(Session.get("selectedFlightPrice").total_price)+parseInt(Session.get("cheapestHotelCombinations")))/Session.get('nbPersons'));
+					return Math.round((parseInt(Session.get("selectedCar").cars.estimated_total.amount)+parseInt(Session.get("selectedFlightPrice").total_price)+parseInt(Session.get("cheapestHotelCombinations")))/Session.get('nbPersons'));
 				}
 				else{
-					return Math.round((parseInt(Session.get("cheapestLiveCar").cars.estimated_total.amount)+parseInt(Session.get("selectedFlightPrice").total_price))/Session.get('nbPersons'));
+					return Math.round((parseInt(Session.get("selectedCar").cars.estimated_total.amount)+parseInt(Session.get("selectedFlightPrice").total_price))/Session.get('nbPersons'));
 				}
 			}
 			else{
@@ -71,8 +71,8 @@ Template.minPrice.helpers({
 	},
 
 	minCarPrice : function(){
-		if(Session.get("cheapestLiveCar")){
-			return Math.round(Session.get("cheapestLiveCar").cars.estimated_total.amount);
+		if(Session.get("selectedCar")){
+			return Math.round(Session.get("selectedCar").cars.estimated_total.amount);
 		}
 	},
 

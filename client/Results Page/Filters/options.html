@@ -1,24 +1,7 @@
-
-
 <template name="options">
 	<div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
 		{{>flightOptions}}
-	  {{#if hasCar}}
-		  <div class="card">
-		    <div class="card-header" role="tab" id="headingTwo">
-		      <h4 class="mb-0">
-		        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-		        	Car Options
-		        </a>
-		      </h4>
-		    </div>
-		    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-		      <div class="panel-body">
-		      	{{> carAgents}}
-		      </div>
-		    </div>
-		  </div>
-	  {{/if}}
+		{{>carOptions}}
 	  <div class="card">
 	    <div class="card-header" role="tab" id="headingThree">
 	      <h4 class="mb-0">
@@ -35,14 +18,3 @@
 	  </div>
 	</div>
 </template>
-
-<template name="carAgents">
-	<b>Agents :</b><br/>
-	<div class='carAgentGroup'>
-		{{#each allAgents}}
-			<input type="checkbox" name="agentSelected" id="{{id}}" checked>{{name}}<br/>
-		{{/each}}
-	</div>
-</template>
-
-
