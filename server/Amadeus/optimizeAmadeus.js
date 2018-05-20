@@ -195,6 +195,7 @@ getAllHotelFares = function(optimalTour, depDate, returnDate, currency, nbAdults
 			var checkinLast  = (moment(returnDate).subtract(endDays, 'd')).format("YYYY-MM-DD");
 			result.push(Meteor.call("getAmadeusHotelFareInCollection", optimalTour[0].ip, depDate, checkoutFirst, currency, nbAdults, nbChildren, nbInfants));
 			lastres = Meteor.call("getAmadeusHotelFareInCollection", optimalTour[0].ip, checkinLast, returnDate, currency, nbAdults, nbChildren, nbInfants);
+			totalDays = totalDays + dayStart;
 		}
 		else{
 			var checkin = (moment(depDate).add(totalDays, 'd')).format("YYYY-MM-DD");
