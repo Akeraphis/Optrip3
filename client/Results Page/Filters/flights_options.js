@@ -2,8 +2,7 @@ var toBeDisplayed = 15;
 
 Template.nbStops.events({
 	'click .list-group' : function(e){
-		var airports = getSelectedAirports();
-		filterFlights(document.getElementById("direct").checked, document.getElementById("oneStop").checked, document.getElementById("twoStops").checked, $("#durationFlight").data("ionRangeSlider").result.from, $("#durationFlight").data("ionRangeSlider").result.to, airports);
+		filterFlights();
 	},
 });
 
@@ -56,8 +55,7 @@ Template.depAirport.helpers({
 
 Template.depAirport.events({
 	'click .airport-group' : function(e){
-		var airports = getSelectedAirports();
-		filterFlights(document.getElementById("direct").checked, document.getElementById("oneStop").checked, document.getElementById("twoStops").checked, $("#durationFlight").data("ionRangeSlider").result.from, $("#durationFlight").data("ionRangeSlider").result.to, airports);
+		filterFlights();
 	},
 });
 
@@ -107,8 +105,14 @@ getMinMaxDuration = function(){
 	return [minDur, maxDur]
 };
 
-filterFlights = function(direct, oneStop, twoStops, minDuration, maxDuration, airports){
+filterFlights = function(){
 	var ff = Session.get("allLiveFlights");
+	var direct = document.getElementById("direct").checked;
+	var oneStop = document.getElementById("oneStop").checked;
+	var twoStops = document.getElementById("twoStops").checked;
+	var minDuration = $("#durationFlight").data("ionRangeSlider").result.from;
+	var maxDuration = $("#durationFlight").data("ionRangeSlider").result.to;
+	var airports = getSelectedAirports();
 	var resItin = [];
 
 	_.forEach(ff, function(itin){
@@ -181,7 +185,6 @@ getSelectedAirports = function(){
 	var res = [];
 
 	_.forEach(airports, function(air){
-		console.log(air);
 		if(air.checked==true){
 			res.push(air.id);
 		}

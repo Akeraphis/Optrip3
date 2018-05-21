@@ -10,6 +10,7 @@
 		<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
 			<div class="panel-body">
 				{{> carAgents}}
+				{{> carType}}
 			</div>
 		</div>
 	</div>
@@ -20,6 +21,15 @@
 	<div class='carAgentGroup'>
 		{{#each allAgents}}
 			<input type="checkbox" name="agentSelected" id="{{company_code}}" checked> {{company_name}}<br/>
+		{{/each}}
+	</div>
+</template>
+
+<template name="carType">
+	<b>Car Type :</b><br/>
+	<div class='carType'>
+		{{#each allVehicleInfos}}
+			<input type="checkbox" name="typeSelected" id="{{category}}" checked> {{category}}<br/>
 		{{/each}}
 	</div>
 </template>

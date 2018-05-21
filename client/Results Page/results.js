@@ -81,13 +81,11 @@ Template.minPrice.helpers({
 	},
 
 	minHotelPrices : function(){
-		var res = Session.get("selectedLiveHotels");
+		var res = Session.get("cheapestLiveHotels");
 		var hp = 0;
 
 		_.forEach(res, function(r){
-			if (r.hotelFare.results.length>0){
-				hp = hp + parseFloat(r.hotelFare.results[0].total_price.amount);
-			}
+			hp = hp + parseFloat(r.hotelFare.results.total_price.amount);
 		});
 
 		Session.set("cheapestHotelCombinations", hp);

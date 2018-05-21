@@ -4,9 +4,9 @@
 		<div class="card-body">
 			{{#with minVehicle}}
 				{{>displayCar}}
-			{{/with}}<br/>
-			<button class="btn btn-info" type="button" name="otherCars">Other Cars</button>
+			{{/with}}<br/>	
 		</div>
+		<button class="btn btn-info" type="button" name="otherCars">Other Cars</button>
 	</div>	
 </template>
 
@@ -27,6 +27,7 @@
 	{{#with provider}}
 		Renting company : {{company_name}}
 	{{/with}}<br/>
+	<span class="badge badge-primary">Airport</span><br/>
 	{{#with address}}
 		Address : {{line1}}, {{city}}
 	{{/with}}

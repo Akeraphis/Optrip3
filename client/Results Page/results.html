@@ -1,5 +1,6 @@
 <template name="results">
 	{{#if results}}
+	<br/>
 	<div class="row">
 		<div class="col-md-2">{{> minPrice}}<br/>{{> buy}}<br/>{{> relaunch}}<br/>{{>options}}</div>
 		<div class="col-md-10">
@@ -12,7 +13,7 @@
 						{{> minCar}}
 					</div>
 				{{/if}}
-			</div>
+			</div><br/>
 			<div class="row">
 				{{> minHotel}}
 			</div>
@@ -37,12 +38,12 @@
 	<div class="card">
 		<div class="card-header"><h1>{{minTotalPrice}} {{symbolCurrency}}</h1> per person</div>
 		<div class="card-body">
-			For {{nbPersons}} adults :
-			<h4>Flight: {{minFlightPrice}} {{symbolCurrency}}</h4>
+			For {{nbPersons}} adults and :
+			<u><b>Flight:</b></u> {{minFlightPrice}} {{symbolCurrency}}<br/>
 			{{#if hasCar}}
-				<h4>Car Rental : {{minCarPrice}} {{symbolCurrency}}</h4>
+				<u><b>Car Rental :</b></u> {{minCarPrice}} {{symbolCurrency}}<br/>
 			{{/if}}
-			<h4>Hotel Total : {{minHotelPrices}} {{symbolCurrency}}</h4></div>
+			<u><b>Hotels :</b></u> {{minHotelPrices}} {{symbolCurrency}}</div>
 		</div>
 </template>
 

@@ -10,5 +10,8 @@ Meteor.methods({
 	//Vider la collection d'aéroports
 	'flushAllAirlines' : function(){
 		Airlines.remove({});
+	},
+	'retrieveAirlineByCode' : function(iata){
+		return Airlines.findOne({iata : iata});
 	}
 })

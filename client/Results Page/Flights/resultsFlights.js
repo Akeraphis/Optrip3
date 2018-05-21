@@ -1,5 +1,5 @@
-Meteor.subscribe("allAirports");
-Meteor.subscribe("allAirlines");
+// Meteor.subscribe("allAirports");
+// Meteor.subscribe("allAirlines");
 
 Template.minFlight.events({
 	'click #myTabs a': function(e){
@@ -8,6 +8,7 @@ Template.minFlight.events({
 	},
 
 	'click .btn-info': function(e){
+		filterFlights();
 		FlowRouter.go('/optimization/results/flights');
 	}
 });
@@ -49,15 +50,21 @@ Template.leg.helpers({
 		return leg
 	},
 	getImage : function(operating_airline){
-		var air = Airlines.findOne({iata : operating_airline});
-		if(air){
-			return air.logo;
+		var handle = Meteor.subscribe("airlineByCode", operating_airline);
+		if(handle.ready()){
+			return Airlines.findOne({iata: operating_airline}).logo;
+		}
+	},
+	getAirlineName : function(operating_airline){
+		var handle = Meteor.subscribe("airlineByCode", operating_airline);
+		if(handle.ready()){
+			return Airlines.findOne({iata: operating_airline}).name;
 		}
 	},
 	getAirport: function(code){
-		var airport = Airports.findOne({code : code});
-		if(airport){
-			return airport.name;
+		var handle = Meteor.subscribe("airportByCode", code)
+		if (handle.ready()){
+			return Airports.findOne({code : code}).name;
 		}
 	}
 });

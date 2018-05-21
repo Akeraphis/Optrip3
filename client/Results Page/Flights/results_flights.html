@@ -16,8 +16,8 @@
 				{{/with}}
 				<br/>
 			{{/with}}
-			<button class="btn btn-info" type="button" name="otherFlights">Other Flights</button>
 		</div>
+		<button class="btn btn-info" type="button" name="otherFlights">Other Flights</button>
 	</div>
 </template>
 
@@ -28,7 +28,7 @@
 				<div class="col-sm">
 					<img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{getImage marketing_airline}}"/>
 					<br/>
-					Flight Number : {{operating_airline}}{{flight_number}}
+					Flight Number : {{operating_airline}}{{flight_number}}, <i>operated by : {{getAirlineName operating_airline}}</i>
 					<br/>
 					Aircraft : {{aircraft}}
 					<br/>

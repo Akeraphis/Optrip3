@@ -99,7 +99,9 @@ Template.home.events({
 							Session.set("selectedItin", res[6][0].itineraries[0]);
 							Session.set("cheapestLiveCar", res[6][1]);
 							Session.set("selectedCar", res[6][1]);
+							Session.set("allLiveHotels", res[7]);
 							Session.set("selectedLiveHotels", res[7]);
+							Session.set("cheapestLiveHotels", res[8]);
 							Session.set("newIpDays", res[2]);
 						}
 					});

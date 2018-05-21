@@ -14,11 +14,12 @@ Meteor.methods({
 
 		//Get code Dep
 		var codeDep = getCodeDep(departureFrom);
+		Meteor.call("updateProgress", 2, "Retrieving all arrival airports");
 		//-------------------
 
 		//Step 1. Look for all possible relevant airports
 		var allArrivalAirports = getAllAirports(ipDays);
-		Meteor.call("updateProgress", 2, "Retrieving all arrival airports");
+		Meteor.call("updateProgress", 15, "Retrieving Flight fares");
 		console.log("---- Step 1 completed : Retrieving flight fares ----");
 		//-------------------
 
@@ -26,35 +27,41 @@ Meteor.methods({
 		var allFlightFares = getAllFlightFares(codeDep, allArrivalAirports, depDate, returnDate, currency, nbAdults, nbChildren, nbInfants);
 		var uniqueTabFF = uniqueTable(allFlightFares);
 		console.log("---- Step 2 completed : Flights Fares retrieved ----");
-		Meteor.call("updateProgress", 10, "Retrieving Car fares");
+		Meteor.call("updateProgress", 30, "Retrieving Car fares");
 		//-------------------
 
 		//Step 3. Retrieve all car fares
 		var allCarFares = getAllCarFares(allArrivalAirports, depDate, returnDate, currency);
 		var uniqueTabCF = uniqueTable(allCarFares);
 		console.log("---- Step 3 completed : Car fares retrieved ----");
-		Meteor.call("updateProgress", 15, "Calculating the cheapest car, flight option");
+		Meteor.call("updateProgress", 45, "Calculating the cheapest car, flight option");
 		//-------------------
 
 		//Step 4. Find the cheapest flight/car combination in the lot
 		var minFlightAndCar = findCheapestFlightAndCar(allFlightFares, allCarFares, ipDays)
 		console.log("---- Step 4 completed : Cheapest flight and car combination found ----");
-		Meteor.call("updateProgress", 20, "Ordering the stops");
+		Meteor.call("updateProgress", 60, "Ordering the stops");
 		//-------------------
 
 		//Step 5. Get the optimal tour
 		var optimalTour = Meteor.call("orderIps", ipDays);
 		console.log("---- Step 5 completed : Computing the optimal tour ----");
-		Meteor.call("updateProgress", 30, "Retrieving Hotel fares");
+		Meteor.call("updateProgress", 80, "Retrieving Hotel fares");
 		//-------------------
 
 		//Step 6. Find the cheapest hotel combination
 		var allHotelFares = getAllHotelFares(optimalTour, depDate, returnDate, currency, nbAdults, nbChildren, nbInfants);
-		console.log("---- Step 6 completed : Cheapest hotels combinations found ----");
-		Meteor.call("updateProgress", 80, "Retrieving Hotel fares");
+		console.log("---- Step 6 completed : Hotel fares retrieved ----");
+		Meteor.call("updateProgress", 90, "Calculating Hotel best deals");
 		//-------------------
 
-		return [departureFrom, depDate, ipDays, allArrivalAirports, uniqueTabFF, uniqueTabCF, minFlightAndCar, allHotelFares];
+		//Step 7. Find the cheapest hotel combination
+		var cheapestHotelBundle = getCheapestHotels(getAllHotelFares(optimalTour, depDate, returnDate, currency, nbAdults, nbChildren, nbInfants));
+		console.log("---- Step 7 completed : Cheapest hotels combinations found ----");
+		Meteor.call("updateProgress", 95, "Wrapping up everything together");
+		//-------------------
+
+		return [departureFrom, depDate, ipDays, allArrivalAirports, uniqueTabFF, uniqueTabCF, minFlightAndCar, allHotelFares, cheapestHotelBundle];
 	},
 
 });
@@ -210,6 +217,25 @@ getAllHotelFares = function(optimalTour, depDate, returnDate, currency, nbAdults
 	return result;
 };
 
+getCheapestHotels = function(allH){
+	var res = allH;
+	var i=0;
+
+	_.forEach(res, function(city){
+		var minPrice = Infinity;
+		var temp = {};
+		_.forEach(city.hotelFare.results, function(hf){
+			if (parseInt(hf.total_price.amount)<minPrice){
+				temp = hf;
+				minPrice = parseInt(hf.total_price.amount);
+			}
+		});
+		res[i].hotelFare.results = temp;
+		i++;
+	});
+	return res;
+};
+
 distance = function(lat1, lon1, lat2, lon2) {
 	var radlat1 = Math.PI * lat1/180
 	var radlat2 = Math.PI * lat2/180
@@ -221,4 +247,4 @@ distance = function(lat1, lon1, lat2, lon2) {
 	dist = dist * 60 * 1.1515
 	dist = dist * 1.609344;
 	return dist
-}
+};

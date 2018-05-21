@@ -4,6 +4,10 @@ Meteor.publish("allAirports", function(){
 	});
 });
 
+Meteor.publish("airportByCode", function(code){
+	return Airports.find({code : code});
+})
+
 Meteor.publish("allInterestPoints", function(){
 	return InterestPoints.find({},{
 		fields: {content: 0}
@@ -78,3 +82,7 @@ Meteor.publish("allProgressionUsers", function(){
 Meteor.publish("allAirlines", function(){
 	return Airlines.find({});
 });
+
+Meteor.publish("airlineByCode", function(iata){
+	return Airlines.find({iata : iata});
+})

@@ -21,7 +21,6 @@ Template.displayAllFlight.events({
 			});
 		});
 
-		console.log(res, res2);
 		Session.set("selectedItin", res2);
 		Session.set("selectedFlightPrice", res.fare);
 		FlowRouter.go('/optimization/results');
