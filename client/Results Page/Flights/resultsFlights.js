@@ -61,10 +61,16 @@ Template.leg.helpers({
 			return Airlines.findOne({iata: operating_airline}).name;
 		}
 	},
-	getAirport: function(code){
-		var handle = Meteor.subscribe("airportByCode", code)
-		if (handle.ready()){
-			return Airports.findOne({code : code}).name;
+	getAirport: function(code2){
+		var air = Airports.findOne({code : code2});
+		if (air){
+			return air.name;
 		}
 	}
+});
+
+Template.leg.onCreated(function(){
+	  this.autorun(() => {
+	    this.subscribe('allAirports');
+	  });
 });

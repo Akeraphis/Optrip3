@@ -32,8 +32,12 @@
 						<h4>{{amount}} {{currency}}</h4>
 					{{/with}}
 					{{#with address}}
-						<i>{{line1}}, {{city}} in {{country}} </i><br/>
-					{{/with}}<br/>
+						<i>{{line1}}, {{city}}</i><br/>
+					{{/with}}
+					{{#with location}}
+						<small><i>{{getDistanceFromCenter latitude longitude}} km from center</i></small>
+					{{/with}}
+					<br/>
 					{{> hotelDetails}}
 				</p>
 			</div>

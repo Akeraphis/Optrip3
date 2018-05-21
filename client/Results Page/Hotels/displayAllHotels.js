@@ -30,7 +30,27 @@ Template.displayAllHotels.helpers({
 				res2 = lh;
 			}
 		});
-
 		return res2.hotelFare.results;
 	},
 });
+
+Template.displayHotels.helpers({
+	getDistanceFromCenter: function(lat, lng){
+		var city = FlowRouter.getParam('city');
+		var ips = Session.get("newIpDays");
+		var lat2 = 0;
+		var lng2 = 0;
+
+		_.forEach(ips, function(ip){
+			if(ip.ip.city==city){
+				lat2= ip.ip.lat;
+				lng2=ip.ip.lng;
+			}
+		});
+		var d = distance(lat, lng, lat2, lng2);
+		return Math.round(d*100)/100;
+	},
+	getCity: function(){
+		return FlowRouter.getParam('city');
+	}
+})
