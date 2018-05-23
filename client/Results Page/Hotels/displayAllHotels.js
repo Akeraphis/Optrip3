@@ -36,21 +36,26 @@ Template.displayAllHotels.helpers({
 
 Template.displayHotels.helpers({
 	getDistanceFromCenter: function(lat, lng){
-		var city = FlowRouter.getParam('city');
-		var ips = Session.get("newIpDays");
-		var lat2 = 0;
-		var lng2 = 0;
-
-		_.forEach(ips, function(ip){
-			if(ip.ip.city==city){
-				lat2= ip.ip.lat;
-				lng2=ip.ip.lng;
-			}
-		});
-		var d = distance(lat, lng, lat2, lng2);
-		return Math.round(d*100)/100;
+		return distanceFromCenter(lat, lng);
 	},
 	getCity: function(){
 		return FlowRouter.getParam('city');
 	}
-})
+});
+
+distanceFromCenter = function(lat, lng){
+	var city = FlowRouter.getParam('city');
+	var ips = Session.get("newIpDays");
+	var lat2 = 0;
+	var lng2 = 0;
+
+	_.forEach(ips, function(ip){
+		if(ip.ip.city==city){
+			lat2= ip.ip.lat;
+			lng2=ip.ip.lng;
+		}
+	});
+	var d = distance(lat, lng, lat2, lng2);
+	return Math.round(d*100)/100;
+}
+

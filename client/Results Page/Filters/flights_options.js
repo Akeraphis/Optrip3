@@ -22,16 +22,7 @@ Template.tripLength.onRendered(function(){
 	    step: 0.5,
 	    postfix: "hours",
 	    onFinish: function (data) {
-	    	var airports = getSelectedAirports();
-			filterFlights(document.getElementById("direct").checked, document.getElementById("oneStop").checked, document.getElementById("twoStops").checked, data.from, data.to, airports);
-			var res = Session.get("selectedLiveFlights")[0]
-			if(res.InboundLegId){
-				var po = res.PricingOptions[0];
-				var ag = res.PricingOptions[0].newAgents[0];
-				po.Agents = ag;
-				res.PricingOptions = po;
-			}
-			Session.set("minLFP", res);
+			filterFlights();
 		},
 	});
 });
@@ -98,9 +89,6 @@ getMinMaxDuration = function(){
 
 	var minDur = Math.round(min/30)/2;
 	var maxDur = Math.round(max/30)/2;
-
-	var minDur = 1;
-	var maxDur = 40;
 
 	return [minDur, maxDur]
 };

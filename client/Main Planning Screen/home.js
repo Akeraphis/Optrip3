@@ -19,6 +19,13 @@ Template.home.helpers({
 Template.selectedIPs.helpers({
 	selectedIp : function(){
 		return Session.get("selectedIp");
+	},
+	hasIp: function(){
+		var res = true;
+		if(Session.get("selectedIp").length>0){
+			res=false;
+		}
+		return res;
 	}
 });
 

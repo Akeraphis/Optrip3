@@ -1,4 +1,5 @@
 var amadeusAPIKey = "HSGrlULdIappATMn3SRIrL0H80cO4Sll";
+var dMax = 100;
 
 Meteor.methods({
 	getAmadeusNearestRelevantAirport : function(lat, lng){
@@ -28,9 +29,22 @@ Meteor.methods({
 		else{
 			//Enter the missing search in the table and retrieve the result
 			var ffs = Meteor.call("getAmadeusNearestRelevantAirport", lat, lng);
-			NearestRelevantAirport.insert({ latitude : lat, longitude : lng, nearest_airports : ffs });
+			NearestRelevantAirport.insert({latitude : lat, longitude : lng, nearest_airports : ffs });
 			console.log("nearest relevant airport no entry");
 		}
+
+		ffs.data = Meteor.call("getAirportsInCircle", lat, lng, ffs.data);
 		return ffs;
+	},
+	getAirportsInCircle : function(lat, lng, airports){
+		var res = [];
+
+		_.forEach(airports, function(air){
+			console.log(lat, lng, air.location.latitude, air.location.longitude);
+			if (distance(lat, lng, air.location.latitude, air.location.longitude)<=dMax){
+				res.push(air);
+			}
+		});
+		return res;
 	}
 })

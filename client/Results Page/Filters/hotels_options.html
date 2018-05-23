@@ -9,8 +9,14 @@
 		</div>
 		<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
 			<div class="panel-body">
-				blabla 3
+				{{>distanceFromCenter}}
 			</div>
 		</div>
 	</div>
+</template>
+
+<template name='distanceFromCenter'>
+	<b>Distance from center :</b><br/>
+	<input type="rangeslide" id="distanceCenter"/>
+	<br/>
 </template>

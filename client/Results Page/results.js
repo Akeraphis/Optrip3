@@ -53,7 +53,7 @@ Template.results.helpers({
 	}
 });
 
-Template.minPrice.helpers({
+Template.minTotalPriceT.helpers({
 	minTotalPrice : function(){
 		if(Session.get("cheapestLiveFlight")){
 			if(Session.get("selectedCar")){
@@ -69,17 +69,22 @@ Template.minPrice.helpers({
 			}
 		}
 	},
+	symbolCurrency : function(){
+		var cur = Session.get("selectedCurrency");
+		var cur2 = Currencies.findOne({Code : cur});
+		//return cur2.Symbol;
+		return "€";
+	},
+})
+
+
+Template.minPrice.helpers({
 
 	minCarPrice : function(){
 		if(Session.get("selectedCar")){
 			return Math.round(Session.get("selectedCar").cars.estimated_total.amount);
 		}
 	},
-
-	minFlightPrice : function(){
-		return Session.get("selectedFlightPrice").total_price;
-	},
-
 	minHotelPrices : function(){
 		var res = Session.get("cheapestLiveHotels");
 		var hp = 0;
@@ -101,10 +106,6 @@ Template.minPrice.helpers({
 		//return cur2.Symbol;
 		return "€";
 	},
-
-	nbPersons : function(){
-		return Session.get('nbPersons');
-	},
 	hasCar : function(){
 		if(Session.get("cheapestLiveCar")){
 			return true
@@ -114,6 +115,32 @@ Template.minPrice.helpers({
 		}
 	}
 });
+
+Template.minTotalFlight.helpers({
+	minFlightPrice : function(){
+		return Session.get("selectedFlightPrice").total_price;
+	},
+	symbolCurrency : function(){
+		var cur = Session.get("selectedCurrency");
+		var cur2 = Currencies.findOne({Code : cur});
+		//return cur2.Symbol;
+		return "€";
+	},
+})
+
+Template.numberPersons.helpers({
+	nbPersons : function(){
+		return Session.get('nbPersons');
+	},
+	nbNights: function(){
+		var ips =Session.get("newIpDays");
+		var res = 0;
+		_.forEach(ips, function(ip){
+			res= res+ ip.nbDays;
+		});
+		return res;
+	}
+})
 
 
 Template.tripDays.onRendered(function(){

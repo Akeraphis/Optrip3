@@ -2,8 +2,12 @@
 	{{#if results}}
 	<br/>
 	<div class="row">
-		<div class="col-md-2">{{> minPrice}}<br/>{{> buy}}<br/>{{> relaunch}}<br/>{{>options}}</div>
-		<div class="col-md-10">
+		<div class="container-fluid">
+			{{>minPrice}}
+		</div>
+	</div><br/>
+	<div class="row">
+		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-6">
 					{{> minFlight}}
@@ -13,10 +17,12 @@
 						{{> minCar}}
 					</div>
 				{{/if}}
-			</div><br/>
-			<div class="row">
-				{{> minHotel}}
 			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="container-fluid">
+			{{> minHotel}}
 		</div>
 	</div>
 	{{/if}}
@@ -29,24 +35,67 @@
 </template>
 
 <template name="buy">
-	<div>
-		<button type="button" class="buyButton" name="Buy">BUY</button>
-	</div>
+	<button type="button" class="btn btn-primary btn-lg" name="Buy">BUY</button>
 </template>
 
 <template name="minPrice">
-	<div class="card">
-		<div class="card-header"><h1>{{minTotalPrice}} {{symbolCurrency}}</h1> per person</div>
-		<div class="card-body">
-			For {{nbPersons}} adults:<br/>
-			<u><b>Flight :</b></u> {{minFlightPrice}} {{symbolCurrency}}<br/>
-			{{#if hasCar}}
-				<u><b>Car Rental :</b></u> {{minCarPrice}} {{symbolCurrency}}<br/>
-			{{/if}}
-			<u><b>Hotels :</b></u> {{minHotelPrices}} {{symbolCurrency}}</div>
+	<div class="row">
+		<div class="col-sm">
+			{{>minTotalPriceT}}
 		</div>
+		<div class="col-sm">
+			{{>numberPersons}}
+		</div>
+		<div class="col-sm">
+			{{>minTotalFlight}}
+		</div>
+		<div class="col-sm">
+			<center>
+				<div style="color:MediumSeaGreen">
+					<i class="fa fa-car fa-5x"></i>
+					{{#if hasCar}}
+						<h4>{{minCarPrice}} {{symbolCurrency}}</h4>
+					{{/if}}
+				</div>
+			</center>
+		</div>
+		<div class="col-sm">
+			<center>
+				<div style="color:Violet">
+					<i class="fa fa-home fa-5x"></i>
+					<h4>{{minHotelPrices}} {{symbolCurrency}}</h4>
+				</div>
+			</center>	
+		</div>
+	</div>
 </template>
 
 <template name="tripDays">
 	{{> fullcalendar id="myCalendar"}}
+</template>
+
+<template name="minTotalPriceT">
+	<center>
+		<h1>{{minTotalPrice}} {{symbolCurrency}}</h1>
+		per person<br/>
+		{{>buy}}
+	</center>
+</template>
+
+<template name="numberPersons">
+	<center>
+		<div style="color:SlateBlue">
+			<i class="fa fa-user fa-5x"></i>
+			<h4>{{nbPersons}} adults for {{nbNights}} nights</h4>
+		</div>
+	</center>
+</template>
+
+<template name="minTotalFlight">
+	<center>
+		<div style="color:Tomato">
+			<i class="fa fa-plane fa-5x"></i><br/>
+			<h3>{{minFlightPrice}} {{symbolCurrency}}</h3>
+		</div>
+	</center>
 </template>
