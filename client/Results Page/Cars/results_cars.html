@@ -12,6 +12,7 @@
 
 <template name="displayCar">
 	{{#with cars}}
+		<span class="badge badge-primary">Airport</span><br/>
 		{{#with estimated_total}}
 			<h3>{{amount}}{{currency}}</h3>
 		{{/with}}
@@ -27,7 +28,6 @@
 	{{#with provider}}
 		Renting company : {{company_name}}
 	{{/with}}<br/>
-	<span class="badge badge-primary">Airport</span><br/>
 	{{#with address}}
 		Address : {{line1}}, {{city}}
 	{{/with}}

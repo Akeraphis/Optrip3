@@ -1,13 +1,13 @@
 <template name="home">
 	<div class="row">
-		<div class="container-fluid">
-			<div class="card bg-light text-black">
+		<div class="container-fluid ">
+			<div class="card border-warning mb-3 bg-light">
 				<div class='card-body'>
 					{{> inputAutocomplete settings=settings id="departurePoint" class="form-control" name="departurePoint" placeholder="Departure from" }}<br/>
 					{{> inputPanel}}
 					{{> selectedIPs}}
 				</div>
-			</div>	
+			</div>
 		</div>	
 	</div>
 	<div class="row">
@@ -24,13 +24,13 @@
 		{{#each selectedIp}}
 		<div class="card bg-black text-white" style="max-width: 18rem; height: 180px;">
 			<center>
-				<img class="card-img" src="{{image}}" height="180px" alt="Card image">
+				<img class="card-img" src="{{getImage image}}" height="180px" alt="Card image">
 				<div class="card-img-overlay">
 					<h3 class="card-title">{{city}}</h3>
 					<p class="card-text">
-						<input type="number" class="form-control" name="NbDays" id="NbDays" min="0" max="99" value="1">
 						<div class="input-group-append">
-							<span class="input-group-text">nights</span>
+							<input type="number" class="form-control" name="NbDays" id="NbDays" min="0" max="99" value="1">
+							<span class="btn btn-warning">nights</span>
 						</div>
 					</p>
 				</div>
@@ -48,7 +48,7 @@
 	<div class="depDate">
 		<div class="input-group mb-3">
 			<div class="input-group-prepend">
-				<span class="btn btn-secondary">Departure on:</span>
+				<span class="btn btn-warning">Departure on:</span>
 			</div>
 			<input type="date" id="departureDate" class="form-control" value="2018-07-25"/>
 		</div>
@@ -56,7 +56,7 @@
 </template>
 
 <template name="optimizeButton">
-		<button type="submit" class="btn btn-secondary btn-lg" name="optimize">Optimize my trip !</button>
+		<button type="submit" class="btn btn-warning btn-lg" name="optimize">Optimize my trip !</button>
 </template>
 
 <template name='inputPanel'>
@@ -76,7 +76,7 @@
 
 <template name="nbTravelers">
 	<div class="dropdown">
-	  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	  <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	    Number of Travelers
 	  </button>
 	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" id="dropdownMenu1">
@@ -102,7 +102,7 @@
 <template name="emptyIp">
 	<div class="card" style="max-width: 18rem;">
 		<center>
-			<div style="color:Tomato">
+			<div class="text-warning">
 				<br/>
 				<div class="card-title"><i class="fa fa-plus fa-3x"></i></div>
 				<div class="card-body"><i>Add a city by clicking on the map</i></div>

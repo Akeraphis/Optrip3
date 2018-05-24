@@ -26,6 +26,14 @@ Template.selectedIPs.helpers({
 			res=false;
 		}
 		return res;
+	},
+	getImage : function(image){
+		if(image){
+			return image;
+		}
+		else{
+			return "http://lostintentions.com/wp-content/uploads/2016/09/youtube-banner2.jpg";
+		}
 	}
 });
 
@@ -35,7 +43,7 @@ Template.home.events({
 	//-------------------------------------------------------------------------------------------------
 	// Function called when the user clicks on the optimize button
 	//-------------------------------------------------------------------------------------------------
-	'click .btn-secondary' : function(e){
+	'click .btn-warning' : function(e){
 
 		// prevent reset of the form
 		e.preventDefault();

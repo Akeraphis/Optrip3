@@ -1,6 +1,6 @@
 .map {
     height: 550px;
-    width: 1470px;
+    width: 100%;
     padding: 5px;
     font-size: 16px;
     border-radius: 1px;
@@ -8,6 +8,25 @@
     font-family: 'Abel', sans-serif;
 }
 
+.map2 {
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 1px;
+    margin-left: 1 0px;
+    font-family: 'Abel', sans-serif;
+}
+
+.map3 {
+    height: 800px;
+    width: 100%;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 1px;
+    margin-left: 1 0px;
+    font-family: 'Abel', sans-serif;
+}
 .info {
     padding: 6px 8px;
     font-family: 'Abel', sans-serif;

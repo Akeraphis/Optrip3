@@ -40,7 +40,6 @@ Meteor.methods({
 		var res = [];
 
 		_.forEach(airports, function(air){
-			console.log(lat, lng, air.location.latitude, air.location.longitude);
 			if (distance(lat, lng, air.location.latitude, air.location.longitude)<=dMax){
 				res.push(air);
 			}

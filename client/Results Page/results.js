@@ -1,5 +1,4 @@
 var countProgress=0;
-Session.set("minLFP", {});
 
 Template.relaunch.events({
 	'click .optimizeButton': function(e){
@@ -174,3 +173,4 @@ Template.tripDays.onRendered(function(){
 	}
 
 });
+

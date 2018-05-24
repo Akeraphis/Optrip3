@@ -9,8 +9,10 @@
 
 <template name="mainLayout">
 	<body class='mainLayout'>
-		{{> NavBar}}
-		{{> Template.dynamic template=main}}
+		<div class="text-black bg-light">
+			{{> NavBar}}
+			{{> Template.dynamic template=main}}
+		</div>
 	</body>
 </template>
 

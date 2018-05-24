@@ -16,9 +16,9 @@ Template.tripLength.onRendered(function(){
 	    type: "double",
 	    grid: false,
 	    min: 0,
-	    max: dur[1],
-	    from: dur[0],
-	    to: dur[1],
+	    max: 40,
+	    from: 0,
+	    to: 40,
 	    step: 0.5,
 	    postfix: "hours",
 	    onFinish: function (data) {
@@ -95,11 +95,27 @@ getMinMaxDuration = function(){
 
 filterFlights = function(){
 	var ff = Session.get("allLiveFlights");
-	var direct = document.getElementById("direct").checked;
-	var oneStop = document.getElementById("oneStop").checked;
-	var twoStops = document.getElementById("twoStops").checked;
-	var minDuration = $("#durationFlight").data("ionRangeSlider").result.from;
-	var maxDuration = $("#durationFlight").data("ionRangeSlider").result.to;
+	var direct = true;
+	var oneStop = true;
+	var twoStops = true;
+	var minDuration = 0;
+	var maxDuration = Infinity;
+	var nopb = false;
+	if(document.getElementById('direct')){
+		direct=document.getElementById('direct').checked;
+		nopb = true;
+	}
+	if(document.getElementById('oneStop')){
+		oneStop=document.getElementById('oneStop').checked;
+	}
+	if(document.getElementById('twoStops')){
+		twoStops=document.getElementById('twoStops').checked;
+	}
+	if($("#durationFlight").data("ionRangeSlider")){
+		minDuration = $("#durationFlight").data("ionRangeSlider").result.from;
+		maxDuration = $("#durationFlight").data("ionRangeSlider").result.to;
+	}
+
 	var airports = getSelectedAirports();
 	var resItin = [];
 
@@ -125,7 +141,7 @@ filterFlights = function(){
 		//same for leg out
 		else if(durationLegOut<minDuration || durationLegOut>maxDuration){}
 		//filtered if not in the authorized airports
-		else if(sanitycheckAirport(airports, depOutbound, arrInbound)){}
+		else if(sanitycheckAirport(airports, depOutbound, arrInbound) && nopb){}
 		//if not skimmed out by filters then add to the selection list
 		else{
 			resItin.push(itin);

@@ -40,7 +40,7 @@ Meteor.methods({
 			var ff = Meteor.call("getAmadeusFlightLowFare", codeDep, ca, departureDate, returnDate, currency, nbAdults, nbChildren, nbInfants);
 			LiveFlightPrices.update({ departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate}, {dateUpdate : dateNow, flightFare : ff });
 			ffs = { departureCode : codeDep, arrivalCode : ca, departureDate : departureDate, returnDate : returnDate, dateUpdate : dateNow, flightFare : ff };
-			console.log("alert live flight price refresh");
+			console.log("alert live flight price refresh from");
 		}
 		else{
 			//Enter the missing search in the table and retrieve the result

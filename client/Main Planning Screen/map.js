@@ -207,49 +207,6 @@ function drawCircuit(map, circuit){
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
-//-------------------------------------------------------------------------------------------------
-// Function used to draw really route using a CAR
-//-------------------------------------------------------------------------------------------------
-
-function drawRoute(map, request){
-
-	setAllMap(null);
-
-	var directionsDisplay = new google.maps.DirectionsRenderer();
-	var directionsService = new google.maps.DirectionsService();
-	directionsDisplay.setMap(map);
-	var waypts = [];
-
-	if(request.length>=2) {
-		for (var i=1; i<request.length; i++){
-			waypts.push({
-          		location:request[i].ip.city,
-          		stopover:true
-          	});
-		}
-	}
-
-	var req2 = {
-    	origin: request[0].ip.city,
-    	destination: request[0].ip.city,
-    	waypoints : waypts,
-    	optimizeWaypoints : true,
-    	travelMode: google.maps.TravelMode.DRIVING
-  	};
-
-	directionsService.route(req2, function(response, status) {
-		if (status == google.maps.DirectionsStatus.OK) {
-			directionsDisplay.setDirections(response);
-		}
-		else{
-			window.alert('Directions request failed due to' + status);
-		}
-
-	});
-};
-//-------------------------------------------------------------------------------------------------
-//-------------------------------------------------------------------------------------------------
-//-------------------------------------------------------------------------------------------------
 
 //-------------------------------------------------------------------------------------------------
 // Markers manipulation functions
