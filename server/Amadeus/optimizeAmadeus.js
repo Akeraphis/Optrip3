@@ -1,3 +1,5 @@
+var googleKey = 'AIzaSyBa-oHgHxxTBaIhoFz8koYTBlHcuCyfiIk';
+
 Meteor.methods({
 	'optimizeTripViaAmadeus' : function(departureFrom, depDate, ipDays, currency, nbAdults, nbChildren, nbInfants, locale, market){
 
@@ -26,6 +28,7 @@ Meteor.methods({
 		//Step 2. Get all the fares for the selected airports
 		var allFlightFares = getAllFlightFares(codeDep, allArrivalAirports, depDate, returnDate, currency, nbAdults, nbChildren, nbInfants);
 		var uniqueTabFF = uniqueTable(allFlightFares);
+		Meteor.call("updateNbFlights", allFlightFares.length);
 		console.log("---- Step 2 completed : Flights Fares retrieved ----");
 		Meteor.call("updateProgress", 30, "Retrieving Car fares");
 		//-------------------
@@ -33,6 +36,7 @@ Meteor.methods({
 		//Step 3. Retrieve all car fares
 		var allCarFares = getAllCarFares(allArrivalAirports, depDate, returnDate, currency);
 		var uniqueTabCF = uniqueTable(allCarFares);
+		Meteor.call("updateNbCars", allCarFares.length);
 		console.log("---- Step 3 completed : Car fares retrieved ----");
 		Meteor.call("updateProgress", 45, "Calculating the cheapest car, flight option");
 		//-------------------
@@ -63,7 +67,77 @@ Meteor.methods({
 
 		return [departureFrom, depDate, ipDays, allArrivalAirports, uniqueTabFF, uniqueTabCF, minFlightAndCar, allHotelFares, cheapestHotelBundle];
 	},
+	updateProgress : function(newProgress, newOperation){
+		var ip = this.connection.clientAddress;
+		ProgressionUsers.update({user : ip}, {$set : {progress : newProgress, operation : newOperation}});
+	},
+	updateNbFlights : function(newNbFlights){
+		var ip = this.connection.clientAddress;
+		ProgressionUsers.update({user : ip}, {$set : {nbFlights: newNbFlights}});
+	},
+	updateNbCars : function(newNbCars){
+		var ip = this.connection.clientAddress;
+		ProgressionUsers.update({user : ip}, {$set : {nbCars: newNbCars}});
+	},
+	updateNbHotels : function(newNbHotels){
+		var ip = this.connection.clientAddress;
+		ProgressionUsers.update({user : ip}, {$set : {nbFlights: newNHotels}});
+	},
+	addToYYYYMMDD : function(startDate, number){
 
+		var depDate = makeDate(startDate);
+		var returnD = depDate;
+		returnD.setDate(depDate.getDate() + number);
+		var returnD
+		var returnDate = returnD.yyyymmdd();
+
+		return returnDate;
+	},
+	//return total days from ip
+	getTotalDays : function(ipDays){
+		var totalDays = 0;
+
+		_.forEach(ipDays, function(ipd){
+			totalDays = totalDays + parseInt(ipd.nbDays);
+		});
+
+		return totalDays;
+	},
+	getRoute : function(ipDays){
+
+		var coord = "";
+
+		if(ipDays.length>=2) {
+
+			coord = coord + "|" +  ipDays[0].ip.lat + ","  + ipDays[0].ip.lng
+			for (var i=1; i<ipDays.length-1; i++){
+				coord = coord + "|" +  ipDays[i].ip.lat + ","  + ipDays[i].ip.lng
+			}
+			coord = coord + "|" +  ipDays[ipDays.length - 1].ip.lat + ","  + ipDays[ipDays.length - 1].ip.lng
+			
+			var url = "https://maps.googleapis.com/maps/api/directions/json?origin="+ipDays[0].ip.lat+","+ipDays[0].ip.lng+"&destination="+ipDays[ipDays.length - 1].ip.lat+","+ipDays[ipDays.length - 1].ip.lng+"&waypoints=optimize:true"+ coord +"&key="+googleKey;
+		}
+		else{
+
+			var url = "https://maps.googleapis.com/maps/api/directions/json?origin="+ipDays[0].ip.lat+","+ipDays[0].ip.lng+"&destination="+ipDays[ipDays.length - 1].ip.lat+","+ipDays[ipDays.length - 1].ip.lng+"&key="+googleKey;
+		}
+
+		response = HTTP.get(url);
+		return response;
+	},
+
+	orderIps : function(ipDays){
+
+		var res = Meteor.call("getRoute", ipDays);
+		var res2 = res.data.routes[0].waypoint_order;
+		var newOrd = [];
+
+		_.forEach(res2, function(ip){
+			newOrd.push(ipDays[ip]);
+		});
+
+		return newOrd;
+	},
 });
 
 getAllAirports = function(ipDays){
@@ -247,4 +321,30 @@ distance = function(lat1, lon1, lat2, lon2) {
 	dist = dist * 60 * 1.1515
 	dist = dist * 1.609344;
 	return dist
+};
+
+makeDate = function(dateString){
+
+	var year = dateString.substring(0, getPosition(dateString, "-", 1));
+	var month = dateString.substring(5, getPosition(dateString, "-", 2));
+	var day = dateString.substring(getPosition(dateString, "-", 2)+1, 10);
+
+	var newMonth = (parseInt(month) - 1).toString();
+
+	res = new Date(year, newMonth, day);
+	return res
+};
+
+getPosition = function(str, m, i) {
+   return str.split(m, i).join(m).length;
+};
+
+Date.prototype.yyyymmdd = function() {
+  var mm = this.getMonth() + 1; // getMonth() is zero-based
+  var dd = this.getDate();
+
+  return [this.getFullYear(),'-',
+          (mm>9 ? '' : '0') + mm,'-',
+          (dd>9 ? '' : '0') + dd
+         ].join('');
 };

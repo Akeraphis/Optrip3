@@ -79,6 +79,12 @@ Meteor.publish("allProgressionUsers", function(){
 	});
 });
 
+Meteor.publish("progIp", function(ip){
+	return ProgressionUsers.find({user : ip}, {
+		fields:{content :0}
+	});
+});
+
 Meteor.publish("allAirlines", function(){
 	return Airlines.find({});
 });

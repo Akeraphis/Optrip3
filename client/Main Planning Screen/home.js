@@ -43,7 +43,7 @@ Template.home.events({
 	//-------------------------------------------------------------------------------------------------
 	// Function called when the user clicks on the optimize button
 	//-------------------------------------------------------------------------------------------------
-	'click .btn-warning' : function(e){
+	'click .optim' : function(e){
 
 		// prevent reset of the form
 		e.preventDefault();
@@ -126,42 +126,28 @@ Template.home.events({
 	},
 
 
-	'keypress .form-control' : function(e){
+	// 'keypress .form-control' : function(e){
 		
-		var departureFrom = document.getElementById("departurePoint");
+	// 	var departureFrom = document.getElementById("departurePoint");
 
-		if(departureFrom.value.length >= 1){
-			var depAutoSuggest = Meteor.call("getPlaceAutosuggest", departureFrom.value, "EUR", "en-GB", "FR", function(error, result){
-			if(error){
-				alert("There is no autocomplete suggested !");
-			}
-			else{
-				//Delete all elements in collection	
-				//Meteor.call("flushAllSuggests");
+	// 	if(departureFrom.value.length >= 1){
+	// 		var depAutoSuggest = Meteor.call("getPlaceAutosuggest", departureFrom.value, "EUR", "en-GB", "FR", function(error, result){
+	// 		if(error){
+	// 			alert("There is no autocomplete suggested !");
+	// 		}
+	// 		else{
 
-				//Refresh collection
-				for (var i = result.Places.length - 1; i >= 0; i--) {
-					Meteor.call("insertAutoSuggest", result.Places[0]);
-				}
-			}
+	// 			console.log(result);
 
-			});
+	// 			//Refresh collection
+	// 			for (var i = result.Places.length - 1; i >= 0; i--) {
+	// 				Meteor.call("insertAutoSuggest", result.Places[0]);
+	// 			}
+	// 		}
 
-			//Add the new Amadeus airport autocomplete
-			var depAutoSuggest = Meteor.call("getAmadeusAirportAutocomplete", departureFrom.value, function(err, res){
-				if(!err){
-					//Meteor.call("flushAllSuggests");
-					//Refresh collection
-					for (var i = res.data.length - 1; i >= 0; i--) {
-						Meteor.call("insertAutoSuggest", res.data[i]);
-					}
-				}
-				else{
-					console.log(err);
-				}
-			});
-		}
-	},
+	// 		});
+	// 	}
+	//},
 
 	'mouseenter .infoBul' : function(e){
 		
