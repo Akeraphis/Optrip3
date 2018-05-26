@@ -13,5 +13,9 @@ Template.minCar.helpers({
 Template.minCar.events({
 	'click .btn-info': function(e){
 		FlowRouter.go('/optimization/results/cars');
+	},
+
+	'click .car_trash': function(e){
+		Session.set("selectedCar", null);
 	}
 });

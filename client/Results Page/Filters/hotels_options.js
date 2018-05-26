@@ -24,7 +24,7 @@ getMinMaxDistance = function(){
 	var min = Infinity;
 	var max = 0;
 
-	var res = Session.get("selectedLiveHotels");
+	var res = Session.get("allLiveHotels");
 	var city = FlowRouter.getParam('city');
 	var checkin = FlowRouter.getParam('checkin');
 	var checkout = FlowRouter.getParam('checkout');

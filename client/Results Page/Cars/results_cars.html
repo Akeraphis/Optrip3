@@ -1,6 +1,8 @@
 <template name="minCar">
 	<div class="card">
-		<div class="card-header">Car</div>
+		<div class="card-header">
+			<h3>Car<span class="car_trash" style="float:right; color:Tomato;"><i class="fa fa-trash"></i></span></h3>
+		</div>
 		<div class="card-body">
 			{{#with minVehicle}}
 				{{>displayCar}}
@@ -12,9 +14,9 @@
 
 <template name="displayCar">
 	{{#with cars}}
-		<span class="badge badge-primary">Airport</span><br/>
+		<span class="badge badge-primary" style="float:right;">Airport</span><br/>
 		{{#with estimated_total}}
-			<h3>{{amount}}{{currency}}</h3>
+			<h3>{{amount}} {{currency}}</h3>
 		{{/with}}
 		{{#if images}}
 			{{#each images}}

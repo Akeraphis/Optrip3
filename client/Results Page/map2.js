@@ -50,23 +50,26 @@ Template.map2.onCreated(function(){
 				});
 		    });
 
-		    //Car Marker
-		    var myLatlng2 = new google.maps.LatLng(car.location.latitude, car.location.longitude);
-		    	var icon2 = {
-					url: "https://use.fontawesome.com/releases/v5.0.13/svgs/solid/car.svg", // url
-					scaledSize: new google.maps.Size(30,30), // scaled size
-					origin: new google.maps.Point(0,0), // origin
-					anchor: new google.maps.Point(0, 0) // anchor
-				};
+		    if(car){
+			    			    //Car Marker
+			    var myLatlng2 = new google.maps.LatLng(car.location.latitude, car.location.longitude);
+			    	var icon2 = {
+						url: "https://use.fontawesome.com/releases/v5.0.13/svgs/solid/car.svg", // url
+						scaledSize: new google.maps.Size(30,30), // scaled size
+						origin: new google.maps.Point(0,0), // origin
+						anchor: new google.maps.Point(0, 0) // anchor
+					};
 
-		    new google.maps.Marker({
-				position: myLatlng2,
-				icon : icon2,
-				map: map.instance
-			});
+			    new google.maps.Marker({
+					position: myLatlng2,
+					icon : icon2,
+					map: map.instance
+				});
 
-		    //Draw Route
-		    drawRoute2(map.instance,car, hotels);
+			    //Draw Route
+			    drawRoute2(map.instance,car, hotels);
+		    }
+
 		});
 	});
 });

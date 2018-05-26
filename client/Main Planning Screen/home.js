@@ -84,8 +84,8 @@ Template.home.events({
 			//Go to proression bar screen and start counting
 			Meteor.call("getIpAddress", function(err, res){
 				if(!err){
-					FlowRouter.go('/progression');
 					Session.set("clientIp", res);
+					FlowRouter.go('/progression');
 					Meteor.call('insertProgressionUser', {user : Session.get("clientIp"), progress : 0, operation : "Initializing"});
 				}
 			});

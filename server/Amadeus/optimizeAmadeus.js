@@ -28,7 +28,7 @@ Meteor.methods({
 		//Step 2. Get all the fares for the selected airports
 		var allFlightFares = getAllFlightFares(codeDep, allArrivalAirports, depDate, returnDate, currency, nbAdults, nbChildren, nbInfants);
 		var uniqueTabFF = uniqueTable(allFlightFares);
-		Meteor.call("updateNbFlights", allFlightFares.length);
+		Meteor.call("updateNbFlights", uniqueTabFF.length);
 		console.log("---- Step 2 completed : Flights Fares retrieved ----");
 		Meteor.call("updateProgress", 30, "Retrieving Car fares");
 		//-------------------
@@ -36,7 +36,7 @@ Meteor.methods({
 		//Step 3. Retrieve all car fares
 		var allCarFares = getAllCarFares(allArrivalAirports, depDate, returnDate, currency);
 		var uniqueTabCF = uniqueTable(allCarFares);
-		Meteor.call("updateNbCars", allCarFares.length);
+		Meteor.call("updateNbCars", uniqueTabCF.length);
 		console.log("---- Step 3 completed : Car fares retrieved ----");
 		Meteor.call("updateProgress", 45, "Calculating the cheapest car, flight option");
 		//-------------------
@@ -73,7 +73,9 @@ Meteor.methods({
 	},
 	updateNbFlights : function(newNbFlights){
 		var ip = this.connection.clientAddress;
+		console.log("nbflights", newNbFlights, " ", ip)
 		ProgressionUsers.update({user : ip}, {$set : {nbFlights: newNbFlights}});
+		console.log(ProgressionUsers.findOne({user : ip}))
 	},
 	updateNbCars : function(newNbCars){
 		var ip = this.connection.clientAddress;

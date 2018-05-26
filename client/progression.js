@@ -17,7 +17,7 @@ Template.progression.helpers({
 
 Template.feedbackSearch.helpers({
 	'getNumberOfFlights': function(){
-		Meteor.subscribe("allProgressions")
+		Meteor.subscribe("allProgressions");
 		var prog = ProgressionUsers.findOne({ user : Session.get("clientIp")});
 		if(prog){
 			Session.set("nbFlights", prog.nbFlights);
@@ -25,7 +25,7 @@ Template.feedbackSearch.helpers({
 		}
 	},
 	'getNumberOfCars': function(){
-		Meteor.subscribe("allProgressions")
+		Meteor.subscribe("allProgressions");
 		var prog = ProgressionUsers.findOne({ user : Session.get("clientIp")});
 		if(prog){
 			Session.set("nbCars", prog.nbCars);
