@@ -17,8 +17,9 @@ Meteor.methods({
 		var myCities = {};
 		myCities = JSON.parse(Assets.getText('CitiesList2.json'));
 
-		_.forEach(myCities, function(myCities){
-			Meteor.call("insertIP", myCities, function(err,id){if(err){alert(err.reason);}});
+		_.forEach(myCities, function(myCity){
+			Meteor.call("insertIP", myCity, function(err,id){if(err){alert(err.reason);}});
+			Meteor.call("insertUniqueCountry", myCity, function(err, id){if(err){alert(err.reason);}});
 		})
 	},
 

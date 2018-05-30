@@ -1,0 +1,58 @@
+<template name="welcome1">
+	<div class="row">
+		<div class="container-fluid">
+			<div class="card bg-dark text-white">
+				<img class="card-img" src="/fields_mountains_resized.jpg" alt="Card image">
+  				<div class="card-img-overlay">
+					{{>intro}}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="container-fluid ">
+			<div class="card border-warning mb-3 bg-light" style="height: 100%;">
+				<div class='card-body'>
+					<center>
+						{{> inputAutocomplete settings=settings id="departurePoint" class="form-control" name="departurePoint" placeholder="Departure from" }}<br/>
+						{{> inputPanel2}}
+						{{> inputAutocomplete settings=settings2 id="whereToGo" class="form-control" name="whereToGo" placeholder="Where do you want to go?" }}<br/>
+						{{>nextButton}}
+					</center>
+				</div>
+			</div>
+		</div>	
+	</div>
+</template>
+
+<template name='inputPanel2'>
+	<div class="row">
+		<div class="col">
+			{{> departureDate}}
+		</div>
+		<div class="col">
+			{{> nbTravelers}}
+		</div>
+	</div>
+</template>
+
+<template name="displayDestination">
+    {{name}}
+</template>
+
+<template name="nextButton">
+	<div class="row">
+		<div class="col">
+			<button type="submit" class="btn btn-warning btn-lg next" name="Next">Next</button>
+		</div>
+	</div>
+</template>
+
+<template name="intro">
+	<h3><br/><br/>
+		<center>
+			Optrip is a solution embedding the finest artificial intelligence algorithms to offer you the most suited solution for your holidays.<br/><br/>
+			Answer a few questions and find out what would be the trip of your dreams!
+		</center>
+	</h3>
+</template>

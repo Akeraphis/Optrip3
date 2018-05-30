@@ -54,6 +54,7 @@ Template.mdips.events({
 Template.mdips.helpers({
 	myCollection: function () {
 		Meteor.subscribe("allInterestPoints");
+		Meteor.subscribe("allCountries");
         return InterestPoints.find({}).fetch();
     },
 });

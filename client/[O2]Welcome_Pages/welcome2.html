@@ -1,0 +1,29 @@
+<template name="welcome2">
+	<div class="row">
+		<div class="col-md-9">
+			{{> map}}
+		</div>
+		<div class="col-md-3">
+			<center>{{>circuit}}</center><br/>
+			{{>selectedIPs}}<br/>
+			{{>nextButton2}}
+		</div>
+	</div>
+</template>
+
+<template name="circuit">
+	<div class="dropdown">
+		<button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Select a circuit
+		</button>
+	<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+		{{#each trips}}
+			<a class="dropdown-item">{{name}}</a>
+		{{/each}}
+	</div>
+	</div>
+</template>
+
+<template name="nextButton2">
+		<center><button type="submit" class="btn btn-warning btn-lg next2" name="Next">Next</button></center>
+</template>

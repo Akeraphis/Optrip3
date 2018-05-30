@@ -1,0 +1,16 @@
+<template name="masterdata_tripCreation">
+	<div class="row">
+		<button class="btn btn-warning back">Back</button>
+	</div>
+	<div class="row">
+		<div class="col-md-9">
+			{{> map}}
+		</div>
+		<div class="col-md-3">
+			<center>{{> inputAutocomplete settings=settings2 id="country" class="form-control" name="country" placeholder="country" }}</center><br/>
+			<input type="text" class="form-control" id="tripName" placeholder="Trip Name" />
+			{{>selectedIPs}}<br/>
+			<button type="submit" class="btn btn-warning newTrip">Create</button>
+		</div>
+	</div>
+</template>

@@ -22,19 +22,21 @@
 			{{>emptyIp}}
 		{{/if}}
 		{{#each selectedIp}}
-		<div class="card bg-black text-white" style="max-width: 18rem; height: 180px;">
-			<center>
-				<img class="card-img" src="{{getImage image}}" height="180px" alt="Card image">
-				<div class="card-img-overlay">
-					<h3 class="card-title">{{city}}</h3>
-					<p class="card-text">
-						<div class="input-group-append">
-							<input type="number" class="form-control" name="NbDays" id="NbDays" min="0" max="99" value="1">
-							<span class="btn btn-warning">nights</span>
-						</div>
-					</p>
-				</div>
-			</center>
+			<div class="row">
+			<div class="card bg-black text-white" style="max-width: 18rem; height: 180px;">
+				<center>
+					<img class="card-img" src="{{getImage image}}" height="180px" alt="Card image">
+					<div class="card-img-overlay">
+						<h3 class="card-title">{{city}}</h3>
+						<p class="card-text">
+							<div class="input-group-append">
+								<input type="number" class="form-control" name="NbDays" id="NbDays" min="0" max="99" value="1">
+								<span class="btn btn-warning">nights</span>
+							</div>
+						</p>
+					</div>
+				</center>
+			</div><br/>
 		</div>
 		{{/each}}
 	</div>
@@ -105,7 +107,7 @@
 			<div class="text-warning">
 				<br/>
 				<div class="card-title"><i class="fa fa-plus fa-3x"></i></div>
-				<div class="card-body"><i>Add a city by clicking on the map</i></div>
+				<div class="card-body"><i>Or add a city yourself by clicking on the map</i></div>
 			</div>
 		</center>
 	</div>

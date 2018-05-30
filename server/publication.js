@@ -101,4 +101,12 @@ Meteor.publish("allHotelDetails", function(){
 
 Meteor.publish("hotelDetailsByCode", function(code){
 	return HotelDetails.find({property_code : code});
+});
+
+Meteor.publish("allCountries", function(code){
+	return Countries.find({});
+});
+
+Meteor.publish("allTrips", function(){
+	return Trips.find({});
 })
