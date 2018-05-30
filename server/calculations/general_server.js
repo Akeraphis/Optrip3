@@ -79,6 +79,10 @@ Meteor.methods({
 	getIpAddress : function(){
 		return this.connection.clientAddress;
 	},
+	returnAirportName: function(code2){
+		var air = Airports.findOne({code : code2});
+		return air.name;
+	}
 });
 
 var findCircuitAsync = function(ips, cb){

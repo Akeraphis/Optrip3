@@ -1,6 +1,3 @@
-// Meteor.subscribe("allAirports");
-// Meteor.subscribe("allAirlines");
-
 Template.minFlight.events({
 	'click #myTabs a': function(e){
 		e.preventDefault()
@@ -62,15 +59,9 @@ Template.leg.helpers({
 		}
 	},
 	getAirport: function(code2){
-		var air = Airports.findOne({code : code2});
-		if (air){
-			return air.name;
+		var handle = Meteor.subscribe("airportByCode", code2);
+		if(handle.ready()){
+			return Airports.findOne({iata: code2}).name;
 		}
-	}
-});
-
-Template.leg.onCreated(function(){
-	  this.autorun(() => {
-	    this.subscribe('allAirports');
-	  });
+	},
 });

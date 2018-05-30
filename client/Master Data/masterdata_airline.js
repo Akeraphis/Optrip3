@@ -1,6 +1,6 @@
 Template.mdairlines.helpers({
-	'allAirlines': function(){
-		Meteor.subscribe("allAirlines")
+	'allHotelDetails': function(){
+		Meteor.subscribe("allHotelDetails")
 		return Airlines.find({}).fetch();
 	}
 });

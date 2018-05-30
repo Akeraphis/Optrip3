@@ -1,4 +1,3 @@
-
 Session.set("count",0);
 var toBeDisplayed = 15;
 

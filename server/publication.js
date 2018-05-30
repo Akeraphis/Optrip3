@@ -5,7 +5,9 @@ Meteor.publish("allAirports", function(){
 });
 
 Meteor.publish("airportByCode", function(code){
-	return Airports.find({code : code});
+	return Airports.find({iata : code}, {
+		fields: {content: 0}
+	});
 })
 
 Meteor.publish("allInterestPoints", function(){
@@ -91,4 +93,12 @@ Meteor.publish("allAirlines", function(){
 
 Meteor.publish("airlineByCode", function(iata){
 	return Airlines.find({iata : iata});
+});
+
+Meteor.publish("allHotelDetails", function(){
+	return HotelDetails.find({});
+});
+
+Meteor.publish("hotelDetailsByCode", function(code){
+	return HotelDetails.find({property_code : code});
 })

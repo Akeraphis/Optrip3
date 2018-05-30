@@ -73,9 +73,7 @@ Meteor.methods({
 	},
 	updateNbFlights : function(newNbFlights){
 		var ip = this.connection.clientAddress;
-		console.log("nbflights", newNbFlights, " ", ip)
 		ProgressionUsers.update({user : ip}, {$set : {nbFlights: newNbFlights}});
-		console.log(ProgressionUsers.findOne({user : ip}))
 	},
 	updateNbCars : function(newNbCars){
 		var ip = this.connection.clientAddress;
@@ -152,7 +150,7 @@ getAllAirports = function(ipDays){
 			else{
 				console.log(err);
 			}
-		})
+		});
 	});
 	return allAirports;
 };
@@ -177,7 +175,7 @@ getAllFlightFares = function(departureFrom, allArrivalAirports, depDate, returnD
 			else{
 				console.log(err);
 			}
-		})
+		});
 	});
 	return result;
 };
