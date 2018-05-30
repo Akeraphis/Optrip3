@@ -25,12 +25,12 @@
 			<div class="row">
 			<div class="card bg-black text-white" style="max-width: 18rem; height: 180px;">
 				<center>
-					<img class="card-img" src="{{getImage image}}" height="180px" alt="Card image">
+					{{#with ip}}<img class="card-img" src="{{getImage image}}" height="180px" alt="Card image">{{/with}}
 					<div class="card-img-overlay">
-						<h3 class="card-title">{{city}}</h3>
+						{{#with ip}}<h3 class="card-title">{{city}}</h3>{{/with}}
 						<p class="card-text">
 							<div class="input-group-append">
-								<input type="number" class="form-control" name="NbDays" id="NbDays" min="0" max="99" value="1">
+								<input type="number" class="form-control" name="NbDays" id="NbDays" min="0" max="99" value="{{nbDays}}">
 								<span class="btn btn-warning">nights</span>
 							</div>
 						</p>

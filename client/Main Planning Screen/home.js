@@ -18,7 +18,7 @@ Template.home.helpers({
 
 Template.selectedIPs.helpers({
 	selectedIp : function(){
-		return Session.get("selectedIp");
+		return Session.get("ipDays");
 	},
 	hasIp: function(){
 		var res = true;

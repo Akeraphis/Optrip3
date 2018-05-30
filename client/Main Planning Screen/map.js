@@ -1,5 +1,6 @@
 //Create a session to select IPs
 Session.set("selectedIp", []);
+Session.set("ipDays", []);
 var map=null;
 var markers = [];
 var googleKey = 'AIzaSyBa-oHgHxxTBaIhoFz8koYTBlHcuCyfiIk';
@@ -128,8 +129,11 @@ Template.map.onCreated(function(){
 
 function SelectCity(ip){
 	var selectedIp = Session.get("selectedIp");
+	var ipDays = Session.get("ipDays");
 	selectedIp.push(ip);
+	ipDays.push({ip: ip, nbDays:1})
 	Session.set("selectedIp", selectedIp);
+	Session.set('ipDays', ipDays);
 };
 
 //Function to know if an ip is already selected
@@ -156,6 +160,7 @@ function IsSelected(ip){
 //Function to remove a city from the selection list
 function UnSelectCity(ip){
 	var selectedIp = Session.get("selectedIp");
+	var ipDays = Session.get("ipDays");
 	var c = selectedIp.length;
 	var ipId = ip.city;
 
@@ -163,11 +168,13 @@ function UnSelectCity(ip){
 		if(selectedIp[i]){
 			if(selectedIp[i].city == ipId){
 				selectedIp.splice(i,1);
+				ipDays.splice(i,1);
 			}
 		}
 	}
 
 	Session.set("selectedIp", selectedIp);
+	Session.set("ipDays", ipDays);
 };
 
 //-------------------------------------------------------------------------------------------------
@@ -220,7 +227,7 @@ function setAllMap(map) {
 };
 
 // Add a marker to the map and push to the array.
-function addMarker(location, title, map, rating) {
+addMarker = function(location, title, map, rating) {
 	var marker = new google.maps.Marker({
 		position: location,
 		title: title,
