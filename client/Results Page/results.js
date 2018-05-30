@@ -1,57 +1,8 @@
 var countProgress=0;
-Session.set("minLFP", {});
-
-Template.relaunch.events({
-	'click .optimizeButton': function(e){
-		console.log(Session.get("departureFrom"), Session.get("departureDate"), Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get('selectedIp'), Session.get('nbDays'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"));
-
-		Meteor.call("updateIpDays", Session.get('selectedIp'), Session.get('nbDays'), function(error, result){
-			if (error){
-				console.log(error.reason);
-			}
-			else{
-				Session.set("ipDays", result);
-				//send this information to the server to optimize and return result
-				Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"), function(error, res){
-					if(error){
-						alert("This is an error while updating the fares!");
-					}
-					else{
-						Session.set("results", res[0][1]);
-						Session.set("minTotalPrice", res[0][0]);
-						Session.set("optimalCircuit", res[0][2]);
-						Session.set("newIpDays", res[0][3]);
-						console.log(res);
-						Session.set("totalResults", res);
-						Session.set("liveFlights", res[1]);
-						Session.set("selectedLiveFlights", res[1]);
-						Session.set("selectedLiveCars", res[0][1][1][4]);
-						Session.set("selectedLiveHotels", res[2]);
-					}
-				});
-			}
-		});
-	},
-});
-
-Template.minFlight.events({
-	'click #myTabs a': function(e){
-		e.preventDefault()
-  		$(this).tab('show')
-	}
-})
 
 Template.results.helpers({
 	results : function(){
-		if (Session.get("minTotalPrice")<Infinity){
-			return true;
-		}
-		else{
-			return false;
-		}
-	},
-	gotLiveFlight : function(){
-		if (Session.get("minLFP")){
+		if (Session.get("cheapestLiveFlight")){
 			return true;
 		}
 		else{
@@ -59,273 +10,101 @@ Template.results.helpers({
 		}
 	},
 	hasCar : function(){
-		if(Session.get("results")[1][1]){
-			if(Session.get("results")[1][1][1]){
-				return true
-			}
-			else{
-				return false
-			}
+		if(Session.get("cheapestLiveCar")){
+			return true
+		}
+		else{
+			return false
 		}
 	}
 });
+
+Template.minTotalPriceT.helpers({
+	minTotalPrice : function(){
+		var carPrice = 0;
+		var hotelPrice = 0;
+		var flightPrice = 0;
+
+		if(Session.get("cheapestLiveFlight")){flightPrice=parseFloat(Session.get("selectedFlightPrice").total_price)}
+		if(Session.get("selectedCar")){carPrice=parseFloat(Session.get("selectedCar").cars.estimated_total.amount)}
+		if(Session.get("cheapestHotelCombinations")){hotelPrice=parseFloat(Session.get("cheapestHotelCombinations"))}
+
+		return Math.round((hotelPrice+carPrice+flightPrice)/Session.get("nbPersons"));
+	},
+	symbolCurrency : function(){
+		var cur = Session.get("selectedCurrency");
+		var cur2 = Currencies.findOne({Code : cur});
+		//return cur2.Symbol;
+		return "€";
+	},
+})
+
 
 Template.minPrice.helpers({
 
-	minTotalPrice : function(){
-		var res = Session.get("results");
-		if(res.length >1 && Session.get("minLFP").OutboundLegId){
-			if(Session.get("SelectedCar")){
-				return Math.round(Session.get("SelectedCar").price_all_days+(Session.get("minLFP").PricingOptions.Price)*Session.get('nbPersons')+(res[2])[0]);
-			}
-			else{
-				return Math.round((Session.get("minLFP").PricingOptions.Price)*Session.get('nbPersons')+(res[2])[0]);
-			}
-		}
-	},
-
 	minCarPrice : function(){
-		if(Session.get("SelectedCar")){
-			return Math.round(Session.get("SelectedCar").price_all_days);
+		if(Session.get("selectedCar")){
+			return Math.round(Session.get("selectedCar").cars.estimated_total.amount);
 		}
+		else return 0;
 	},
-
-	minFlightPrice : function(){
-		var res = (Session.get("minLFP"));
-		if(res.OutboundLegId){
-			return Math.round(res.PricingOptions.Price*Session.get('nbPersons'));
-		}
-	},
-
 	minHotelPrices : function(){
-		var res = Session.get("results");
-		var hp = [];
-		if(res.length >1){
-			return Math.round((res[2])[0]);
+		var res = Session.get("cheapestLiveHotels");
+		var hp = 0;
+
+		_.forEach(res, function(r){
+			hp = hp + parseFloat(r.hotelFare.results.total_price.amount);
+		});
+
+		Session.set("cheapestHotelCombinations", hp);
+
+		if(hp >0){
+			return Math.round(hp);
 		}
 	},
 
 	symbolCurrency : function(){
 		var cur = Session.get("selectedCurrency");
 		var cur2 = Currencies.findOne({Code : cur});
-		return cur2.Symbol;
+		//return cur2.Symbol;
+		return "€";
 	},
+	hasCar : function(){
+		if(Session.get("cheapestLiveCar")){
+			return true
+		}
+		else{
+			return false
+		}
+	}
+});
 
+Template.minTotalFlight.helpers({
+	minFlightPrice : function(){
+		return Session.get("selectedFlightPrice").total_price;
+	},
+	symbolCurrency : function(){
+		var cur = Session.get("selectedCurrency");
+		var cur2 = Currencies.findOne({Code : cur});
+		//return cur2.Symbol;
+		return "€";
+	},
+})
+
+Template.numberPersons.helpers({
 	nbPersons : function(){
 		return Session.get('nbPersons');
 	},
-	hasCar : function(){
-		if(Session.get("results")[1][1]){
-			if(Session.get("results")[1][1][1]){
-				return true
-			}
-			else{
-				return false
-			}
-		}
-	}
-});
-
-Template.minFlight.helpers({
-	minLiveFlight : function(){
-		var res = Session.get("minLFP");
+	nbNights: function(){
+		var ips =Session.get("newIpDays");
+		var res = 0;
+		_.forEach(ips, function(ip){
+			res= res+ ip.nbDays;
+		});
 		return res;
-	},
-	symbolCurrency : function(){
-		var cur = Session.get("selectedCurrency");
-		var cur2 = Currencies.findOne({Code : cur});
-		return cur2.Symbol;
 	}
-});
-
-Template.minPrice.onRendered(function(){
-
-	var res = Session.get("selectedLiveFlights")[0];
-	var po = Session.get("selectedLiveFlights")[0].PricingOptions[0];
-	var ag = Session.get("selectedLiveFlights")[0].PricingOptions[0].newAgents[0];
-	po.Agents = ag;
-	res.PricingOptions = po;
-	Session.set("minLFP", res)
 })
 
-Template.leg.helpers({
-	getDepDate: function(){	
-		var depDateTime = this.DepartureDateTime;
-		return depDateTime.substring(0, depDateTime.indexOf("T"));
-	},
-	getDepTime: function(){
-		var depDateTime = this.DepartureDateTime;
-		return depDateTime.substring(depDateTime.indexOf("T")+1);
-	},
-	getArrDate: function(){
-		var depDateTime = this.ArrivalDateTime;
-		return depDateTime.substring(0, depDateTime.indexOf("T"));
-	},
-	getArrTime: function(){
-		var depDateTime = this.ArrivalDateTime;
-		return depDateTime.substring(depDateTime.indexOf("T")+1);
-	},
-	getLeg : function(leg){
-		return leg
-	}
-});
-
-Template.minCar.onRendered(function(){
-	Session.set("SelectedCar", (Session.get("selectedLiveCars").carFare.cars)[0] );
-})
-
-Template.minCar.helpers({
-
-	minVehicle : function(){
-		return Session.get("SelectedCar");
-	},
-	getManual : function(manual){
-		if(manual){
-			return "Manual";
-			}
-		else{
-			return "Not manual";
-		}
-	},
-	symbolCurrency : function(){
-		var cur = Session.get("selectedCurrency");
-		var cur2 = Currencies.findOne({Code : cur});
-		return cur2.Symbol;
-	},
-	getVehicleImage : function(imId){
-		var res = Session.get("selectedLiveCars").carFare.images;
-		var imUrl = "";
-
-		_.forEach(res, function(im){
-			if(im.id==imId){
-				imUrl = im.url;
-			}
-		});
-		return imUrl;
-	},
-	getCarClass :function(car_class_id){
-		var res = Session.get("selectedLiveCars").carFare.car_classes;
-		var cc = "";
-
-		_.forEach(res, function(im){
-			if(im.id==car_class_id){
-				cc = im.name;
-			}
-		});
-
-		return cc;
-	},
-	getWebsiteImage : function(imId){
-		var res = Session.get("selectedLiveCars").carFare.websites;
-		var imUrl = "";
-
-		_.forEach(res, function(im){
-			if(im.id==imId){
-				imUrl = im.image_url;
-			}
-		});
-
-		return imUrl;
-	},
-	getDepartureDate : function(){
-		return Session.get("selectedLiveCars").departureDate;
-	},
-	getReturnDate : function(){
-		return Session.get("selectedLiveCars").returnDate;
-	}
-});
-
-Template.minHotel.helpers({
-	minHotels : function(){
-		var res = Session.get("selectedLiveHotels");
-		return getMinHotels(res);
-	},
-	symbolCurrency : function(){
-		var cur = Session.get("selectedCurrency");
-		var cur2 = Currencies.findOne({Code : cur});
-		return cur2.Symbol;
-	},
-	getFirstImage : function(hotelId){
-		var res ={};
-		var slh = Session.get("selectedLiveHotels");
-
-		_.forEach(slh, function(lh){
-			_.forEach(lh.data.hotels, function(hot){
-				if(hot.hotel_id==hotelId){
-					res = hot.newImages[0].url;
-				}
-			})
-		});
-		return res;
-	},
-	getStars : function(hotelId){
-		var res ="";
-		var slh = Session.get("selectedLiveHotels");
-
-		_.forEach(slh, function(lh){
-			_.forEach(lh.data.hotels, function(hot){
-				if(hot.hotel_id==hotelId){
-					if(hot.star_rating==1){
-						res=[{}];
-					}
-					else if(hot.star_rating==2){
-						res=[{},{}];
-					}
-					else if(hot.star_rating==3){
-						res=[{},{},{}];
-					}
-					else if(hot.star_rating==4){
-						res=[{},{},{},{}];
-					}
-					else if(hot.star_rating==5){
-						res=[{},{},{},{},{}];
-					}
-				}
-			})
-		});
-		return res;
-	}
-});
-
-Template.amenities.helpers({
-	getHotel : function(hotelId){
-		var res ={};
-		var slh = Session.get("selectedLiveHotels");
-
-		_.forEach(slh, function(lh){
-			_.forEach(lh.data.hotels, function(hot){
-				if(hot.hotel_id==hotelId){
-					res = hot;
-				}
-			})
-		});
-
-		return res;
-	}
-});
-
-Template.allImages.helpers({
-	getHotel : function(hotelId){
-		var res ={};
-		var slh = Session.get("selectedLiveHotels");
-
-		_.forEach(slh, function(lh){
-			_.forEach(lh.data.hotels, function(hot){
-				if(hot.hotel_id==hotelId){
-					res = hot;
-				}
-			})
-		});
-
-		return res;
-	},
-	getHotelIdDiesed : function(hotelId){
-		return "#"+hotelId+"hotelImage";
-	},
-	getHotelIdNotDiesed : function(hotelId){
-		return hotelId+"hotelImage";
-	}
-});
 
 Template.tripDays.onRendered(function(){
 
@@ -342,92 +121,20 @@ Template.tripDays.onRendered(function(){
 		countDays= countDays+ipDays.nbDays;
 	});
 
-	if(Session.get("minLFP")){
-		var event2 = {title : "trip", start : moment(Session.get("minLFP").OutboundLeg.Departure), end: moment(Session.get("minLFP").InboundLeg.Arrival), editable : 'true' };
+	if(Session.get("selectedLiveHotels")){
+		var nbOutboundFlights = Session.get("cheapestLiveFlight").itineraries[0].outbound.flights.length;
+		var nbInboundFlights = Session.get("cheapestLiveFlight").itineraries[0].inbound.flights.length;
+		var event2 = {title : "trip", start : moment(Session.get("cheapestLiveFlight").itineraries[0].outbound.flights[0].departs_at), end: moment(Session.get("cheapestLiveFlight").itineraries[0].inbound.flights[nbInboundFlights-1].arrives_at), editable : 'true' };
 
 		$('#myCalendar').fullCalendar( 'renderEvent', event2, true);
 		$('#myCalendar').fullCalendar( 'gotoDate', moment(depDate) );
 
 		//Display Flights
-		var outboundFlight = {title : 'Outbound Flight', start : moment(Session.get("minLFP").OutboundLeg.Departure), end : moment(Session.get("minLFP").OutboundLeg.Arrival), color:'green'};
-		var inboundFlight= {title : 'Inbound Flight', start : moment(Session.get("minLFP").InboundLeg.Departure), end : moment(Session.get("minLFP").InboundLeg.Arrival), color:'green'};
+		var outboundFlight = {title : 'Outbound Flight', start : moment(Session.get("cheapestLiveFlight").itineraries[0].outbound.flights[0].departs_at), end : moment(Session.get("cheapestLiveFlight").itineraries[0].outbound.flights[nbOutboundFlights-1].arrives_at), color:'green'};
+		var inboundFlight= {title : 'Inbound Flight', start : moment(Session.get("cheapestLiveFlight").itineraries[0].inbound.flights[0].departs_at), end : moment(Session.get("cheapestLiveFlight").itineraries[0].inbound.flights[nbInboundFlights-1].arrives_at), color:'green'};
 		$('#myCalendar').fullCalendar( 'renderEvent', outboundFlight, true);
 		$('#myCalendar').fullCalendar( 'renderEvent', inboundFlight, true);
 	}
+
 });
 
-Template.tripDays.events({
-	'click #myCalendar': function(e){
-		if(e.target.class =="fc.content"){
-			console.log(e.target)
-		}
-	},
-});
-
-Template.priceOptions.helpers({
-	itin : function(Itineraries){
-		return Itineraries
-	},
-	getAgent : function(agentId){
-		var res = Session.get("liveFlights").flightFare.Agents;
-		var agent={};
-
-		_.forEach(res, function(ag){
-			if(agentId == ag.Id){
-				agent=ag
-			}
-		});
-		return agent
-	},
-	symbolCurrency : function(){
-		var cur = Session.get("selectedCurrency");
-		var cur2 = Currencies.findOne({Code : cur});
-		return cur2.Symbol;
-	}
-});
-
-getMinHotels = function(hf){
-
-	var minHotels = [];
-	_.forEach(hf, function(hff){
-		var minhp = Infinity;
-		var minHP = "";
-		var minhotP = {};
-		var temphf = hff;
-		var minap = {};
-
-		_.forEach(hff.data.hotels_prices, function(hp){
-			_.forEach(hp.agent_prices, function(ap){
-				if(ap.price_total < minhp){
-					minhp = ap.price_total;
-					minHP = hp.id
-					minhotP = hp;
-					minhotP.agent_prices = ap;
-				}
-			});
-		});
-
-		_.forEach(hff.data.hotels, function(hot){
-			if(minHP==hot.hotel_id){
-				temphf.data.hotels = hot;
-				temphf.data.hotels_prices = minhotP;
-				minHotels.push(temphf);
-			}
-		});
-	});
-
-	return minHotels
-}
-
-Template.options.helpers({
-	hasCar : function(){
-		if(Session.get("results")[1][1]){
-			if(Session.get("results")[1][1][1]){
-				return true
-			}
-			else{
-				return false
-			}
-		}
-	},
-})

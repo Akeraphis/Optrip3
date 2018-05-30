@@ -1,0 +1,57 @@
+
+<template name="minFlight">
+	<div class="card">
+		<div class="card-header"><h3>Flight</h3></div>
+		<div class="card-body">
+			{{#with minLiveFlight}}
+				<h3>{{total_price}} {{symbolCurrency}}</h3>
+			{{/with}}
+			<br/>
+			{{#with getFirstItinerary}}							
+				{{#with outbound}}
+					{{>leg}}
+				{{/with}}<br/><br/>
+				{{#with inbound}}
+					{{>leg}}
+				{{/with}}
+				<br/>
+			{{/with}}
+		</div>
+		<button class="btn btn-info" type="button" name="otherFlights">Other Flights</button>
+	</div>
+</template>
+
+<template name="leg">
+	<div class="container">
+		{{#each flights}}		
+			<div class="row">
+				<div class="col-sm">
+					<img border="0" height="45" width="90" hspace="0" class="img-rounded" src="{{getImage marketing_airline}}"/>
+					<br/>
+					Flight Number : {{operating_airline}}{{flight_number}}, <i>operated by : {{getAirlineName operating_airline}}</i>
+					<br/>
+					Aircraft : {{aircraft}}
+					<br/>
+					{{#with booking_info}}
+						{{travel_class}}
+					{{/with}}
+					<br/>
+				</div>
+				<div class="col-sm">
+					{{getDepDate}}<br/>
+					Leaving at {{getDepTime}} from
+					{{#with origin}}
+						<b>{{getAirport airport}} </b> ({{airport}})
+					{{/with}}<br/>
+					Landing at {{getArrTime}} in
+					{{#with destination}}
+						<b>{{getAirport airport}} </b>({{airport}})
+					{{/with}}
+					<br/>
+					<br/>
+				</div>
+			</div>
+		{{/each}}
+	</div>
+</template>
+	

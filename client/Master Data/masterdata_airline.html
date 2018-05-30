@@ -1,0 +1,8 @@
+<template name="mdairlines">
+	<h4>Master Data Airlines</h4>
+	<form>
+		<input type="button" name="generateAirlines" value="Generate airlines" class="generateAirlines" />
+		<input type="button" name="flushAirlines" value="Flush all airlines" class="flushAirlines" />
+	</form>
+	{{> reactiveTable collection=allAirlines}}
+</template>

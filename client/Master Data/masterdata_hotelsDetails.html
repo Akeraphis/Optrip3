@@ -1,0 +1,8 @@
+<template name="mdhd">
+	<h4>Master Data Hotel Details</h4>
+	<form>
+		<input type="button" name="generateHotelDetails" value="Generate hotels details" class="generateHotelsDetails" />
+		<input type="button" name="flushHotelDetails" value="Flush all hotel details" class="flushHotelDetails" />
+	</form>
+	{{> reactiveTable collection=allHotelDetails}}
+</template>

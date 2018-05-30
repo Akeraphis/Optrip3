@@ -1,0 +1,46 @@
+[
+{
+	"property_code" :"CHPSAHTP",
+	"stars" : 3,
+	"grade_tripadvisor"  : 3,
+	"pictures" :
+	[
+		"https://media.expedia.com/hotels/2000000/1140000/1133200/1133130/1133130_101_z.jpg",
+		"http://www.terminusplaza.it/wp-content/uploads/2018/03/Camera-16-6A1A9185_risultato.jpg",
+		"http://edge.media.datahc.com/HI350416091.jpg"
+	]
+},
+{
+	"property_code" :"CHFLRH52",
+	"stars" : 2,
+	"grade_tripadvisor"  : 4.5,
+	"pictures" :
+	[
+		"https://imghtlak.mmtcdn.com/images/hotels/8436720888269138/Exterior1.jpg",
+		"http://images.trvl-media.com/hotels/1000000/900000/892000/891910/0478109b_z.jpg",
+		"http://images.trvl-media.com/hotels/1000000/900000/892000/891910/2993b991_z.jpg"
+	]
+},
+{
+	"property_code" :"HOFLRLAG",
+	"stars" : 3,
+	"grade_tripadvisor"  : 3.5,
+	"pictures" :
+	[
+		"http://www.azzurro.cz/media/images/16/12/13/hotel-del-lago--8.jpg",
+		"http://www.azzurro.cz/media/images/16/12/13/hotel-del-lago--15.jpg",
+		"http://static.budgetplaces.com/establishment/08/34/13408/1.jpg"
+	]
+},
+{
+	"property_code" :"SISAY818",
+	"stars" : 4,
+	"grade_tripadvisor"  : 3.5,
+	"pictures" :
+	[
+		"https://q-ec.bstatic.com/images/hotel/max1024x768/614/61453883.jpg",
+		"https://images.trvl-media.com/hotels/1000000/860000/852400/852305/852305_179_z.jpg",
+		"http://siena-degli-ulivi.sienahotels.org/data/Photos/OriginalPhoto/1861/186165/186165549.JPEG"
+	]
+}
+]

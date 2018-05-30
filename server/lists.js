@@ -7,9 +7,7 @@ Meteor.methods({
 		myAirports = JSON.parse(Assets.getText('AirportsList.json'));
 
 		_.forEach(myAirports, function(myAirports){
-			if (myAirports.size == "large") {
-				Meteor.call("insertAirport", myAirports, function(err,id){if(err){alert(err.reason);}});
-			};
+			Meteor.call("insertAirport", myAirports, function(err,id){if(err){alert(err.reason);}});
 		})
 	},
 
@@ -22,5 +20,22 @@ Meteor.methods({
 		_.forEach(myCities, function(myCities){
 			Meteor.call("insertIP", myCities, function(err,id){if(err){alert(err.reason);}});
 		})
+	},
+
+	importAirlines : function(){
+		var myAirlines = {};
+		myAirlines = JSON.parse(Assets.getText('AirlinesList.json'));
+
+		_.forEach(myAirlines, function(mair){
+			Meteor.call("insertAirline", mair, function(err,id){if(err){alert(err.reason);}});
+		})
+	},
+	importHotelDetails : function(){
+		var myHotelDetails = {};
+		myHotelDetails = JSON.parse(Assets.getText('hotel_details.json'));
+
+		_.forEach(myHotelDetails, function(mhd){
+			Meteor.call("insertHotelDetails", mhd, function(err,id){if(err){alert(err.reason);}});
+		})
 	}
-})
+});

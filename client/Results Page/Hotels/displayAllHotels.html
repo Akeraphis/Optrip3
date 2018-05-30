@@ -1,0 +1,41 @@
+<template name="displayAllHotels">
+	<button type="button" class="btn btn-default">Back</button>
+	<h2>All Hotels</h2>
+	<div class="row">
+		<div class="col-md-8">
+			{{>map3}}
+		</div>
+		<div class="col-md-4">
+			{{>hotelOptions}}
+			{{#each allHotels}}
+				<div class="card">
+					{{>displayHotels}}
+					<button type="button" class="btn btn-success">Select</button>
+				</div><br/>
+			{{/each}}
+		</div>
+	</div>
+</template>
+
+<template name="displayHotels">
+	<div class="card-header">
+		{{#with address}}
+			<h3>{{city}}</h3>
+		{{/with}}
+	</div>
+	<div class="card-body">
+		<h4>{{property_name}}</h4>
+		<p>
+			{{#with total_price}}
+				<h4>{{amount}} {{currency}}</h4>
+			{{/with}}
+			{{#with address}}
+				<i>{{line1}}, {{city}}</i><br/>
+			{{/with}}
+			{{#with location}}
+				<small><i>{{getDistanceFromCenter latitude longitude}} km from {{getCity}}</i></small>
+			{{/with}}<br/>
+			{{> hotelDetails}}
+		</p>
+	</div>
+</template>

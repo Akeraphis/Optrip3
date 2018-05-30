@@ -10,5 +10,8 @@ Meteor.methods({
 	//Vider la collection d'aéroports
 	'flushAllAirports' : function(){
 		Airports.remove({});
+	},
+	'retrieveAirportByCode': function(code){
+		return Airports.findOne({code : code})
 	}
 })

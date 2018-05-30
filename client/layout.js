@@ -1,16 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.css';
 
 Template.mainLayout.events({
+	'click .navbar-brand': function(){
+		Session.set('selectedIp',[]);
+		FlowRouter.go('/');
+	},
 	'click .dropdown-toggle': function(e){
 		$('.dropdown-toggle').dropdown();
-	}
-});
-
-Template.mainLayout.events({
-	'click .mainLayout': function(e){
-		if (!$('.dropdown').is(e.target) && $('.dropdown').has(e.target).length === 0 && $('.open').has(e.target).length === 0){
-        	$('.dropdown').removeClass('open');
-    	}
 	}
 });
 

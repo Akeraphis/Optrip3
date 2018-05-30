@@ -1,0 +1,72 @@
+
+<template name="minHotel">
+	<div class="card">
+		<div class="card-header"><h3>Hotels</h3></div>
+			<div class="card-body">
+				<div class="card-group">
+					{{#each minHotels}}
+						<div class="col-md-4">
+							<div class="card">
+								{{>displayHotel}}
+								<button class="btn btn-info" type="button" name="otherHotels">Other Hotels</button>				
+							</div>
+						</div>
+					{{/each}}
+				</div>
+			</div>
+		</div>
+</template>
+
+<template name="displayHotel">
+	{{#with hotelFare}}
+		{{#with results}}
+			<div class="card-header">
+				{{#with address}}
+					<h3>{{city}}</h3>
+				{{/with}}
+			</div>
+			<center>
+				<img class="card-img-top" src="{{getImageFromHD property_code}}" alt="Card image cap" style="max-width: 18rem; height: 180px;">
+			</center>
+			<div class="card-body">
+				<h4>
+					{{property_name}}
+					{{#each getStarsFromHD property_code}} <img class="card-img-top" src="http://www.pngpix.com/wp-content/uploads/2016/10/PNGPIX-COM-Gold-Star-PNG-Transparent-Image.png" style="width: 20px; height: 20px;">{{/each}}
+				</h4>
+				<p>
+					Tripadvisor grade : {{getRatingFromHD property_code}}/5 <br/><br/>
+					{{#with total_price}}
+						<h4>{{amount}} {{currency}}</h4>
+					{{/with}}
+					{{#with address}}
+						<i>{{line1}}, {{city}}</i><br/>
+					{{/with}}
+					{{#with location}}
+						<small><i>{{getDistanceFromCenter latitude longitude}} km from center</i></small>
+					{{/with}}
+					<br/><br/>
+					{{> hotelDetails}}
+				</p>
+			</div>
+		{{/with}}
+	{{/with}}
+	<p class="card-text"><small class="text-muted">From {{checkin}} to {{checkout}}</small></p>
+</template>
+
+<template name="hotelDetails">
+	<a class="btn btn-secondary" role="button" data-toggle="collapse" href="#{{property_code}}" aria-expanded="false" aria-controls="{{hotel_id}}">
+		Details
+	</a>
+	<div class="collapse" id="{{property_code}}">
+		<div class="well">
+			<b>Description :</b>
+			{{marketing_text}}<br/>
+			<b>Amenities :</b>
+			<ul>
+				{{#each amenities}}
+					<li>{{description}}</li>
+				{{/each}}
+			</ul>
+		</div>
+	</div>
+</template>

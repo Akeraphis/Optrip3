@@ -1,0 +1,22 @@
+<template name="hotelOptions">
+	<div class="card">
+		<div class="card-header" role="tab" id="headingThree">
+			<h4 class="mb-0">
+				<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+					Hotel Options
+				</a>
+			</h4>
+		</div>
+		<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+			<div class="panel-body">
+				{{>distanceFromCenter}}
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name='distanceFromCenter'>
+	<b>Distance from center :</b><br/>
+	<input type="rangeslide" id="distanceCenter"/>
+	<br/>
+</template>

@@ -4,11 +4,22 @@ Meteor.publish("allAirports", function(){
 	});
 });
 
+Meteor.publish("airportByCode", function(code){
+	return Airports.find({iata : code}, {
+		fields: {content: 0}
+	});
+})
+
 Meteor.publish("allInterestPoints", function(){
 	return InterestPoints.find({},{
 		fields: {content: 0}
 	});
 });
+
+Meteor.publish('places', function(box) {
+    return InterestPoints.find({lat : {$gt : box[0][0], $lt : box[1][0]}, lng: {$gt: box[0][1], $lt: box[1][1]}});
+});
+
 
 Meteor.publish("allFlightFares", function(){
 	return FlightFares.find({},{
@@ -69,3 +80,25 @@ Meteor.publish("allProgressionUsers", function(){
 		fields:{content :0}
 	});
 });
+
+Meteor.publish("progIp", function(ip){
+	return ProgressionUsers.find({user : ip}, {
+		fields:{content :0}
+	});
+});
+
+Meteor.publish("allAirlines", function(){
+	return Airlines.find({});
+});
+
+Meteor.publish("airlineByCode", function(iata){
+	return Airlines.find({iata : iata});
+});
+
+Meteor.publish("allHotelDetails", function(){
+	return HotelDetails.find({});
+});
+
+Meteor.publish("hotelDetailsByCode", function(code){
+	return HotelDetails.find({property_code : code});
+})

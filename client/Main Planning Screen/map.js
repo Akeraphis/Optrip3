@@ -3,6 +3,8 @@ Session.set("selectedIp", []);
 var map=null;
 var markers = [];
 var googleKey = 'AIzaSyBa-oHgHxxTBaIhoFz8koYTBlHcuCyfiIk';
+Meteor.subscribe("allSuggestions");
+
 
 Session.set("selectedCurrency", "EUR");
 Session.set("selectedLocal", "en-GB");
@@ -50,58 +52,70 @@ Template.map.helpers({
 });
 
 
-Template.map.onCreated(function() {
+Template.map.onCreated(function(){
 
-  // We can use the `ready` callback to interact with the map API once the map is ready.
+	var self = this;
+
 	GoogleMaps.ready('map', function(map) {
+		self.autorun(function() {
+			getBox();
+			var handle = Meteor.subscribe('places', Session.get('box'));
+			if(handle.ready()){
+				//-------------------------------------------------------------------------------------------------
+				// Position all Interest Points on the map, add info on hovering and events linked to the markers
+				//-------------------------------------------------------------------------------------------------
+			    // retrieve all IPs and display them on the map
+				var ipArray = InterestPoints.find().fetch();
 
-		//-------------------------------------------------------------------------------------------------
-		// Position all Interest Points on the map, add info on hovering and events linked to the markers
-		//-------------------------------------------------------------------------------------------------
-	    // retrieve all IPs and display them on the map
-		var ipArray = InterestPoints.find().fetch();
+				google.maps.event.addListener(map.instance, 'dragend', function(e){
+			         getBox();
+			    });
 
-		//Loop to add all IPs
-	    _.forEach(ipArray, function(ip){
+			    google.maps.event.addListener(map.instance, 'zoom_changed', function(e){
+			        getBox();
+			    });
 
-	    	//add marker for considered ip
-	    	var myLatlng = new google.maps.LatLng(ip.lat, ip.lng);
-	    	var k = 0;
+				//Loop to add all IPs
+			    _.forEach(ipArray, function(ip){
 
-	    	var marker = addMarker(myLatlng, ip.city, map.instance);
+			    	//add marker for considered ip
+			    	var myLatlng = new google.maps.LatLng(ip.lat, ip.lng);
+			    	var k = 0;
 
-	    	//Add info window
-			var contentString = '<b>'+ip.city + '</b>, ' + ip.province + ', '+ ip.country;
-			var infowindow = new google.maps.InfoWindow({content: contentString, disableAutoPan : true});
+			    	var marker = addMarker(myLatlng, ip.city, map.instance);
+
+			    	//Add info window
+					var contentString = '<b>'+ip.city + '</b>, ' + ip.province + ', '+ ip.country;
+					var infowindow = new google.maps.InfoWindow({content: contentString, disableAutoPan : true});
 
 
-			//Add event to display info upon hovering
-			google.maps.event.addListener(marker, 'mouseover', function(){
-				infowindow.open(map.instance,marker);
-			});
+					//Add event to display info upon hovering
+					google.maps.event.addListener(marker, 'mouseover', function(){
+						infowindow.open(map.instance,marker);
+					});
 
-			//Add event to undisplay when mouse is leaving the marker
-			google.maps.event.addListener(marker, 'mouseout', function(){
-				infowindow.close(map.instance, marker);
-			});
+					//Add event to undisplay when mouse is leaving the marker
+					google.maps.event.addListener(marker, 'mouseout', function(){
+						infowindow.close(map.instance, marker);
+					});
 
-			//Set to selected/unselected upon clicking
-			google.maps.event.addListener(marker, 'click', function(){
-				//if the ip is already selected
-				if (IsSelected(ip)){
-					UnSelectCity(ip);
-					marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red.png');
-				}
-				//if it is not already selected
-				else{
-					SelectCity(ip);
-					marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green.png');
-					marker.setLabel("");
-				}
-			});
-
-	    });
-
+					//Set to selected/unselected upon clicking
+					google.maps.event.addListener(marker, 'click', function(){
+						//if the ip is already selected
+						if (IsSelected(ip)){
+							UnSelectCity(ip);
+							marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red.png');
+						}
+						//if it is not already selected
+						else{
+							SelectCity(ip);
+							marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green.png');
+							marker.setLabel("");
+						}
+					});
+			    });
+			}
+		});
 	});
 });
 
@@ -193,49 +207,6 @@ function drawCircuit(map, circuit){
 //-------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------
 
-//-------------------------------------------------------------------------------------------------
-// Function used to draw really route using a CAR
-//-------------------------------------------------------------------------------------------------
-
-function drawRoute(map, request){
-
-	setAllMap(null);
-
-	var directionsDisplay = new google.maps.DirectionsRenderer();
-	var directionsService = new google.maps.DirectionsService();
-	directionsDisplay.setMap(map);
-	var waypts = [];
-
-	if(request.length>=2) {
-		for (var i=1; i<request.length; i++){
-			waypts.push({
-          		location:request[i].ip.city,
-          		stopover:true
-          	});
-		}
-	}
-
-	var req2 = {
-    	origin: request[0].ip.city,
-    	destination: request[0].ip.city,
-    	waypoints : waypts,
-    	optimizeWaypoints : true,
-    	travelMode: google.maps.TravelMode.DRIVING
-  	};
-
-	directionsService.route(req2, function(response, status) {
-		if (status == google.maps.DirectionsStatus.OK) {
-			directionsDisplay.setDirections(response);
-		}
-		else{
-			window.alert('Directions request failed due to' + status);
-		}
-
-	});
-};
-//-------------------------------------------------------------------------------------------------
-//-------------------------------------------------------------------------------------------------
-//-------------------------------------------------------------------------------------------------
 
 //-------------------------------------------------------------------------------------------------
 // Markers manipulation functions
@@ -278,180 +249,11 @@ function deleteMarkers() {
   markers = [];
 }
 
-Template.home.helpers({
-	settings: function() {
-		return {
-			position: Session.get("position"),
-			limit: 10,
-			rules: [
-				{
-				// token: '',
-					collection: AutoSuggest,
-					field: 'PlaceName',
-					matchAll: true,
-					template: Template.displayDeparture
-				}
-			]
-		};
-	}
-});
+//Function to get the box we are currently looking at
+function getBox() {
+	var bounds = GoogleMaps.maps.map.instance.getBounds();
+	var ne = bounds.getNorthEast();
+	var sw = bounds.getSouthWest();
+	Session.set('box', [[sw.lat(),sw.lng()], [ne.lat(),ne.lng()]]);
+};
 
-Template.selectedIPs.helpers({
-	selectedIp : function(){
-		return Session.get("selectedIp");
-	}
-});
-
-Template.home.events({
-
-	//-------------------------------------------------------------------------------------------------
-	// Function called when the user clicks on the optimize button
-	//-------------------------------------------------------------------------------------------------
-	'submit .startingPanel' : function(e){
-
-		// prevent reset of the form
-		e.preventDefault();
-
-		//create all variables to get values in the form
-		var departureFrom = document.getElementById("departurePoint");
-		var departureDate = document.getElementById("departureDate");
-		var nbDaysElements = document.getElementsByName('NbDays');
-		var nbPersons = document.getElementById("NbPerson");
-		var nbChildren = document.getElementById("NbChildren");
-		var nbInfants = document.getElementById("NbInfants");
-		var nbDays = [];
-		var totalNbDays = 0;
-
-		for (var i=0; i<nbDaysElements.length; i++){
-			nbDays.push(nbDaysElements[i].value);
-			totalNbDays += parseInt(nbDaysElements[i].value);
-		}
-
-		Session.set('nbDays', nbDays);
-
-		var sc = sanityCheck(departureFrom.value, departureDate.value, Session.get('selectedIp'), totalNbDays, nbPersons.value, nbChildren.value, nbInfants.value);
-		var passedSanityCheck = sc[0];
-		var messageSC = sc[1];
-
-		if(!passedSanityCheck){
-			document.getElementById('myalert').innerHTML = messageSC;
-			$("#mySCModal").modal('show');
-		}
-		else{
-			Session.set("nbPersons", nbPersons.value);
-			Session.set("nbChildren", nbChildren.value);
-			Session.set("nbInfants", nbInfants.value);
-			Session.set("departureDate", departureDate.value);
-			Session.set("departureFrom", departureFrom.value);
-			var totalDays = 0;
-
-			//Go to proression bar screen and start counting
-			Meteor.call("getIpAddress", function(err, res){
-				if(!err){
-					Router.go('/progression');
-					Session.set("clientIp", res);
-					Meteor.call('insertProgressionUser', {user : Session.get("clientIp"), progress : 0, operation : "Initializing"});
-				}
-			});
-
-			//Call the update method for selectedIPDays
-			Meteor.call("updateIpDays", Session.get('selectedIp'), Session.get('nbDays'), function(error, result){
-				if (error){
-					console.log(error.reason);
-				}
-				else{
-					Session.set("ipDays", result);
-					console.log(Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"));
-					//send this information to the server to optimize and return result
-					Meteor.call('optimizeTrip', Session.get("departureFrom"), Session.get("departureDate"), result, Session.get('selectedCurrency'), Session.get('nbPersons'), Session.get("nbChildren"), Session.get("nbInfants"), Session.get("selectedLocal"), Session.get("selectedMarket"), function(error, res){
-						if(error){
-							alert("This is an error while updating the fares!");
-						}
-						else{
-							Router.go('/optimization/results');
-							Session.set("results", res[0][1]);
-							Session.set("minTotalPrice", res[0][0]);
-							Session.set("optimalCircuit", res[0][2]);
-							Session.set("newIpDays", res[0][3]);
-							console.log(res);
-							Session.set("totalResults", res);
-							Session.set("liveFlights", res[1]);
-							Session.set("selectedLiveFlights", res[1]);
-							Session.set("selectedLiveCars", res[0][1][1][4]);
-							Session.set("selectedLiveHotels", res[2]);
-							//drawRoute(GoogleMaps.maps.map.instance, Session.get("optimalCircuit"));
-							Meteor.call('deleteProgressionUser', Session.get("clientIp"));
-						}
-					});
-				}
-			});
-		}
-	},
-
-
-	'keypress .form-control' : function(e){
-		
-		var departureFrom = document.getElementById("departurePoint");
-
-		if(departureFrom.value.length >= 1){
-			var depAutoSuggest = Meteor.call("getPlaceAutosuggest", departureFrom.value, "EUR", "en-GB", "FR", function(error, result){
-			if(error){
-				alert("There is no autocomplete suggested !");
-			}
-			else{
-				//Delete all elements in collection	
-				//Meteor.call("flushAllSuggests");
-
-				//Refresh collection
-				for (var i = result.Places.length - 1; i >= 0; i--) {
-					Meteor.call("insertAutoSuggest", result.Places[0]);
-				}
-			}
-
-			});	
-		}
-	},
-
-	'mouseenter .infoBul' : function(e){
-		
-	},
-	'mouseleave .infoBul' : function(e){
-		console.log("this is it");
-	},
-
-
-	//-------------------------------------------------------------------------------------------------
-	//-------------------------------------------------------------------------------------------------
-	//-------------------------------------------------------------------------------------------------
-});
-
-sanityCheck = function(departureFrom, departureDate, selectedIp, totalNbDays, nbAdults, nbChildren, nbInfants){
-	var passedSC = false;
-	var messageSC = "";
-
-	if(departureFrom==""){
-		messageSC = "Please enter a departure place";
-	}
-	else if(!(/^[a-zA-Z]+$/.test(departureFrom))){
-		messageSC = "Please make sur you enter only letters in the departure field";
-	}
-	else if(moment(departureDate).isBefore(moment())){
-		messageSC = "Please enter a departure date after today";
-	}
-	else if(selectedIp.length<1){
-		messageSC = "Select at least one destination";
-	}
-	else if(selectedIp.length>8){
-		messageSC = "You cannot select more than 8 destinations";
-	}
-	else if(parseInt(nbAdults)+parseInt(nbChildren)+parseInt(nbInfants)>8){
-		messageSC = "Number of travelers cannot be above 8";
-	}
-	else if(totalNbDays>22){
-		messageSC = "The total number of nights must be less than 22 days";
-	}
-	else{
-		passedSC = true;
-	}
-	return [passedSC, messageSC];
-}

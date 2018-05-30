@@ -1,53 +1,41 @@
 <head>
 	<title>Optrip</title>
 	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Abel" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" crossorigin="anonymous">
 	<meta name='B-verify' content='995e50cf875d29e6e5b178683be89fc41a995eaf' />
 </head>
 
 <template name="mainLayout">
 	<body class='mainLayout'>
-		{{> NavBar}}
-		<center><h1 class="titleSite">Optrip</h1></center><br />
-		<div>
-			{{>yield}}
+		<div class="text-black bg-light">
+			{{> NavBar}}
+			{{> Template.dynamic template=main}}
 		</div>
 	</body>
 </template>
 
 <template name="NavBar">
-	<nav class="navbar navbar-default">
-	  <div class="container-fluid">
-	    <div class="navbar-header">
-	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-	        <span class="sr-only">Toggle navigation</span>
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>
-	        <span class="icon-bar"></span>
-	      </button>
-	      <a class="navbar-brand" href="/">Optrip</a>
-	    </div>
-
-	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-	      <ul class="nav navbar-nav navbar-right">
-	      	<!--{{>loginButtons}}-->
-	      	{{>dropDownCurrency}}
-	      	{{>dropDownLocale}}
-	      	{{>dropDownMarket}}
-	        <li><a href="#">SkyScanner</a></li>
-	        <li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Parameters</a>
-	          <ul class="dropdown-menu">
-	            <li></li>
-	            <li><a href="#">Trips</a></li>
-	            <li><a href="#">Carreers</a></li>
-	            <li role="separator" class="divider"></li>
-	            <li><a href="#">Credentials</a></li>
-	          </ul>
-	        </li>
-	      </ul>
-	    </div>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	  <a href="/" class="navbar-brand">Optrip</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+	  <img src="question-mark-icon.png" height="30px" class="imagehelp" width="30px" data-toggle="tooltip" title="Optrip is an application that will help you build your holidays (flight+car+hotels) in an optimal way. Just seelect a number of cities you want to visit on the map and fill the fields below. Our powerful optimization engine will then find you the cheapest trip for your selection. (The computation time can take up to several minutes).">
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav mr-auto">
+	      <li class="nav-item active">
+	        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="">Amadeus</a>
+	      </li>
+	    </ul>
+	    <form class="form-inline my-2 my-lg-0">
+	      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+	      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+	    </form>
 	  </div>
 	</nav>
 </template>
@@ -62,7 +50,6 @@
 		</ul>
 	</li>
 </template>
-
 
 <template name="dropDownLocale">
 	<li class="dropdown">
