@@ -14,13 +14,16 @@ Template.circuit.events({
 		_.forEach(this.circuit, function(c){
 			ips.push(c.ip);
 			nbDays.push(c.nbDays);
-			var myLatlng = new google.maps.LatLng(c.ip.lat, c.ip.lng);
-
-			var marker = addMarker(myLatlng, c.ip.city, map.instance);
 		});
 
 		Session.set("selectedIp", ips);
 		Session.set('nbDays', nbDays);
 		Session.set("ipDays", this.circuit);
 	}
+});
+
+Template.nextButton2.events({
+	'click .next2': function(){
+		FlowRouter.go('/3');
+	},
 });

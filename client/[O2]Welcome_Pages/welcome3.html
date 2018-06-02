@@ -1,0 +1,18 @@
+<template name="welcome3">
+	<div class="container-fluid">
+		<center>
+			{{>budgetMax}}
+			{{>authenticOrClassy}}
+		</center>
+	</div>
+</template>
+
+<template name="budgetMax">
+	<h4>Do you have a maximum budget ?</h4>
+	<input type="number" name="maxBudget" id="maxBudget"/>
+</template>
+
+<template name="authenticOrClassy">
+	<h4>Are you more authentic or classy ?</h4>
+	<input type="rangeslide" id="authenticOrClassy"/>
+</template>
